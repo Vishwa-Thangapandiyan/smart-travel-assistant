@@ -44,6 +44,27 @@ logs/
 *.pem
 .cache/
 
+# ---- Signing keys and service config : NEVER commit these ----
+# Android release signing, Firebase/Google config, machine-local SDK
+# paths, and Supabase CLI scratch state.
+key.properties
+*.jks
+*.keystore
+*.p12
+google-services.json
+GoogleService-Info.plist
+android/local.properties
+supabase/.temp/
+supabase/.branches/
+
+# ---- Landing page ----
+# Lives in its own repo now (~/Documents/meridian-landing). Ignored here
+# so a stray local copy can never be committed back into the app repo.
+landing-page/
+
+# ---- Codex: machine-local state ----
+.codex/
+
 # ---- AI tooling: machine-local / generated state ----
 # skills-lock.json (root) IS tracked on purpose — it's a lockfile
 # (skill name -> source -> content hash), not runtime state.
@@ -57,3 +78,4 @@ logs/
 .claude/settings.local.json
 .impeccable/config.local.json
 .impeccable/live/
+.impeccable/critique/

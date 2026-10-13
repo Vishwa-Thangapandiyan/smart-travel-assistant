@@ -1,0 +1,32 @@
+# Runs on every pull request into main. A green check is all a PR needs to
+# be merged — no approval is required (see docs/WORKFLOW.md).
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install packages
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      # Skipped until the app shell adds the first test, so CI is green
+      # from the start instead of failing on a missing test/ folder.
+      - name: Test
+        if: hashFiles('test/**/*_test.dart') != ''
+        run: flutter test

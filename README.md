@@ -7,11 +7,13 @@ recommendations.
 Software engineering course project — Vellore Institute of Technology,
 Chennai.
 
-| Name | Reg. No | Owns |
+| Name | Reg. No | Builds |
 | --- | --- | --- |
-| Vishwa Thangapandiyan | 24BCE1415 | Accounts, Maps & Offline |
-| Sanjay Sivakumar | 24BCE1948 | Itinerary, Recommendations |
-| Santhosh S | 24BCE5169 | Budget, Emergency Assistance |
+| Vishwa Thangapandiyan | 24BCE1415 | App shell, Accounts, Itinerary, Maps & routing, Recommendations |
+| Sanjay Sivakumar | 24BCE1948 | Offline access, Emergency Assistance |
+| Santhosh S | 24BCE5169 | Budget & Expenses |
+
+Canonical record: [`docs/OWNERSHIP.md`](docs/OWNERSHIP.md).
 
 **Why Flutter, not a web app.** This project started as a React + Vite web
 app. It was rebuilt as Flutter because background location tracking — the
@@ -31,10 +33,10 @@ isn't rebuilt a second time later.
 it covers cloning the repo, making a branch, pushing your work, and
 opening a pull request, written for people who have never used Git.
 
-Then open your own folder in [`team/`](team/) and follow the brief there.
-**Step 0 of that brief loads project context into your AI tool** — do not
-skip it. A task read without the requirements behind it produces code that
-drifts from the SRS.
+Then open your own folder in [`team/`](team/). Your brief has the one
+prompt to give your AI tool (Claude Code or Codex); it reads
+[`AGENTS.md`](AGENTS.md) and the files it points to, so the requirements
+come along with every task.
 
 ---
 
@@ -120,15 +122,18 @@ smart-travel-assistant/
 ├── START-HERE.md               git + flutter setup guide, read this first
 ├── RUN.md                       exact flutter run command, with Supabase keys
 ├── FILE-STRUCTURE.md            build spec — what lives where and why
-├── CLAUDE.md                    project context for Claude Code
+├── AGENTS.md                    rules every AI agent and contributor follows
+├── CLAUDE.md                    imports AGENTS.md, plus Claude Code specifics
+├── .claude/settings.json        shared Claude Code settings (attribution off)
+├── .github/                     PR template, CODEOWNERS, CI workflow
 ├── .gitignore
 ├── pubspec.yaml                fixed dependency list — no additions without asking
 ├── analysis_options.yaml
 │
-├── team/                      per-person task briefs and planners
-│   ├── vishwa/                Accounts, Maps & Offline
-│   ├── sanjay/                Itinerary, Recommendations
-│   └── santhosh/               Budget, Emergency  (+ AI prompt pack)
+├── team/                      per-person briefs and planners
+│   ├── vishwa/                App shell, Accounts, Itinerary, Maps, Recommendations
+│   ├── sanjay/                Offline, Emergency
+│   └── santhosh/               Budget
 │
 ├── db/
 │   ├── schema.sql             ALL tables for ALL features. Frozen — see rule 2.
@@ -146,13 +151,14 @@ smart-travel-assistant/
 │   │
 │   ├── providers/               state, one per feature area
 │   │
-│   ├── features/                one folder per SRS feature, one owner each
+│   ├── features/                one folder per feature, one owner each; README = spec
 │   │   ├── accounts/            Vishwa    — REQ-1.x
-│   │   ├── itinerary/            Sanjay    — REQ-2.x
+│   │   ├── itinerary/            Vishwa    — REQ-2.x
 │   │   ├── budget/                Santhosh  — REQ-3.x
-│   │   ├── maps/                   Vishwa    — REQ-4.x
-│   │   ├── emergency/               Santhosh  — REQ-5.x (except REQ-5.2, see below)
-│   │   └── recommendations/          Sanjay    — REQ-6.x (and REQ-5.2)
+│   │   ├── maps/                   Vishwa    — REQ-4.1, 4.2
+│   │   ├── offline/                 Sanjay    — REQ-4.3
+│   │   ├── emergency/               Sanjay    — REQ-5.x
+│   │   └── recommendations/          Vishwa    — REQ-6.x
 │   │
 │   ├── screens/                 top-level navigation
 │   └── widgets/                  shared UI
@@ -167,25 +173,13 @@ shows where things belong. See [`docs/README.md`](docs/README.md).
 
 ## 5. Ownership and branches
 
-Each person owns two features and works on their own branch. **Only touch
-your own feature folder** — or a folder you're an authorized implementer
-for, see below.
+Each feature has one owner who builds it on its own branch. **Only touch
+your own folders.** Branches are named `flex/<page-or-feature>`, never by
+contributor.
 
-Branches are named `flex/<page-or-feature>`, not by contributor — the
-name stays the same regardless of who is currently implementing it.
-Current implementer exceptions (e.g. Budget and Emergency currently being
-implemented by Vishwa on Santhosh's behalf) are recorded in
-[`docs/OWNERSHIP.md`](docs/OWNERSHIP.md), the canonical source — ownership
-itself doesn't change because of who's implementing.
-
-| Branch | Owner | Folders they edit |
-| --- | --- | --- |
-| `flex/accounts` | Vishwa | `lib/features/accounts/`, `lib/services/supabase_service.dart` |
-| `flex/maps` | Vishwa | `lib/features/maps/`, `lib/services/routing_service.dart`, `lib/services/location_service.dart` |
-| `flex/itinerary` | Sanjay | `lib/features/itinerary/` |
-| `flex/recommendations` | Sanjay | `lib/features/recommendations/`, plus the REQ-5.2 directions wrapper (see `lib/features/emergency/README.md`) |
-| `flex/budget` | Santhosh | `lib/features/budget/` |
-| `flex/emergency` | Santhosh | `lib/features/emergency/`, `lib/services/overpass_service.dart` |
+The table of owners, branches and the exact folders each person edits is
+in [`docs/OWNERSHIP.md`](docs/OWNERSHIP.md) — the canonical source, kept
+in one place so it can't disagree with itself.
 
 ## 6. Ground rules
 
@@ -216,38 +210,36 @@ itself doesn't change because of who's implementing.
    conflicts.
 
 6. **Small PRs, often.** One PR per working piece — "login screen works" —
-   not one giant PR at the end of the month.
+   not one giant PR at the end of the month. Merge your own PR once CI is
+   green; no approval is needed.
 
 7. **Update your planner.** Each `team/<name>/PLANNER.md` has dated
-   milestones. Tick things off as you finish. When the instructor asks
-   where we are, that file is the answer.
+   milestones. Tick things off in the same PR that finishes them. When the
+   instructor asks where we are, that file is the answer.
 
-8. **Blocked for more than a day? Say so.** Especially Santhosh — you are
-   on free-tier AI, and burning ten free messages on one bug is worse than
-   someone with Pro pasting the error into their session and handing back
-   a fix in one.
+8. **Blocked for more than a day? Say so** in the group chat.
+
+9. **No AI attribution** in commits or PRs — see `AGENTS.md` rule 8.
 
 ## 7. Build order
 
-Not arbitrary — it is a dependency chain.
+The features used to form a waiting chain (Accounts → Itinerary → Maps →
+Emergency). That chain is broken on purpose:
 
 ```
-1. Accounts        (Vishwa)     ← everything keys on user_id. Nothing works until this does.
+1. App shell + theme + fake services  (Vishwa)   ← the only thing anyone waits for
        │
-       ├── 2. Itinerary  (Sanjay)     ← creates the trips table Maps needs
-       │        │
-       │        └── 4. Maps + Offline (Vishwa)   ← plots itinerary stops, builds routing_service.dart
-       │                 │
-       │                 └── 5. Emergency (Santhosh)  ← calls Sanjay's REQ-5.2 wrapper around routing_service.dart
+       ├── Accounts, Itinerary, Maps & routing, Recommendations  (Vishwa)
+       ├── Offline, Emergency                                    (Sanjay)
+       └── Budget                                                (Santhosh)
+              all in parallel, each against the fake services
        │
-       └── 3. Budget     (Santhosh)   ← independent, runs parallel with Itinerary
-                │
-                └── 6. Recommendations (Sanjay)  ← last; REQ-6.4 lets it degrade gracefully
+2. Integration: real services replace fakes, full flow tested  (everyone)
 ```
 
-**Weeks 1–2 are not idle for Sanjay and Santhosh.** While Accounts is being
-built, they build their screens against hardcoded data and swap in real
-queries once auth lands. Details in the individual planners.
+Every service has a fixed signature in `lib/services/README.md` and a
+fake version from the app shell, so nobody waits for anyone else's
+branch. See `docs/OWNERSHIP.md`, "How parallel work stays parallel".
 
 ## 8. Running it locally
 
@@ -270,14 +262,16 @@ no `.env` file to copy.
 Semester runs to **20 November 2026**. Planning, SRS, and design
 documentation are complete. We are in **Phase 4: Implementation**.
 
-| Sprint | Dates | Focus |
-| --- | --- | --- |
-| 0 | Aug 24 – Aug 30 | Everyone: setup, Flutter running locally, Supabase connected |
-| 1 | Aug 31 – Sep 13 | Accounts (Vishwa). Others build UI shells on hardcoded data. |
-| 2 | Sep 14 – Sep 27 | Itinerary (Sanjay), Budget (Santhosh) |
-| 3 | Sep 28 – Oct 18 | Maps & Offline (Vishwa), Emergency (Santhosh) |
-| 4 | Oct 19 – Nov 1 | Recommendations (Sanjay), integration of all six features |
-| 5 | Nov 2 – Nov 8 | Testing — unit, integration, demo dry-run |
-| 6 | Nov 9 – Nov 20 | Deploy, user guide, final report, viva prep |
+Re-planned on 14 Oct 2026: the original sprint dates (Aug 24 – Oct 18)
+passed with no feature code merged, and the work was redistributed (see
+`docs/OWNERSHIP.md`).
 
-Sprint dates match the Gantt chart in `docs/gantt/`.
+| Phase | Dates | Focus |
+| --- | --- | --- |
+| A | Oct 14 – Oct 19 | App shell, theme, fake services, Supabase project (Vishwa). Others set up. |
+| B | Oct 20 – Nov 1 | All features in parallel (everyone) |
+| C | Nov 2 – Nov 8 | Real services replace fakes, integration, testing |
+| D | Nov 9 – Nov 20 | Release APK, user guide, final report, viva prep |
+
+The Gantt chart in `docs/gantt/` still shows the original sprints and
+needs updating to match.

@@ -15,13 +15,17 @@ smart-travel-assistant/
 ├── START-HERE.md                        git + Flutter setup guide
 ├── RUN.md                                exact `flutter run` command and the two --dart-define keys
 ├── FILE-STRUCTURE.md                     this file
-├── CLAUDE.md                              project context for Claude Code
+├── AGENTS.md                              rules for every AI agent and contributor (Codex reads it)
+├── CLAUDE.md                              imports AGENTS.md, plus Claude Code specifics
+├── .claude/settings.json                  shared Claude Code settings: attribution off
 ├── .gitignore
 ├── pubspec.yaml                          fixed dependency list — no additions without asking
 ├── analysis_options.yaml
 │
 ├── .github/
-│   └── pull_request_template.md
+│   ├── pull_request_template.md
+│   ├── CODEOWNERS                        tags each folder's owner on a PR
+│   └── workflows/ci.yml                  flutter analyze (+ test) on every PR
 │
 ├── docs/                                  contents gitignored, structure tracked
 │   ├── .gitignore
@@ -34,15 +38,15 @@ smart-travel-assistant/
 ├── team/
 │   ├── README.md
 │   ├── vishwa/
-│   │   ├── README.md                     task brief, includes the build/review workflow section
+│   │   ├── README.md                     brief: what he builds, when, and the prompt for his AI tool
 │   │   └── PLANNER.md
 │   ├── sanjay/
-│   │   ├── README.md                     includes the REQ-5.2 directions task
+│   │   ├── README.md
 │   │   └── PLANNER.md
 │   └── santhosh/
 │       ├── README.md
 │       ├── PLANNER.md
-│       └── AI-PROMPT-PACK.md             Flutter/Dart prompts, schema + model classes baked in
+│       └── AI-PROMPT-PACK.md             old copy-paste fallback; superseded by Codex
 │
 ├── db/
 │   ├── schema.sql                        ALL tables for ALL features. FROZEN.
@@ -64,21 +68,24 @@ smart-travel-assistant/
     │   └── last_known_location.dart
     │
     ├── services/                          anything that talks outside the phone
-    │   ├── README.md                      documents every service's signature (files below don't exist yet — owners write them)
+    │   ├── README.md                      fixes every service's signature; fake versions come with the app shell
     │   ├── supabase_service.dart          OWNER: Vishwa
-    │   ├── routing_service.dart           OWNER: Vishwa — OSRM; Sanjay's REQ-5.2 wrapper calls this
-    │   ├── overpass_service.dart          OWNER: Santhosh
-    │   └── location_service.dart          OWNER: Vishwa
+    │   ├── trip_service.dart              OWNER: Vishwa — read-only trips for Offline, Budget, Maps
+    │   ├── routing_service.dart           OWNER: Vishwa — OSRM; Emergency calls it for directions
+    │   ├── location_service.dart          OWNER: Vishwa
+    │   ├── offline_service.dart           OWNER: Sanjay
+    │   └── overpass_service.dart          OWNER: Sanjay
     │
     ├── providers/                         state, one per feature area (built by owners as features land)
     │
-    ├── features/                          one folder per SRS feature, one owner each
+    ├── features/                          one folder per feature, one owner each; README = spec + checklist
     │   ├── accounts/README.md             Vishwa    — REQ-1.x
-    │   ├── itinerary/README.md            Sanjay    — REQ-2.x
+    │   ├── itinerary/README.md            Vishwa    — REQ-2.x
     │   ├── budget/README.md               Santhosh  — REQ-3.x
-    │   ├── maps/README.md                 Vishwa    — REQ-4.x
-    │   ├── emergency/README.md            Santhosh  — REQ-5.1, 5.3, 5.4
-    │   └── recommendations/README.md      Sanjay    — REQ-6.x, and REQ-5.2
+    │   ├── maps/README.md                 Vishwa    — REQ-4.1, 4.2
+    │   ├── offline/README.md              Sanjay    — REQ-4.3
+    │   ├── emergency/README.md            Sanjay    — REQ-5.1–5.4
+    │   └── recommendations/README.md      Vishwa    — REQ-6.x
     │
     ├── screens/                           top-level navigation (built as features land)
     └── widgets/                           shared UI (built as features land)
@@ -98,38 +105,18 @@ only documents where their code goes.
 engineering course project
 **Timeline:** implementation runs 24 Aug 2026 → 20 Nov 2026
 
-**Team and ownership:**
+**Team and ownership:** Vishwa Thangapandiyan (24BCE1415), Sanjay
+Sivakumar (24BCE1948), Santhosh S (24BCE5169). Who builds which feature,
+on which branch, editing which folders, is recorded in one place only:
+[`docs/OWNERSHIP.md`](docs/OWNERSHIP.md). Branches are named by feature
+(`flex/<page-or-feature>`), never by contributor.
 
-| Person | Reg. No | Features owned | Branches | AI access |
-| --- | --- | --- | --- | --- |
-| Vishwa Thangapandiyan | 24BCE1415 | Accounts (4.1), Maps & Offline (4.4) | `flex/accounts`, `flex/maps` | Claude Pro |
-| Sanjay Sivakumar | 24BCE1948 | Itinerary (4.2), Recommendations (4.6), REQ-5.2 | `flex/itinerary`, `flex/recommendations` | Claude Pro, possibly Max |
-| Santhosh S | 24BCE5169 | Budget (4.3), Emergency (4.5, minus REQ-5.2) | `flex/budget`, `flex/emergency` | **None — free tier only** |
-
-Branches are named by feature (`flex/<page-or-feature>`), not by
-contributor — see `docs/OWNERSHIP.md` for who currently implements what
-when that differs from the owner listed above.
-
-**Git experience:** Sanjay knows GitHub reasonably. Vishwa and Santhosh
-have never used it.
-
-**Six features and their requirement ranges:**
-
-| # | Feature | Folder | REQs | Owner |
-| --- | --- | --- | --- | --- |
-| 4.1 | User Account Management | `accounts` | REQ-1.1–1.4 | Vishwa |
-| 4.2 | Trip and Itinerary Planning | `itinerary` | REQ-2.1–2.4 | Sanjay |
-| 4.3 | Budget and Expense Management | `budget` | REQ-3.1–3.5 | Santhosh |
-| 4.4 | Maps, Navigation & Offline Access | `maps` | REQ-4.1–4.3 | Vishwa |
-| 4.5 | Emergency Assistance | `emergency` | REQ-5.1, 5.3, 5.4 | Santhosh |
-| — | — directions inside Emergency | (wrapper in `recommendations/` or `services/`) | REQ-5.2 | Sanjay |
-| 4.6 | Destination Recommendations | `recommendations` | REQ-6.1–6.4 | Sanjay |
-
-REQ-5.2's move from Santhosh to Sanjay is documented in full in
-`CLAUDE.md`, `team/sanjay/README.md`, and `team/santhosh/README.md` —
-reason: it needs integrating someone else's live implementation
-(`routing_service.dart`), which isn't practical from a pasted prompt with
-no repo access.
+**Six features (SRS sections):** 4.1 User Account Management
+(`accounts`, REQ-1.x) · 4.2 Trip and Itinerary Planning (`itinerary`,
+REQ-2.x) · 4.3 Budget and Expense Management (`budget`, REQ-3.x) · 4.4
+Maps, Navigation & Offline Access (`maps` for REQ-4.1–4.2, `offline` for
+REQ-4.3) · 4.5 Emergency Assistance (`emergency`, REQ-5.x) · 4.6
+Destination Recommendations (`recommendations`, REQ-6.x).
 
 **Stack (fixed — do not substitute):** Flutter + Dart, Provider,
 Supabase (auth + Postgres), flutter_map + OpenStreetMap, OSRM public demo
@@ -138,23 +125,14 @@ offline. No custom backend. No API keys beyond the Supabase anon key. No
 credit card anywhere. Full dependency list in `pubspec.yaml` — see
 `CLAUDE.md` for the "do not substitute" table.
 
-**Sprint schedule:**
+**Schedule:** re-planned on 14 Oct 2026 into phases A–D — see
+`README.md` §9.
 
-| Sprint | Dates | Focus |
-| --- | --- | --- |
-| 0 | Aug 24 – Aug 30 | Setup: everyone running Flutter locally, Supabase live |
-| 1 | Aug 31 – Sep 13 | Accounts (Vishwa). Others build UI on hardcoded data. |
-| 2 | Sep 14 – Sep 27 | Itinerary (Sanjay), Budget (Santhosh) |
-| 3 | Sep 28 – Oct 18 | Maps & Offline (Vishwa), Emergency (Santhosh), REQ-5.2 (Sanjay) |
-| 4 | Oct 19 – Nov 1 | Recommendations (Sanjay), integration |
-| 5 | Nov 2 – Nov 8 | Testing |
-| 6 | Nov 9 – Nov 20 | Deploy, user guide, final report, viva |
-
-**Dependency chain:** Accounts must land first (every table keys on
-`user_id`). Itinerary's `trips`/`itinerary_items` must exist before Maps
-can plot markers. Emergency reuses Sanjay's REQ-5.2 wrapper around
-Vishwa's `routing_service.dart`, and Overpass independently. Recommendations
-ships last because REQ-6.4 permits it to degrade gracefully.
+**Dependencies:** the only thing anyone waits for is Vishwa's app shell
+(theme plus a fake version of every service). After it merges, every
+feature builds in parallel against the fixed service signatures in
+`lib/services/README.md`; real services replace the fakes during
+integration. See `README.md` §7.
 
 ---
 
@@ -162,12 +140,9 @@ ships last because REQ-6.4 permits it to degrade gracefully.
 
 Every table in `db/schema.sql` has exactly one matching Dart class in
 `lib/models/`. `lib/models/CONTRACT.md` documents every field, its type,
-and its owner — self-contained enough to paste into a chat with no other
-context. This is the single most load-bearing file in the migration:
-Santhosh has no Claude Code access and can only paste code into a chat
-window, so without a fixed, written contract, whatever AI he uses will
-invent field names and his branch won't compile against anyone else's
-work.
+and its owner. It is the most load-bearing file in the repo: without a
+fixed, written contract, each person's AI tool would invent its own field
+names and no branch would compile against anyone else's work.
 
 **Do not change a class in `lib/models/` without raising it in the group
 chat first.** A silent field rename breaks the other two branches, not
@@ -178,11 +153,11 @@ just yours.
 ## 4. lib/services/ — the service contract
 
 `lib/services/README.md` documents the public method signature of every
-service file before that file exists — most importantly
-`routing_service.dart`, since Sanjay's REQ-5.2 wrapper (and, through it,
-Santhosh's Emergency screen) calls it directly. Build against the
-documented signature; if it needs to change, say so in the group chat
-first, same rule as the models.
+service file before that file exists, and the app shell ships a fake
+version of each — so a feature can call a service someone else owns
+(for example, Emergency calling Vishwa's `routing_service.dart`) without
+waiting for their branch. Build against the documented signature; if it
+needs to change, say so in the group chat first, same rule as the models.
 
 ---
 
@@ -226,11 +201,10 @@ ever leaks, rotate it in the Supabase dashboard immediately.
 
 ## 6. The context-loading step
 
-Every team member's README includes this before any task, because a task
-brief read without the SRS produces work that drifts from the
-requirements. Reproduced in full in `START-HERE.md` §7 — see that file
-for the exact wording used for Vishwa/Sanjay (Claude Code) versus
-Santhosh (paste-into-a-chat).
+Every team member's brief has one prompt for their AI tool (Claude Code
+or Codex). The tool reads `AGENTS.md`, the brief, the planner and the
+feature README, so a task never arrives without the requirements behind
+it. See `START-HERE.md` §7.
 
 ---
 

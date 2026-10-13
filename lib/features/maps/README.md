@@ -1,16 +1,39 @@
-# Maps, Navigation & Offline Access — REQ-4.1–4.3
+# Maps & routing — REQ-4.1, 4.2
 
-Flutter feature folder. Owner: Vishwa · Branch: `flex/maps` · SRS 4.4
+Owner: Vishwa · Branch: `flex/maps` · SRS 4.4 · Record:
+[`docs/OWNERSHIP.md`](../../../docs/OWNERSHIP.md)
 
-Plots itinerary stops on a map with routing, and lets a trip be downloaded
-for offline use (Hive).
+Plots a trip's stops on an OpenStreetMap map and draws a road route
+between them. Offline access (REQ-4.3) is a separate feature owned by
+Sanjay — see `lib/features/offline/README.md`.
 
-Exports `lib/services/routing_service.dart` — see
-`lib/services/README.md` for its signature. **REQ-5.2 (directions inside
-Emergency) is built by Sanjay as a wrapper around this function, not by
-Santhosh directly** — don't change the signature without telling both of
-them.
+Builds `lib/services/routing_service.dart` and
+`lib/services/location_service.dart`. Emergency (Sanjay) calls both, so
+**never change their signatures** in `lib/services/README.md` without
+telling Sanjay first.
 
-Task brief: [`team/vishwa/README.md`](../../../team/vishwa/README.md)
+## Tasks
 
-Only Vishwa edits this folder.
+1. Set up `flutter_map` with an OpenStreetMap tile layer. Add the
+   `INTERNET` permission to `android/app/src/main/AndroidManifest.xml` —
+   without it the map stays blank with no error.
+2. Show OSM attribution on the map (`RichAttributionWidget` or
+   equivalent). This is a licence condition, not a style choice.
+3. Plot itinerary stops as markers from `ItineraryItem.latitude` /
+   `.longitude`.
+4. Build `routing_service.dart` as a plain function calling the public
+   OSRM server, matching the documented signature and replacing the fake.
+5. Build `location_service.dart` (geolocator for the live position,
+   Supabase for the stored last-known position), and add the
+   `ACCESS_FINE_LOCATION` / `ACCESS_COARSE_LOCATION` permissions.
+6. Handle a slow or unreachable OSRM server: time out, keep the pins, show
+   no line rather than spinning for ever.
+
+## Done when
+
+- [ ] Map renders with visible tiles and correct markers — REQ-4.1
+- [ ] OSM attribution is visible — REQ-4.1
+- [ ] Routing between stops works via OSRM through
+      `routing_service.dart` — REQ-4.2
+- [ ] `location_service.dart` is real and matches its signature
+- [ ] A map with zero stops shows a sensible empty state, no crash

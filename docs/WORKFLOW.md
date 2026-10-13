@@ -34,6 +34,33 @@ These apply no matter what tool or model a contributor is using:
   to change outside your own scope, say so before doing it.
 - Use repository-aware development tooling appropriate to the task at
   hand, rather than working blind against guessed file contents.
+- No AI attribution in commits or pull requests — no `Co-authored-by`,
+  `Claude-Session` or "Generated with" lines. See `AGENTS.md` rule 8.
+
+### Merging without waiting on anyone
+
+`main` is protected: every change arrives through a pull request, and a
+CI check (`flutter analyze`, plus `flutter test` once tests exist) must
+pass. **No approval is required** — once your check is green, merge your
+own PR. Nobody waits for Vishwa (or anyone) to merge. CODEOWNERS
+automatically tags the owner of any folder a PR touches, so a change
+outside your folders is visible straight away.
+
+### Running your AI tool
+
+Everyone works the same way, whichever tool they use. From the repository
+root, start your tool and send:
+
+```
+Read AGENTS.md, then team/<your-name>/README.md and
+team/<your-name>/PLANNER.md. Find my next unticked task, read its feature
+README, show me the plan, then build it on the right flex/ branch,
+verify it, and open the PR.
+```
+
+Claude Code reads `CLAUDE.md` (which imports `AGENTS.md`); Codex reads
+`AGENTS.md` directly. The repository's files carry all the context — no
+pasting needed.
 
 ## 2. Individual contributor tooling
 
@@ -42,14 +69,20 @@ their own tools within the expectations above.
 
 **Sanjay** — uses Claude Code for repository-aware implementation. Chooses
 his own Claude model and effort level per task; that choice is personal
-and not dictated by this repository.
+and not dictated by this repository. Attribution is switched off for him
+automatically by the checked-in `.claude/settings.json`.
 
-**Santhosh** — remains owner of Budget and Emergency. Vishwa is currently
-implementing those two features on his behalf (see `docs/OWNERSHIP.md`
-for the canonical record). No specific AI workflow is prescribed for
-Santhosh beyond documenting this arrangement — `team/santhosh/AI-PROMPT-PACK.md`
-stays available to him as fallback/reference for whenever he's reviewing,
-picking pieces back up, or resuming full implementation.
+**Santhosh** — uses Codex for repository-aware implementation. Codex reads
+`AGENTS.md` automatically. Codex only adds a `Co-authored-by: Codex`
+trailer when its `codex_git_commit` feature is turned on; to be certain it
+never does, put this in `~/.codex/config.toml`:
+
+```toml
+commit_attribution = ""
+```
+
+`team/santhosh/AI-PROMPT-PACK.md` is kept only as a fallback for times
+he has no Codex access.
 
 **Vishwa** — current personal workflow, documented here as an example,
 not a requirement for anyone else:
@@ -86,9 +119,8 @@ GPT-5.6 final review
 
 None of the above — GPT-5.6, Sonnet 5, Antigravity, Codex, or the
 specific pipeline shape — is a requirement for Sanjay or Santhosh. It's
-recorded here so the team has visibility into how Vishwa's own work
-(including his current implementation of Santhosh's Budget and Emergency
-modules) gets built and reviewed.
+recorded here so the team has visibility into how Vishwa's own work gets
+built and reviewed.
 
 ## 3. Claude Code's role in this repository
 
@@ -112,9 +144,9 @@ Branches and PRs are named by feature or page, not by contributor:
 flex/<page-or-feature-being-updated>
 ```
 
-Examples: `flex/landing-page`, `flex/login`, `flex/accounts`,
-`flex/maps`, `flex/itinerary`, `flex/budget`, `flex/emergency`,
-`flex/recommendations`.
+Examples: `flex/app-shell`, `flex/login`, `flex/accounts`,
+`flex/maps`, `flex/itinerary`, `flex/offline`, `flex/budget`,
+`flex/emergency`, `flex/recommendations`.
 
 Contributor names never appear in a branch or PR name. Who owns a
 feature, and who is currently implementing it, are documented separately
