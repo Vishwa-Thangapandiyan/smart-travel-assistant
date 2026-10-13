@@ -25,7 +25,9 @@ Future<void> main() async {
     );
   }
 
-  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+  // Supabase renamed the anon key to the "publishable" key; it is the
+  // same public value, so the --dart-define name stays as it is.
+  await Supabase.initialize(url: supabaseUrl, publishableKey: supabaseAnonKey);
 
   runApp(const SmartTravelApp());
 }

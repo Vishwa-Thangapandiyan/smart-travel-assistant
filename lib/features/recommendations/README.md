@@ -1,20 +1,30 @@
-# Destination Recommendations — REQ-6.1–6.4
+# Destination recommendations — REQ-6.1–6.4
 
-Flutter feature folder. Owner: Sanjay · Branch: `flex/recommendations` · SRS 4.6
+Owner: Vishwa · Branch: `flex/recommendations` · SRS 4.6 · Record:
+[`docs/OWNERSHIP.md`](../../../docs/OWNERSHIP.md)
 
-Suggests places near the trip destination that can be added straight to
-the itinerary. Ranking is a plain database `ORDER BY` — REQ-6.4 makes
-this the required deliverable, not a stand-in for something smarter later.
+A browsable list of places for the trip's destination that can be added
+straight to the itinerary. Ranking is a plain database `ORDER BY` on a
+hand-seeded table — REQ-6.4 makes that the required deliverable, not a
+stand-in for something smarter. REQ-6.4 also allows this feature to
+degrade gracefully if time runs short, so it ships last.
 
-Ships last in the build order. REQ-6.4 explicitly allows this feature to
-degrade gracefully if it isn't finished.
+## Tasks
 
-**Also owns REQ-5.2**, the directions-inside-Emergency wrapper around
-Vishwa's `lib/services/routing_service.dart` — see
-`lib/features/emergency/README.md` for why this moved from Santhosh, and
-`team/sanjay/README.md` for the task itself. It lives in this folder or
-`lib/services/`, not in `emergency/`.
+1. Seed real place names for 3–5 demo destinations (10–15 places each) in
+   `db/seed.sql`, replacing the `-- TODO` marker. "Restaurant 1" looks like
+   a placeholder — use real listings.
+2. The feed: query `recommendations` filtered by destination and category,
+   ordered by rating, mapped to `Recommendation` objects; filters for
+   category, price and rating.
+3. "Add to itinerary" from a card: build a new `ItineraryItem` from the
+   tapped `Recommendation` and write it through `TripProvider`.
+4. Optional, stop by 8 Nov 2026: a similarity ranking on top. If built,
+   describe it in code and docs as a ranking function, never a model.
 
-Task brief: [`team/sanjay/README.md`](../../../team/sanjay/README.md)
+## Done when
 
-Only Sanjay edits this folder.
+- [ ] The feed shows real places for the destination, ranked by a database
+      query — REQ-6.1, REQ-6.2, REQ-6.4
+- [ ] A recommendation can be added straight to the itinerary — REQ-6.3
+- [ ] Seed data covers 3–5 destinations with real place names — REQ-6.1

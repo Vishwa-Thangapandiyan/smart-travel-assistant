@@ -16,7 +16,12 @@ flutter run \
 
 Replace both values with the real ones from the group chat (posted by
 Vishwa after he creates the Supabase project — see his `PLANNER.md`,
-Sprint 0).
+Phase A).
+
+Once the app shell is merged, the app can also run with fake data and no
+Supabase at all (`--dart-define=USE_FAKE_DATA=true`) — see
+`lib/services/README.md`. The app shell PR documents the exact command
+here.
 
 If you forget either `--dart-define`, the app throws a clear error on
 startup instead of failing silently later — see the check at the top of

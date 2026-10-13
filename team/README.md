@@ -1,30 +1,19 @@
 # team/
 
-One folder per person. Each has a task brief (`README.md`) and a dated
-checklist (`PLANNER.md`), written against the Flutter/Dart rebuild — see
-`README.md` and `CLAUDE.md` at the repo root for the current stack.
+One folder per person: a short brief (`README.md`) and a dated checklist
+(`PLANNER.md`). Each brief has the exact prompt to give your AI tool —
+it reads the rest of the repo itself.
 
-| Person | Folder | Features | Branches |
+| Person | Folder | Builds | Starts |
 | --- | --- | --- | --- |
-| Vishwa Thangapandiyan | [`vishwa/`](vishwa/) | Accounts, Maps & Offline | `flex/accounts`, `flex/maps` |
-| Sanjay Sivakumar | [`sanjay/`](sanjay/) | Itinerary, Recommendations | `flex/itinerary`, `flex/recommendations` |
-| Santhosh S | [`santhosh/`](santhosh/) | Budget, Emergency | `flex/budget`, `flex/emergency` |
+| Vishwa Thangapandiyan | [`vishwa/`](vishwa/) | App shell + theme, Accounts, Itinerary, Maps & routing, Recommendations, integration | Now |
+| Sanjay Sivakumar | [`sanjay/`](sanjay/) | Offline, Emergency | When the app shell is merged |
+| Santhosh S | [`santhosh/`](santhosh/) | Budget | When the app shell is merged |
 
-Branches are named by feature (`flex/<page-or-feature>`), not by
-contributor — who currently owns versus who is currently implementing a
-feature are documented separately, see [`../docs/OWNERSHIP.md`](../docs/OWNERSHIP.md).
+Ownership and branches: [`../docs/OWNERSHIP.md`](../docs/OWNERSHIP.md)
+(canonical). Feature specs: `lib/features/<feature>/README.md`.
 
-## What's in each folder
+New to Git? Read [`START-HERE.md`](../START-HERE.md) first.
 
-- **`README.md`** — the task brief: what you own, why, and the tasks with
-  their "done when" checklists.
-- **`PLANNER.md`** — the dated sprint checklist. Tick items off as you go;
-  this is what the instructor sees when asking where we are.
-- **`AI-PROMPT-PACK.md`** (Santhosh only) — copy-paste prompts for free-tier
-  AI chats, since Santhosh doesn't have Claude Code.
-
-If you haven't used Git before, read [`START-HERE.md`](../START-HERE.md)
-first — it covers cloning, branching, and pull requests from zero.
-
-A planner nobody updates is worse than no planner at all — it lies about
-where the project stands. Keep it current.
+A planner nobody updates is worse than none — it lies about where the
+project stands. Tick items in the same PR that finishes them.

@@ -1,6 +1,6 @@
 -- Demo data. Run after schema.sql.
--- Emergency contacts: owned by Santhosh.
--- Recommendations: owned by Sanjay.
+-- Emergency contacts: owned by Sanjay.
+-- Recommendations: owned by Vishwa.
 
 -- ============================================================
 -- Emergency contacts — default helplines
@@ -32,6 +32,6 @@ values
    '17th-century Portuguese fort with a lighthouse overlooking the Arabian Sea.',
    4.5, 1, array['historical', 'viewpoint'], 15.4925, 73.7738, null);
 
--- TODO (Sanjay): add the remaining 10-15 places per destination, across
+-- TODO (Vishwa): add the remaining 10-15 places per destination, across
 -- 3-5 chosen destinations. Keep names real and specific — pull from actual
 -- listings, not generated placeholders.

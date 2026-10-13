@@ -144,9 +144,11 @@ and open the PR.
 
 ### 3.7 Merge
 
-Once a teammate has looked at it (or you've agreed async review isn't
-needed for something small), click **Merge pull request** on GitHub, then
-**Delete branch**. Back on your machine:
+GitHub runs a CI check on every PR (`flutter analyze`, and `flutter test`
+once tests exist). When it shows green, click **Merge pull request**
+yourself, then **Delete branch** — no one else's approval is needed, so
+you never wait on a teammate. If it's red, open the check's log, fix what
+it reports, and push again. Back on your machine:
 
 ```bash
 git checkout main
@@ -252,37 +254,12 @@ dated checklist.
 
 ## 7. Loading project context before you work
 
-Do this every time, before you write anything — a task read without the
-requirements behind it produces code that drifts from the SRS.
+Everyone uses a repository-aware AI tool — Claude Code (Vishwa, Sanjay)
+or Codex (Santhosh). Start it from the repository root and send the
+prompt in your own `team/<name>/README.md`. It reads `AGENTS.md`, your
+brief, your planner and the feature README, so the requirements come
+along with every task — nothing to paste.
 
-**For Vishwa and Sanjay (Claude Code):**
-
-> **Step 0 — Load context before you start.** From the repo root, run `claude`. It reads `CLAUDE.md` automatically. Then, in your first message of the session:
->
-> ```
-> Read these before doing anything:
-> - README.md (what the project is, the stack, the rules)
-> - CLAUDE.md (project context and constraints)
-> - team/<yourname>/README.md (my tasks)
-> - team/<yourname>/PLANNER.md (what is due right now)
-> - db/schema.sql (the frozen database schema)
-> - lib/models/CONTRACT.md (the frozen Dart data contract)
-> - docs/srs/ (the requirements — check REQ numbers before building)
->
-> Then tell me which task I should be on based on today's date, and show me
-> the plan before writing any code.
-> ```
->
-> Do this once per session. Skipping it means your AI writes code against guessed requirements rather than the actual SRS.
-
-**For Santhosh (free tier — no repo access from the chat):**
-
-> **Step 0 — Load context before you start.** Free ChatGPT and Claude cannot read your repo, so the context has to be pasted. Do this once at the start of each new chat:
->
-> 1. Open `README.md` and copy the sections "What this project is", "What we are honest about", and "Tech stack".
-> 2. Open your own `team/santhosh/README.md` and copy the task you are working on.
-> 3. Open `db/schema.sql` and copy only the tables your feature uses.
-> 4. Open `lib/models/CONTRACT.md` and copy the class(es) matching those tables.
-> 5. Paste all four, then your question.
->
-> `AI-PROMPT-PACK.md` already has this bundled into each prompt, so for the six main tasks you can skip straight to copying the relevant prompt. Use these manual steps for anything the pack does not cover.
+Make sure your tool never adds itself as a co-author: Claude Code is
+handled by the repo's `.claude/settings.json`; for Codex, put
+`commit_attribution = ""` in `~/.codex/config.toml`.

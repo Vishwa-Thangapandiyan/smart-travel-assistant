@@ -59,7 +59,7 @@ user's profile screen loads empty.
 
 ## Trip — table `trips`
 
-Owner: Sanjay (Itinerary, REQ-2.1–2.4). File: `lib/models/trip.dart`.
+Owner: Vishwa (Itinerary, REQ-2.1–2.4). File: `lib/models/trip.dart`.
 
 | Field | Type | Column | Notes |
 | --- | --- | --- | --- |
@@ -81,7 +81,7 @@ end date can never leave stale day rows behind.
 
 ## ItineraryItem — table `itinerary_items`
 
-Owner: Sanjay (Itinerary, REQ-2.1–2.4). File: `lib/models/itinerary_item.dart`.
+Owner: Vishwa (Itinerary, REQ-2.1–2.4). File: `lib/models/itinerary_item.dart`.
 
 | Field | Type | Column | Notes |
 | --- | --- | --- | --- |
@@ -137,7 +137,7 @@ an expense is edited or deleted.
 
 ## Recommendation — table `recommendations`
 
-Owner: Sanjay (Recommendations, REQ-6.1–6.4). File: `lib/models/recommendation.dart`.
+Owner: Vishwa (Recommendations, REQ-6.1–6.4). File: `lib/models/recommendation.dart`.
 
 | Field | Type | Column | Notes |
 | --- | --- | --- | --- |
@@ -153,7 +153,7 @@ Owner: Sanjay (Recommendations, REQ-6.1–6.4). File: `lib/models/recommendation
 | `longitude` | `double?` | `longitude` | Copied onto a new `ItineraryItem` when the user taps "add to trip". |
 | `imageUrl` | `String?` | `image_url` | |
 
-Rows are hand-seeded in `db/seed.sql` by Sanjay. There is no live places
+Rows are hand-seeded in `db/seed.sql` by Vishwa. There is no live places
 API and no scraping. Ranking is a plain `ORDER BY rating DESC` — that is
 the complete, required deliverable for REQ-6.4, not a placeholder for a
 future ML model.
@@ -162,7 +162,7 @@ future ML model.
 
 ## EmergencyContact — table `emergency_contacts`
 
-Owner: Santhosh (Emergency, REQ-5.1–5.4). File: `lib/models/emergency_contact.dart`.
+Owner: Sanjay (Emergency, REQ-5.1–5.4). File: `lib/models/emergency_contact.dart`.
 
 | Field | Type | Column | Notes |
 | --- | --- | --- | --- |
@@ -179,7 +179,7 @@ Overpass fails, is rate-limited, or returns nothing.
 
 ## OfflinePack — table `offline_packs`
 
-Owner: Vishwa (Maps & Offline, REQ-4.1–4.3). File: `lib/models/offline_pack.dart`.
+Owner: Sanjay (Offline, REQ-4.3). File: `lib/models/offline_pack.dart`.
 
 | Field | Type | Column | Notes |
 | --- | --- | --- | --- |
@@ -198,7 +198,7 @@ written into Hive on the phone, not into this table.
 
 ## LastKnownLocation — table `last_known_location`
 
-Owner: Santhosh (Emergency, REQ-5.4). File: `lib/models/last_known_location.dart`.
+Owner: Sanjay (Emergency, REQ-5.4). File: `lib/models/last_known_location.dart`.
 
 | Field | Type | Column | Notes |
 | --- | --- | --- | --- |

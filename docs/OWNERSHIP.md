@@ -1,68 +1,66 @@
 # docs/OWNERSHIP.md
 
-**This is the canonical record of feature ownership and current
-implementation responsibility.** Where any other document (a feature
-README, a team brief, a planner) says something different about who owns
-or is implementing a feature, this file wins — update it first, then fix
-the other document to match.
+**This is the canonical record of who owns and builds each feature.**
+Where any other document says something different, this file wins —
+update it first, then fix the other document to match.
 
-## Ownership vs. implementation
+The owner of a feature is the person who builds it, is accountable for
+its REQs, and signs off that it is done. Only the owner edits that
+feature's folder and service files.
 
-These are two different things:
+## Current record (from 14 Oct 2026)
 
-- **Ownership** — who is accountable for a feature's requirements (REQs),
-  who signs off that it's actually done, and who gets project credit for
-  it. Ownership is fixed for the semester (see `CLAUDE.md`) and does not
-  change just because someone else is currently writing the code.
-- **Implementation** — who is, right now, the person actually writing the
-  Dart code for a feature. This can differ from the owner, as an explicit,
-  documented exception. An implementation arrangement never transfers
-  ownership, REQ responsibility, or project credit on its own — only an
-  update to this file does that.
-
-## Current record
-
-| Feature | REQs | Owner | Current implementer | Notes |
+| Feature | REQs | Owner | Branch | Folders and files they edit |
 | --- | --- | --- | --- | --- |
-| Accounts | REQ-1.1–1.4 | Vishwa | Vishwa | — |
-| Itinerary | REQ-2.1–2.4 | Sanjay | Sanjay | — |
-| Budget | REQ-3.1–3.5 | **Santhosh** | **Vishwa** | Implementation arrangement, not an ownership transfer — see below |
-| Maps & Offline | REQ-4.1–4.3 | Vishwa | Vishwa | — |
-| Emergency | REQ-5.1, 5.3, 5.4 | **Santhosh** | **Vishwa** | Implementation arrangement, not an ownership transfer — see below |
-| REQ-5.2 (directions inside Emergency) | REQ-5.2 | **Sanjay** | Sanjay | Exception — lives conceptually inside Emergency, but owned and built by Sanjay; see below |
-| Recommendations | REQ-6.1–6.4 | Sanjay | Sanjay | — |
+| App shell, theme, service fakes | — | Vishwa | `flex/app-shell` | `lib/main.dart`, `lib/screens/`, `lib/widgets/`, `lib/theme/`, `lib/dev/` |
+| Accounts | REQ-1.1–1.4 | Vishwa | `flex/accounts` | `lib/features/accounts/`, `lib/services/supabase_service.dart` |
+| Itinerary | REQ-2.1–2.4 | Vishwa | `flex/itinerary` | `lib/features/itinerary/`, `lib/services/trip_service.dart` |
+| Maps & routing | REQ-4.1, 4.2 | Vishwa | `flex/maps` | `lib/features/maps/`, `lib/services/routing_service.dart`, `lib/services/location_service.dart` |
+| Recommendations | REQ-6.1–6.4 | Vishwa | `flex/recommendations` | `lib/features/recommendations/`, `db/seed.sql` (recommendations rows) |
+| Offline access | REQ-4.3 | Sanjay | `flex/offline` | `lib/features/offline/`, `lib/services/offline_service.dart` |
+| Emergency (incl. directions) | REQ-5.1–5.4 | Sanjay | `flex/emergency` | `lib/features/emergency/`, `lib/services/overpass_service.dart` |
+| Budget | REQ-3.1–3.5 | Santhosh | `flex/budget` | `lib/features/budget/` |
 
-## Exception 1 — Budget and Emergency: Vishwa implementing for Santhosh
+Shared and frozen for everyone: `db/schema.sql`, `lib/models/`. Changes
+there need the whole team's agreement first.
 
-Vishwa is currently implementing Budget and Emergency (`lib/features/budget/`,
-`lib/features/emergency/`, `lib/services/overpass_service.dart`) in a
-Claude Code session, on Santhosh's behalf.
+## Why the split looks like this
 
-- Santhosh remains the **owner** of both features: REQ-3.1–3.5 and
-  REQ-5.1/5.3/5.4 responsibility, and project credit for them, stay his.
-- This is not a branch or folder reassignment — the branches are still
-  `flex/budget` and `flex/emergency`, named by feature, not by whoever is
-  currently pushing to them.
-- `team/santhosh/README.md` and `team/santhosh/AI-PROMPT-PACK.md` remain
-  accurate reference material for Santhosh throughout — whether he's
-  reviewing what Vishwa built, picking up a piece of it himself, or
-  resuming full implementation later.
+- **Vishwa takes the most**, including the critical path: the app shell,
+  theme and service fakes come first so nobody else has to wait on his
+  feature branches.
+- **Sanjay and Santhosh have college commitments**, so their load is
+  lighter: Sanjay builds Offline and Emergency, Santhosh builds Budget.
+- **Both start once the app shell and theme are merged** (Vishwa's first
+  task), so their screens match the app's look from day one and their
+  AI tools have the design context to read.
+- **Directions inside Emergency (REQ-5.2)** now sit with the Emergency
+  owner. The old reason for splitting it off — Santhosh having no
+  repo-aware AI tool — no longer applies, and keeping it with Emergency
+  removes a cross-person dependency. Emergency calls Vishwa's
+  `routing_service.dart` through its documented signature, using its fake
+  data mode until the real one is merged.
 
-## Exception 2 — REQ-5.2: owned by Sanjay, not Santhosh
+## How parallel work stays parallel
 
-REQ-5.2 (directions inside the Emergency panel) is owned and implemented
-by Sanjay, even though it lives conceptually inside the Emergency
-feature. Reason: it requires reading and integrating someone else's live
-implementation (`lib/services/routing_service.dart`, owned by Vishwa) —
-not practical for Santhosh to do from a pasted prompt with no repo
-access. Sanjay builds a self-contained wrapper with a documented
-signature (see `lib/services/README.md`); Santhosh's Emergency screen
-calls it like any other service, once it lands. Santhosh still owns the
-rest of the Emergency UI.
+1. Vishwa's first PR (`flex/app-shell`) adds the shell, the theme, and a
+   fake-data version of every service in `lib/services/README.md`.
+2. After that merges, all three work at the same time. Anyone calling a
+   service someone else owns builds against its documented signature and
+   fake data — never waits for the other branch.
+3. Each owner merges their own PR once the CI check is green. No approval
+   from anyone else is required (see `docs/WORKFLOW.md`).
+4. When a real service lands, callers need no change: the signature was
+   fixed from the start.
+
+## History
+
+Before 14 Oct 2026: Vishwa owned Accounts and Maps & Offline; Sanjay owned
+Itinerary, Recommendations and REQ-5.2; Santhosh owned Budget and
+Emergency, with Vishwa implementing both on his behalf. Replaced by the
+table above.
 
 ## Keeping this current
 
-If an implementation arrangement changes — Santhosh resumes Budget or
-Emergency himself, or anything else shifts — update the table above in
-the same change that makes it true. Don't let this file describe a past
-arrangement.
+If anything shifts, update the table above in the same change that makes
+it true. Don't let this file describe a past arrangement.

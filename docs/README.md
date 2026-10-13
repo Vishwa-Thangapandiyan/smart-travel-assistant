@@ -9,7 +9,7 @@ clone shows where things belong.
 
 Two plain-text files live directly under `docs/` and, unlike the
 subfolders above, **are** tracked in git: `OWNERSHIP.md` (canonical
-feature ownership and current-implementer record) and `WORKFLOW.md`
+feature ownership record) and `WORKFLOW.md`
 (shared team workflow expectations versus individual contributor
 tooling). Neither is a course deliverable — both are living project
 documentation.
@@ -30,18 +30,23 @@ today.
 
 **A specific mismatch to watch for:** the SRS still numbers Emergency's
 REQ-5.2 as directions/routing per the original design, with tap-to-call
-folded elsewhere. In the current docs (`CLAUDE.md`, `team/*/README.md`),
-REQ-5.2 is explicitly "directions inside Emergency" (owned by Sanjay) and
-tap-to-call is grouped under REQ-5.3 with the default helplines. If the
-SRS text you're revising uses a different split, reconcile it against
-`CLAUDE.md`'s ownership table and `lib/models/CONTRACT.md`, not the other
-way around — those two are what the code is actually built against.
+folded elsewhere. In the current docs (`docs/OWNERSHIP.md`,
+`lib/features/emergency/README.md`), REQ-5.2 is "directions inside
+Emergency" and tap-to-call is grouped under REQ-5.3 with the default
+helplines. If the SRS text you're revising uses a different split,
+reconcile it against `docs/OWNERSHIP.md` and `lib/models/CONTRACT.md`, not
+the other way around — those are what the code is actually built
+against.
+
+**The WBS and Gantt chart need updating** to the 14 Oct 2026 re-plan:
+new owners in `docs/OWNERSHIP.md` and new phase dates in the main
+`README.md` §9.
 
 | Folder | Contents |
 | --- | --- |
 | `srs/` | The Software Requirements Specification. Source of truth for scope — every feature README and task brief points back to a `REQ-<feature>.<number>` label defined here. |
 | `wbs/` | The Work Breakdown Structure. |
-| `gantt/` | The Gantt chart (`.xlsx`). Sprint dates in the main `README.md` are copied from this. |
+| `gantt/` | The Gantt chart (`.xlsx`). Still shows the original sprints; the current dates are in the main `README.md` §9. |
 | `images/` | Diagrams — ER diagram, architecture diagram, and anything else generated for the report. |
 
 ## Setting up your local copy

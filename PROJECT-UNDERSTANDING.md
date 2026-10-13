@@ -273,10 +273,10 @@ Destination, start date, end date. That is all a trip requires. Optionally a bud
 The trip in the `trips` table, the budget in `budgets`, preferences on the user's `profiles` row. All in Supabase.
 
 **3. How do we find possible places to visit?**
-From a table called `recommendations` that **your team fills in by hand**. Sanjay picks three to five destinations you will actually demo, and types in ten to fifteen real places for each — name, category, rating, price level, coordinates.
+From a table called `recommendations` that **your team fills in by hand**. Vishwa picks three to five destinations you will actually demo, and types in ten to fifteen real places for each — name, category, rating, price level, coordinates.
 
 **4. Where do those places come from?**
-Sanjay. Typing them. This is worth sitting with: there is no live places API, no scraping, no external feed. It is a hand-written list in a database table.
+Vishwa. Typing them. This is worth sitting with: there is no live places API, no scraping, no external feed. It is a hand-written list in a database table.
 
 **5. How are places selected?**
 The user taps ones they like. There is no automatic selection.
@@ -1181,7 +1181,7 @@ Vishwa, 20 November, Bangalore. Every step shows what he sees and what happens u
    FLUTTER  Reads the trip's destination, queries by it
    CALLS    Supabase: "recommendations where destination = Bangalore,
             order by rating desc"
-   DATABASE Reads `recommendations` — rows Sanjay typed in by hand
+   DATABASE Reads `recommendations` — rows Vishwa typed in by hand
    MOVES    ~12 places with names, ratings, price levels, coordinates
 
    ⚠️  Nothing is being computed. No engine, no model. This is a
@@ -1517,7 +1517,7 @@ Packages: `supabase_flutter`, `flutter_map`, `geolocator`, `hive`, `provider`.
 
 External endpoints: OSRM public routing server, Overpass interpreter, OpenStreetMap tile servers.
 
-Ownership: Vishwa on accounts and maps/offline, Sanjay on itinerary and recommendations, Santhosh on budget and emergency.
+Ownership (re-planned 14 Oct 2026): Vishwa on accounts, itinerary, maps & routing and recommendations; Sanjay on offline and emergency; Santhosh on budget. Canonical record: `docs/OWNERSHIP.md`.
 
 **Do not start here.** If Level 5 makes sense but Level 3 does not, the model is memorised rather than understood.
 
