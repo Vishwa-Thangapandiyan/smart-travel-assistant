@@ -46,6 +46,15 @@ own PR. Nobody waits for Vishwa (or anyone) to merge. CODEOWNERS
 automatically tags the owner of any folder a PR touches, so a change
 outside your folders is visible straight away.
 
+### Issues
+
+Every task is a GitHub issue, labelled `owner: <name>`, assigned to its
+owner, and grouped into the four phase milestones. Your planner lists your
+issue numbers. Write `Closes #N` in the PR that finishes an issue —
+GitHub closes it when the PR merges — and tick the same line in your
+planner in that PR. Decisions that aren't code (label `decision`) are
+closed by hand once the answer is written into the relevant README.
+
 ### Running your AI tool
 
 Everyone works the same way, whichever tool they use. From the repository
@@ -55,7 +64,7 @@ root, start your tool and send:
 Read AGENTS.md, then team/<your-name>/README.md and
 team/<your-name>/PLANNER.md. Find my next unticked task, read its feature
 README, show me the plan, then build it on the right flex/ branch,
-verify it, and open the PR.
+verify it, and open the PR that closes its issue.
 ```
 
 Claude Code reads `CLAUDE.md` (which imports `AGENTS.md`); Codex reads

@@ -80,9 +80,11 @@ offline, when cached data expires, SMS emergency alerts.
 ## How to work a task
 
 1. `git checkout main && git pull`.
-2. Find your next task: the first unticked item in `team/<name>/PLANNER.md`,
-   or the GitHub issue assigned to you. Its spec and "done when" list are
-   in `lib/features/<feature>/README.md`.
+2. Find your next task: the first unticked item in `team/<name>/PLANNER.md`.
+   Every item is a GitHub issue (`#N`); read it with `gh issue view N` if
+   the GitHub CLI is available. Its full spec and "done when" list are in
+   `lib/features/<feature>/README.md`. Skip an issue whose "Starts after"
+   or "Needs" line isn't satisfied yet and take the next one.
 3. Branch: `git checkout -b flex/<feature>` (feature or page name, never a
    person's name — see `docs/WORKFLOW.md`).
 4. Before writing code, read: the feature README, `lib/models/CONTRACT.md`,
@@ -97,16 +99,18 @@ offline, when cached data expires, SMS emergency alerts.
 7. Commit only the files you meant to change (`git add <paths>`, not
    `git add .`), with a message that says what changed. No attribution
    trailers (rule 8).
-8. Push and open a pull request into `main` using the template. When the
-   **CI check is green you may merge your own PR** — no one else's
-   approval is required. Tick the item in your planner in the same PR.
+8. Push and open a pull request into `main` using the template, with
+   `Closes #N` in the description for every issue it finishes — GitHub
+   then closes the issue when the PR merges. Tick the same items in your
+   planner in the same PR. When the **CI check is green you may merge your
+   own PR** — no one else's approval is required.
 
 ## Where things are
 
 | Need | File |
 | --- | --- |
 | Who owns what, who builds what | `docs/OWNERSHIP.md` |
-| Your tasks and dates | `team/<name>/README.md`, `team/<name>/PLANNER.md` |
+| Your tasks and dates | `team/<name>/README.md`, `team/<name>/PLANNER.md`, GitHub issues labelled `owner: <name>` |
 | A feature's spec and checklist | `lib/features/<feature>/README.md` |
 | Service signatures (incl. other people's) | `lib/services/README.md` |
 | Data classes | `lib/models/CONTRACT.md` |
