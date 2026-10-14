@@ -30,9 +30,9 @@ Itinerary — `lib/features/itinerary/README.md`
 - [x] #12 Notes on a stop (REQ-2.4)
 
 Maps & routing — `lib/features/maps/README.md`
-- [ ] #13 OpenStreetMap with stop markers and attribution (REQ-4.1)
-- [ ] #14 Road routing through `routing_service` (REQ-4.2)
-- [ ] #15 `location_service` and location permissions
+- [x] #13 OpenStreetMap with stop markers and attribution (REQ-4.1)
+- [x] #14 Road routing through `routing_service` (REQ-4.2)
+- [x] #15 `location_service` and location permissions
 
 Recommendations — `lib/features/recommendations/README.md`
 - [ ] #16 Seed real places for 3–5 destinations (REQ-6.1)

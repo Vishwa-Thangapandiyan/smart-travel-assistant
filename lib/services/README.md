@@ -100,10 +100,18 @@ Future<RouteResult> getRoute({
 });
 ```
 
-Calls the public OSRM demo server. Throws on network failure or a
-non-200 response — callers catch and show their own fallback (the map
-keeps its pins with no line; Emergency shows distance without a route).
-Nothing is cached; callers ask fresh every time.
+Calls the public OSRM demo server. Throws on network failure, a
+non-200 response, "no route" (`RouteException`) or no answer within 12
+seconds — callers catch and show their own fallback (the map keeps its
+pins with no line; Emergency shows distance without a route). Nothing is
+cached; callers ask fresh every time.
+
+Also, for a whole day of stops in one request (the Map screen uses it;
+`getRoute` is this with two points):
+
+```dart
+Future<RouteResult> getRouteThrough(List<RoutePoint> stops);   // at least two stops, in order
+```
 
 ---
 
