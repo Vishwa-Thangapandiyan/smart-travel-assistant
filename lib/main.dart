@@ -1,4 +1,5 @@
-// Entry point. Starts Supabase (unless running on fake data), registers
+// Entry point. Starts Supabase (unless running on fake data) and Hive,
+// registers
 // every feature's Provider once, and applies the Meridian theme. Feature
 // owners fill in their own provider and screen files — this file should
 // rarely need to change.
@@ -6,6 +7,7 @@
 // Supabase config comes from --dart-define, not a .env file (RUN.md).
 
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,6 +21,7 @@ import 'features/maps/maps_provider.dart';
 import 'features/offline/offline_provider.dart';
 import 'features/recommendations/recommendations_provider.dart';
 import 'theme/meridian_theme.dart';
+import 'theme/theme_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,16 +46,24 @@ Future<void> main() async {
     await Supabase.initialize(url: supabaseUrl, publishableKey: supabaseAnonKey);
   }
 
-  runApp(const MeridianApp());
+  // Hive is started once, here, for everyone: the theme choice now, and
+  // downloaded trips (Offline) later in boxes of their own.
+  await Hive.initFlutter();
+  final settings = await Hive.openBox<String>(ThemeProvider.boxName);
+
+  runApp(MeridianApp(settings: settings));
 }
 
 class MeridianApp extends StatelessWidget {
-  const MeridianApp({super.key});
+  final Box<String> settings;
+
+  const MeridianApp({super.key, required this.settings});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider(settings)),
         ChangeNotifierProvider(create: (_) => AccountsProvider()),
         ChangeNotifierProvider(create: (_) => ItineraryProvider()),
         ChangeNotifierProvider(create: (_) => MapsProvider()),
@@ -61,16 +72,18 @@ class MeridianApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => EmergencyProvider()),
         ChangeNotifierProvider(create: (_) => RecommendationsProvider()),
       ],
-      child: MaterialApp(
-        title: 'Meridian',
-        debugShowCheckedModeBanner: false,
-        theme: meridianTheme(Brightness.light),
-        darkTheme: meridianTheme(Brightness.dark),
-        // Night first (DESIGN.md §2). Following the phone's setting is
-        // proposed but not decided, so this stays fixed for now.
-        themeMode: ThemeMode.dark,
-        // The app when signed in (always, in fake data mode), else sign-in.
-        home: const AuthGate(),
+      // Builder: the theme mode has to be read below the providers above.
+      child: Builder(
+        builder: (context) => MaterialApp(
+          title: 'Meridian',
+          debugShowCheckedModeBanner: false,
+          theme: meridianTheme(Brightness.light),
+          darkTheme: meridianTheme(Brightness.dark),
+          // Follows the phone unless the user picked Day or Night (DESIGN.md §2).
+          themeMode: context.watch<ThemeProvider>().mode,
+          // The app when signed in (always, in fake data mode), else sign-in.
+          home: const AuthGate(),
+        ),
       ),
     );
   }
