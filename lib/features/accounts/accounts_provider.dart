@@ -19,7 +19,11 @@ class AccountsProvider extends ChangeNotifier {
     // Sign-in, sign-out and token refresh all arrive here, so screens
     // watching this provider switch between sign-in and the app by themselves.
     if (!useFakeData) {
-      _authChanges = supabaseClient.auth.onAuthStateChange.listen((_) => notifyListeners());
+      _authChanges = supabaseClient.auth.onAuthStateChange.listen((change) {
+        // Google sign-in finishes here, when the browser hands the session back.
+        if (change.event == AuthChangeEvent.signedIn) _makeProfileIfMissing();
+        notifyListeners();
+      });
     }
   }
 
@@ -103,20 +107,34 @@ class AccountsProvider extends ChangeNotifier {
     return true;
   }
 
+  /// Opens Google in the browser. The session arrives later through the
+  /// link dev.meridian.travel://login-callback (see AndroidManifest.xml).
+  Future<void> signInWithGoogle() async {
+    await supabaseClient.auth.signInWithOAuth(
+      OAuthProvider.google,
+      redirectTo: googleRedirect,
+      authScreenLaunchMode: LaunchMode.externalApplication,
+    );
+  }
+
+  static const googleRedirect = 'dev.meridian.travel://login-callback';
+
   Future<void> signOut() => supabaseClient.auth.signOut();
 
   // Supabase Auth creates the auth.users row but not ours in `profiles`
   // (lib/features/accounts/README.md, task 3), so add it the first time.
+  // Runs on every sign-in, so it must be harmless when the row exists:
+  // ignoreDuplicates makes it "insert, or do nothing".
   Future<void> _makeProfileIfMissing() async {
     final user = supabaseClient.auth.currentUser;
     if (user == null) return;
-    final existing = await supabaseClient.from('profiles').select('id').eq('id', user.id).maybeSingle();
-    if (existing != null) return;
-    final name = user.userMetadata?['full_name'] as String?;
-    await supabaseClient.from('profiles').insert({
-      'id': user.id,
-      'full_name': (name == null || name.isEmpty) ? null : name,
-    });
+    // Email sign-up stores full_name; Google sends full_name (or name).
+    final name = (user.userMetadata?['full_name'] ?? user.userMetadata?['name']) as String?;
+    await supabaseClient.from('profiles').upsert(
+      {'id': user.id, 'full_name': (name == null || name.isEmpty) ? null : name},
+      onConflict: 'id',
+      ignoreDuplicates: true,
+    );
   }
 
   @override

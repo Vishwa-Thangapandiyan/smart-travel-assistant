@@ -53,4 +53,11 @@ void main() {
     await tester.pump();
     expect(find.widgetWithText(TextField, 'Your name (optional)'), findsNothing);
   });
+
+  testWidgets('Continue with Google is offered below the form', (tester) async {
+    await tester.pumpWidget(_app());
+
+    expect(find.widgetWithText(OutlinedButton, 'Continue with Google'), findsOneWidget);
+    expect(find.text('OR'), findsOneWidget);
+  });
 }
