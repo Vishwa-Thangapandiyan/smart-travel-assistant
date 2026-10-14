@@ -13,6 +13,7 @@ import '../../models/trip.dart';
 import '../../services/supabase_service.dart';
 import '../../services/trip_service.dart';
 import 'destination_lookup.dart';
+import 'trip_dates.dart';
 
 class ItineraryProvider extends ChangeNotifier {
   List<Trip> _trips = [];
@@ -73,6 +74,15 @@ class ItineraryProvider extends ChangeNotifier {
     _trips = [..._trips, trip]..sort((a, b) => a.startDate.compareTo(b.startDate));
     notifyListeners();
     return trip;
+  }
+
+  /// For the Map and Explore tabs: if the Trips tab hasn't opened a trip,
+  /// open the next upcoming one (or the latest, if every trip is over).
+  Future<void> openNextTripIfNone(String userId) async {
+    if (_currentTrip != null) return;
+    if (_trips.isEmpty) await loadTrips(userId);
+    final trip = nextTrip(_trips, today: DateTime.now()) ?? _trips.lastOrNull;
+    if (trip != null) await openTrip(trip);
   }
 
   Future<void> openTrip(Trip trip) async {

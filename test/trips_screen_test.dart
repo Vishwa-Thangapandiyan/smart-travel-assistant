@@ -6,6 +6,7 @@ import 'package:smart_travel_assistant/dev/fake_data.dart';
 import 'package:smart_travel_assistant/features/accounts/accounts_provider.dart';
 import 'package:smart_travel_assistant/features/itinerary/destination_lookup.dart';
 import 'package:smart_travel_assistant/features/itinerary/itinerary_provider.dart';
+import 'package:smart_travel_assistant/features/itinerary/trip_dates.dart';
 import 'package:smart_travel_assistant/features/itinerary/trips_screen.dart';
 import 'package:smart_travel_assistant/theme/meridian_theme.dart';
 
