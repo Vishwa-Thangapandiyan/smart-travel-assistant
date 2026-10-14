@@ -9,9 +9,9 @@ import 'package:smart_travel_assistant/services/trip_service.dart';
 
 void main() {
   group('in fake data mode', () {
-    setUp(() {
+    setUp(() async {
       debugUseFakeData = true;
-      resetFakeDownloads();
+      await resetFakeDownloads();
     });
     tearDown(() => debugUseFakeData = null);
 
@@ -103,15 +103,6 @@ void main() {
       // No Supabase in tests, so the real query fails — what matters is
       // that it is a real call, not the "not built yet" error.
       expect(getTrips(demoUserId), throwsA(isNot(isA<UnimplementedError>())));
-    });
-  });
-
-  group('in real mode, a service nobody has built yet', () {
-    setUp(() => debugUseFakeData = false);
-    tearDown(() => debugUseFakeData = null);
-
-    test('fails loudly instead of quietly returning fake data', () {
-      expect(() => downloadTrip('t'), throwsA(isA<UnimplementedError>()));
     });
   });
 }

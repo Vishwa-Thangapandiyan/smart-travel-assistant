@@ -27,8 +27,8 @@ Emergency — branch `flex/emergency`
 - [x] #48 Email my emergency contact, sent from the phone's mail app
 
 Offline — branch `flex/offline`
-- [ ] #24 Agree where guide text and the static map come from (team decision)
-- [ ] #25 Download a trip to Hive and record it (REQ-4.3)
+- [x] #24 Agree where guide text and the static map come from (team decision)
+- [x] #25 Download a trip to Hive and record it (REQ-4.3)
 - [ ] #26 `DownloadTripButton` and `SavedTripScreen` (REQ-4.3)
 
 ## Phase C — 2 Nov – 8 Nov: integration and testing

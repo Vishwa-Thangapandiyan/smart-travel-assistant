@@ -165,6 +165,12 @@ Future<SavedTrip?> loadSavedTrip(String tripId);   // null if never downloaded
 Future<bool> isDownloaded(String tripId);
 ```
 
+`downloadTrip` throws if the trip can't be fetched or the row can't be
+written (no connection); nothing is kept then. The map image is the one
+OpenStreetMap tile holding the trip — `staticMapTileFor(trip, items)`
+says which, and `StaticMapTile.positionOf(lat, lng)` where a point falls
+on it (see `lib/features/offline/README.md`, issue #24).
+
 Hive holds the payload; the `offline_packs` row in Supabase is only the
 record that a download happened. Offline also provides two widgets other
 screens place without editing: `DownloadTripButton(tripId)` and

@@ -26,11 +26,28 @@ Not decided by the team — don't build either way, flag it instead: what
 happens if the user edits a trip while offline, and when a download
 counts as stale.
 
-**Open question, ask before building task 1:** the `offline_packs` row has
-`guide_text` and `static_map_url` columns, but nothing in the docs says
-where a destination's guide text or static map image comes from in the
-first place. Agree the source with the team (for example, seeded per demo
-destination) instead of inventing one.
+## Where the guide text and the map image come from — decided (issue #24)
+
+The `offline_packs` row has `guide_text` and `static_map_url`; this is
+where they come from. No new table, no new package, no key.
+
+- **Guide text** is a short note we wrote by hand for each of the five
+  demo destinations — the same cities seeded in `recommendations`
+  (Bangalore, Chennai, Goa, Jaipur, Mysore). It is bundled with the app in
+  `destination_guides.dart` and copied into `guide_text` on download.
+  Other names work the same way as Explore ("Bengaluru" → Bangalore). A
+  trip anywhere else downloads without a guide, and the saved trip says so.
+- **The static map image** is the single OpenStreetMap tile (256 × 256
+  px, zoom 12 — about 10 km across) that holds the trip's coordinates,
+  or its first placed stop if the trip has none. It is downloaded once,
+  with the app's User-Agent as OSM's tile policy asks, and stored as
+  bytes in Hive; its URL goes into `static_map_url`. The saved trip draws
+  the stops that fall on it as dots and shows the OpenStreetMap credit.
+  It is one picture: it does not pan or zoom, and the screen says so.
+
+If the team wants a different source later (for example a guide row per
+destination in Supabase), only `destination_guides.dart` and
+`offline_service.dart` change.
 
 ## Tasks
 
@@ -55,7 +72,8 @@ destination) instead of inventing one.
 ## Done when
 
 - [ ] A downloaded trip (itinerary + guide text + static map image) loads
-      in Airplane Mode — REQ-4.3
-- [ ] An `OfflinePack` row is written on download
-- [ ] The offline banner shows whenever saved data is being displayed
-- [ ] A never-downloaded trip opened offline shows a clear message
+      in Airplane Mode — REQ-4.3 (built and read from Hive only; still to
+      check on a phone in Airplane Mode)
+- [x] An `OfflinePack` row is written on download
+- [x] The offline banner shows whenever saved data is being displayed
+- [x] A never-downloaded trip opened offline shows a clear message
