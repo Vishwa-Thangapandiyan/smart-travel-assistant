@@ -9,6 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../dev/app_config.dart';
 import '../../dev/fake_data.dart';
+import '../../models/user_profile.dart';
 import '../../services/supabase_service.dart';
 
 class AccountsProvider extends ChangeNotifier {
@@ -31,6 +32,56 @@ class AccountsProvider extends ChangeNotifier {
   String? get email => useFakeData ? 'demo@meridian.dev' : supabaseClient.auth.currentUser?.email;
 
   bool get isSignedIn => userId != null;
+
+  UserProfile? _profile;
+  UserProfile? get profile => _profile;
+
+  /// The place categories the user picked as interests, stored as
+  /// {"interests": [...]} in profiles.preferences. They never shape a trip.
+  List<String> get interests {
+    final saved = _profile?.preferences?['interests'];
+    return saved is List ? saved.cast<String>() : [];
+  }
+
+  Future<void> loadProfile() async {
+    if (useFakeData) {
+      _profile = fakeProfile;
+    } else {
+      final id = userId;
+      if (id == null) return;
+      final row = await supabaseClient.from('profiles').select().eq('id', id).maybeSingle();
+      _profile = row == null ? null : UserProfile.fromJson(row);
+    }
+    notifyListeners();
+  }
+
+  Future<void> saveProfile({
+    required String fullName,
+    required String defaultCurrency,
+    required List<String> interests,
+  }) async {
+    final current = _profile!;
+    final name = fullName.trim().isEmpty ? null : fullName.trim();
+    // Keep any other preference keys a later feature may have added.
+    final preferences = {...?current.preferences, 'interests': interests};
+
+    if (!useFakeData) {
+      await supabaseClient.from('profiles').update({
+        'full_name': name,
+        'default_currency': defaultCurrency,
+        'preferences': preferences,
+      }).eq('id', current.id);
+    }
+    _profile = UserProfile(
+      id: current.id,
+      fullName: name,
+      defaultCurrency: defaultCurrency,
+      preferences: preferences,
+      createdAt: current.createdAt,
+    );
+    if (useFakeData) fakeProfile = _profile!;
+    notifyListeners();
+  }
 
   Future<void> signIn({required String email, required String password}) async {
     await supabaseClient.auth.signInWithPassword(email: email.trim(), password: password);

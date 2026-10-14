@@ -35,7 +35,7 @@ service fakes (see `lib/services/README.md`).
 - [x] Sign-up creates both an `auth.users` row and a matching `profiles`
       row — REQ-1.1
 - [ ] Sign-in works, including Google — REQ-1.1
-- [ ] Profile screen reads and updates `profiles` via `UserProfile`
+- [x] Profile screen reads and updates `profiles` via `UserProfile`
       (name, currency, preferences) — REQ-1.2, REQ-1.3
 - [x] Auth errors show as human-readable messages — REQ-1.4
 - [ ] Tested: email already in use, and a wrong password, both show a

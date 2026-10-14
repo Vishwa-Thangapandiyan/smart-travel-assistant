@@ -1,5 +1,5 @@
 // Owner: Vishwa. The account sheet opened from the Trips header: who is
-// signed in, and Sign out. The profile screen (issue #7) grows from here.
+// signed in, Edit profile, and Sign out.
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +8,7 @@ import '../../dev/app_config.dart';
 import '../../theme/meridian_colors.dart';
 import '../itinerary/itinerary_provider.dart';
 import 'accounts_provider.dart';
+import 'profile_screen.dart';
 
 Future<void> showAccountSheet(BuildContext context) {
   return showModalBottomSheet<void>(
@@ -28,6 +29,15 @@ Future<void> showAccountSheet(BuildContext context) {
               Text('Signed in as', style: text.bodySmall),
               Text(accounts.email ?? '', style: text.titleLarge),
               const SizedBox(height: 20),
+              OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ProfileScreen()));
+                },
+                icon: const Icon(Icons.person_outline),
+                label: const Text('Edit profile'),
+              ),
+              const SizedBox(height: 12),
               if (useFakeData)
                 Text('Demo mode: no account, nothing is saved after the app closes.',
                     style: text.bodyMedium?.copyWith(color: colors.inkSoft))

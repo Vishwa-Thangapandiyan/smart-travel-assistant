@@ -6,8 +6,17 @@ import '../models/emergency_contact.dart';
 import '../models/itinerary_item.dart';
 import '../models/last_known_location.dart';
 import '../models/trip.dart';
+import '../models/user_profile.dart';
 
 const demoUserId = 'demo-user';
+
+UserProfile _demoProfile() => UserProfile(id: demoUserId, fullName: 'Demo traveller', createdAt: DateTime(2026, 10, 14));
+
+/// The demo user's profile; saving in fake data mode replaces it.
+UserProfile fakeProfile = _demoProfile();
+
+/// For tests: put the demo profile back.
+void resetFakeProfile() => fakeProfile = _demoProfile();
 
 final _created = DateTime(2026, 10, 14);
 
