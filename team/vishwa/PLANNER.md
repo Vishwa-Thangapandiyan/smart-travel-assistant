@@ -11,10 +11,10 @@ passed with no feature code merged). Team-wide phases are in `README.md`
 ## Phase A — 14 Oct – 19 Oct: app shell (unblocks everyone)
 
 - [ ] #2 Set up the Supabase project and load the schema
-- [ ] #3 App shell: theme, navigation and placeholder screens
-- [ ] #4 Fake data mode for every service, plus a smoke test
+- [x] #3 App shell: theme, navigation and placeholder screens
+- [x] #4 Fake data mode for every service, plus a smoke test
 - [ ] #5 Update the WBS, Gantt chart and schema comments to the re-plan
-- [ ] (no issue) Toolbox dev environment: `flutter doctor` clean for Android
+- [x] (no issue) Toolbox dev environment: `flutter doctor` clean for Android
 
 ## Phase B — 20 Oct – 1 Nov: features (in parallel with Sanjay and Santhosh)
 

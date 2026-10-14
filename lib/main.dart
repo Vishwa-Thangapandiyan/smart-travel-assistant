@@ -1,63 +1,68 @@
-// Entry point. Initialises Supabase and wraps the app in the Provider
-// tree every feature reads from. Feature owners add their own
-// ChangeNotifierProvider entries here as they build screens — this file
-// stays shared, so check with the group before restructuring it.
+// Entry point. Starts Supabase (unless running on fake data), registers
+// every feature's Provider once, and applies the Meridian theme. Feature
+// owners fill in their own provider and screen files — this file should
+// rarely need to change.
 //
-// Supabase config comes from --dart-define, not a .env file (see RUN.md
-// for the exact command). String.fromEnvironment reads values baked in
-// at build time; there is nothing to load at runtime and nothing to
-// gitignore beyond the command itself.
+// Supabase config comes from --dart-define, not a .env file (RUN.md).
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
-const supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
+import 'dev/app_config.dart';
+import 'features/accounts/accounts_provider.dart';
+import 'features/accounts/sign_in_screen.dart';
+import 'features/budget/budget_provider.dart';
+import 'features/emergency/emergency_provider.dart';
+import 'features/itinerary/itinerary_provider.dart';
+import 'features/maps/maps_provider.dart';
+import 'features/offline/offline_provider.dart';
+import 'features/recommendations/recommendations_provider.dart';
+import 'screens/home_shell.dart';
+import 'theme/meridian_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
-    throw StateError(
-      'Missing Supabase config. Run with --dart-define=SUPABASE_URL=... '
-      '--dart-define=SUPABASE_ANON_KEY=... — see RUN.md.',
-    );
+  if (!useFakeData) {
+    if (supabaseAnonKey.isEmpty) {
+      throw StateError(
+        'SUPABASE_URL is set but SUPABASE_ANON_KEY is missing — see RUN.md.',
+      );
+    }
+    // Supabase renamed the anon key to the "publishable" key; it is the
+    // same public value, so the --dart-define name stays as it is.
+    await Supabase.initialize(url: supabaseUrl, publishableKey: supabaseAnonKey);
   }
 
-  // Supabase renamed the anon key to the "publishable" key; it is the
-  // same public value, so the --dart-define name stays as it is.
-  await Supabase.initialize(url: supabaseUrl, publishableKey: supabaseAnonKey);
-
-  runApp(const SmartTravelApp());
+  runApp(const MeridianApp());
 }
 
-class SmartTravelApp extends StatelessWidget {
-  const SmartTravelApp({super.key});
+class MeridianApp extends StatelessWidget {
+  const MeridianApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      // Feature owners: add your ChangeNotifierProvider here, not inside
-      // individual screens, so every screen sees the same instance.
-      providers: const [],
+      providers: [
+        ChangeNotifierProvider(create: (_) => AccountsProvider()),
+        ChangeNotifierProvider(create: (_) => ItineraryProvider()),
+        ChangeNotifierProvider(create: (_) => MapsProvider()),
+        ChangeNotifierProvider(create: (_) => OfflineProvider()),
+        ChangeNotifierProvider(create: (_) => BudgetProvider()),
+        ChangeNotifierProvider(create: (_) => EmergencyProvider()),
+        ChangeNotifierProvider(create: (_) => RecommendationsProvider()),
+      ],
       child: MaterialApp(
-        title: 'Smart Travel Planning Assistant',
-        theme: ThemeData(useMaterial3: true),
-        home: const _SetupCheckScreen(),
-      ),
-    );
-  }
-}
-
-class _SetupCheckScreen extends StatelessWidget {
-  const _SetupCheckScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Setup is working. Open your task brief in team/ to start.'),
+        title: 'Meridian',
+        debugShowCheckedModeBanner: false,
+        theme: meridianTheme(Brightness.light),
+        darkTheme: meridianTheme(Brightness.dark),
+        // Night first (DESIGN.md §2). Following the phone's setting is
+        // proposed but not decided, so this stays fixed for now.
+        themeMode: ThemeMode.dark,
+        // Fake data mode has a demo user already signed in.
+        home: useFakeData ? const HomeShell() : const SignInScreen(),
       ),
     );
   }
