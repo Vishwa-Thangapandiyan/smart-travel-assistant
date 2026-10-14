@@ -1,8 +1,9 @@
 // Owner: Vishwa. Sign in, or create an account, with email and password
 // (REQ-1.1). Field problems show under the field before anything is sent;
 // Supabase's answers show as plain sentences (REQ-1.4).
-// Design: design/screens/night-01-sign-in.png. Google sign-in and
-// "Forgot password?" need setup outside the app first (issue #34).
+// Continue with Google opens the browser and comes back to the app.
+// Design: design/screens/night-01-sign-in.png. "Forgot password?" needs a
+// reset link into the app first (issue #34).
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,25 @@ class _SignInScreenState extends State<SignInScreen> {
       _serverError = null;
       _notice = null;
     });
+  }
+
+  Future<void> _google() async {
+    setState(() {
+      _serverError = null;
+      _errorDetails = null;
+    });
+    try {
+      await context.read<AccountsProvider>().signInWithGoogle();
+      // The browser opens; AuthGate swaps this screen for the app when it comes back.
+    } on Exception catch (error) {
+      debugPrint('Google sign-in failed: $error');
+      if (mounted) {
+        setState(() {
+          _serverError = authErrorMessage(error);
+          _errorDetails = kDebugMode ? '$error' : null;
+        });
+      }
+    }
   }
 
   Future<void> _submit() async {
@@ -158,6 +178,23 @@ class _SignInScreenState extends State<SignInScreen> {
             FilledButton(
               onPressed: _busy ? null : _submit,
               child: Text(_busy ? 'One moment…' : (_creating ? 'Create account' : 'Sign in')),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(child: Divider(color: colors.line)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text('OR', style: MeridianText.monoData.copyWith(color: colors.inkSoft)),
+                ),
+                Expanded(child: Divider(color: colors.line)),
+              ],
+            ),
+            const SizedBox(height: 16),
+            OutlinedButton.icon(
+              onPressed: _busy ? null : _google,
+              icon: const Icon(Icons.account_circle_outlined),
+              label: const Text('Continue with Google'),
             ),
             const SizedBox(height: 20),
             Row(

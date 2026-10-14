@@ -19,7 +19,7 @@ passed with no feature code merged). Team-wide phases are in `README.md`
 ## Phase B — 20 Oct – 1 Nov: features (in parallel with Sanjay and Santhosh)
 
 Accounts — `lib/features/accounts/README.md`
-- [ ] #6 Sign-up and sign-in, including Google (REQ-1.1)
+- [x] #6 Sign-up and sign-in, including Google (REQ-1.1)
 - [x] #7 Profile screen (REQ-1.2, REQ-1.3)
 - [x] #8 Human-readable auth errors (REQ-1.4)
 
