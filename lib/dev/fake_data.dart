@@ -22,6 +22,15 @@ final demoTrip = Trip(
   createdAt: _created,
 );
 
+// Every fake trip, demo first. Trips created in fake data mode are added
+// here so the Trips screen shows them until the app restarts.
+final fakeTrips = <Trip>[demoTrip];
+
+/// For tests: forget created trips, keep the demo trip.
+void resetFakeTrips() => fakeTrips
+  ..clear()
+  ..add(demoTrip);
+
 ItineraryItem _stop(int day, int order, String title, double lat, double lng,
     {String? time, String? notes}) {
   return ItineraryItem(

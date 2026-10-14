@@ -95,12 +95,22 @@ void main() {
     });
   });
 
+  group('in real mode', () {
+    setUp(() => debugUseFakeData = false);
+    tearDown(() => debugUseFakeData = null);
+
+    test('trip_service asks Supabase instead of returning the demo trip', () {
+      // No Supabase in tests, so the real query fails — what matters is
+      // that it is a real call, not the "not built yet" error.
+      expect(getTrips(demoUserId), throwsA(isNot(isA<UnimplementedError>())));
+    });
+  });
+
   group('in real mode, a service nobody has built yet', () {
     setUp(() => debugUseFakeData = false);
     tearDown(() => debugUseFakeData = null);
 
     test('fails loudly instead of quietly returning fake data', () {
-      expect(() => getTrips('u'), throwsA(isA<UnimplementedError>()));
       expect(
         () => getRoute(originLat: 0, originLng: 0, destLat: 1, destLng: 1),
         throwsA(isA<UnimplementedError>()),

@@ -6,18 +6,18 @@ void main() {
   setUp(() => debugUseFakeData = true);
   tearDown(() => debugUseFakeData = null);
 
-  testWidgets('with no Supabase config the app opens on the Days tab', (tester) async {
+  testWidgets('with no Supabase config the app opens on the Trips tab', (tester) async {
     await tester.pumpWidget(const MeridianApp());
     await tester.pumpAndSettle();
 
-    expect(find.text('Days'), findsWidgets);
+    expect(find.text('Trips'), findsWidgets);
   });
 
   testWidgets('every tab opens its screen and SOS is always one tap away', (tester) async {
     await tester.pumpWidget(const MeridianApp());
     await tester.pumpAndSettle();
 
-    for (final tab in ['Map', 'Budget', 'Explore', 'Days']) {
+    for (final tab in ['Map', 'Budget', 'Explore', 'Trips']) {
       await tester.tap(find.byTooltip(tab));
       await tester.pumpAndSettle();
 

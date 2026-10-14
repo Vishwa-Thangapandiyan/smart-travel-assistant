@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../features/budget/budget_screen.dart';
 import '../features/emergency/emergency_screen.dart';
-import '../features/itinerary/itinerary_screen.dart';
+import '../features/itinerary/trips_screen.dart';
 import '../features/maps/maps_screen.dart';
 import '../features/recommendations/recommendations_screen.dart';
 import '../widgets/meridian_nav_bar.dart';
@@ -20,9 +20,9 @@ class HomeShell extends StatefulWidget {
 class _HomeShellState extends State<HomeShell> {
   int _tab = 0;
 
-  // Same order as navTabs: Days, Map, Budget, Explore.
+  // Same order as navTabs: Trips, Map, Budget, Explore.
   static const _screens = <Widget>[
-    ItineraryScreen(),
+    TripsScreen(),
     MapsScreen(),
     BudgetScreen(),
     RecommendationsScreen(),

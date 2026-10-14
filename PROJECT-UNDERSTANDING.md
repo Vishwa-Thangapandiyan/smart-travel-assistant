@@ -686,6 +686,9 @@ RESULT
 **Flutter → OSRM**
 *Why:* nothing else in the stack knows how roads connect. *Sends:* two or more coordinate pairs. *Returns:* the path along real roads, plus distance and duration.
 
+**Flutter → Nominatim**
+*Why:* a typed destination ("Bangalore") has no coordinates, and the map needs them. *Sends:* the destination name, once, when the user taps Create on a new trip. *Returns:* the best-matching place's coordinates and full name. If it finds nothing or can't be reached, the trip is saved without coordinates. Decided 14 Oct 2026 (issue #9).
+
 **Flutter → Overpass**
 *Why:* to find hospitals and police stations near a position. *Sends:* "amenity=hospital within 5km of these coordinates". *Returns:* matching OpenStreetMap entries with names and coordinates.
 
@@ -1489,7 +1492,7 @@ Now that the system makes sense, here is what each name means. Four questions ea
 >
 > **Supabase** is the permanent memory: a Postgres database holding users, trips, stops, budgets, expenses, and recommendations, with rules ensuring you only ever see your own rows. It also handles login.
 >
-> **OpenStreetMap** supplies the map imagery. **OSRM** computes driving routes between coordinates. **Overpass** searches OpenStreetMap data for nearby hospitals and police.
+> **OpenStreetMap** supplies the map imagery. **Nominatim** turns a typed destination into coordinates. **OSRM** computes driving routes between coordinates. **Overpass** searches OpenStreetMap data for nearby hospitals and police.
 >
 > **Hive** is a copy of your trip stored on the phone, so the app still works with no connection.
 >

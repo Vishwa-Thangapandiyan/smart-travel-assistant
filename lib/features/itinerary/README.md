@@ -33,9 +33,9 @@ recommendation. Don't build or imply anything else.
 
 ## Done when
 
-- [ ] Creating a trip stores destination, dates and coordinates — REQ-2.1
+- [x] Creating a trip stores destination, dates and coordinates — REQ-2.1
 - [ ] Stops can be added, edited and deleted per day — REQ-2.2
 - [ ] Stops can be reordered within a day (arrow buttons at minimum) —
       REQ-2.3
 - [ ] Notes can be added to a stop — REQ-2.4
-- [ ] `trip_service.dart` is real and matches its documented signature
+- [x] `trip_service.dart` is real and matches its documented signature
