@@ -35,7 +35,8 @@ const _india = LatLng(20.59, 78.96);
 String _routeSummary(RouteResult route) {
   final km = (route.distanceMeters / 1000).toStringAsFixed(1);
   final minutes = (route.durationSeconds / 60).round();
-  final how = useFakeData ? 'straight line, demo data' : 'by road';
+  // Fake data mode draws straight lines, so say so rather than "by road".
+  final how = useFakeData ? '· demo line' : 'by road';
   return '$km km · $minutes min $how';
 }
 
@@ -153,6 +154,11 @@ class _MapsScreenState extends State<MapsScreen> {
           options: MapOptions(
             initialCenter: center,
             initialZoom: trip == null ? 4 : 12,
+            // Country level at the widest; tiles stop at 19.
+            minZoom: 4,
+            maxZoom: 18,
+            // North stays up: with rotation on, every pinch also twists the map.
+            interactionOptions: const InteractionOptions(flags: InteractiveFlag.all & ~InteractiveFlag.rotate),
             onMapReady: () {
               _mapReady = true;
               _fitCamera(placed, trip);
@@ -190,23 +196,7 @@ class _MapsScreenState extends State<MapsScreen> {
             ]),
           ],
         ),
-        // Licence condition: OpenStreetMap credit always visible; tapping
-        // it opens the licence page.
-        Positioned(
-          left: 16,
-          bottom: 100 + 8,
-          child: SafeArea(
-            child: GestureDetector(
-              onTap: () => launchUrl(Uri.parse('https://www.openstreetmap.org/copyright')),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                color: colors.ground.withValues(alpha: 0.7),
-                child: Text('© OpenStreetMap contributors',
-                    style: MeridianText.monoData.copyWith(fontSize: 10, color: colors.inkSoft)),
-              ),
-            ),
-          ),
-        ),
+
         SafeArea(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 40, 16, 0),
@@ -226,8 +216,26 @@ class _MapsScreenState extends State<MapsScreen> {
         Positioned(
           left: 16,
           right: 16,
-          bottom: 100, // clear of the floating nav bar
-          child: _StopCard(
+          // Clear of the floating nav bar (68 tall, 16 margin) and of the
+          // phone's own button bar under it, plus a 16 gap.
+          bottom: MediaQuery.paddingOf(context).bottom + 16 + 68 + 16,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Licence condition: OpenStreetMap credit always visible;
+              // tapping it opens the licence page.
+              GestureDetector(
+                onTap: () => launchUrl(Uri.parse('https://www.openstreetmap.org/copyright')),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                  color: colors.ground.withValues(alpha: 0.7),
+                  child: Text('© OpenStreetMap contributors',
+                      style: MeridianText.monoData.copyWith(fontSize: 10, color: colors.inkSoft)),
+                ),
+              ),
+              const SizedBox(height: 8),
+              _StopCard(
             trip: trip,
             day: _day,
             dayStops: dayStops,
@@ -240,6 +248,8 @@ class _MapsScreenState extends State<MapsScreen> {
                     : _route == null
                         ? null
                         : _routeSummary(_route!),
+              ),
+            ],
           ),
         ),
       ],
@@ -347,7 +357,8 @@ class _StopCard extends StatelessWidget {
         ),
         if (routeLine != null) ...[
           const SizedBox(height: 10),
-          Text(routeLine!, style: MeridianText.monoData.copyWith(color: colors.inkSoft)),
+          Text(routeLine!,
+              maxLines: 1, overflow: TextOverflow.ellipsis, style: MeridianText.monoData.copyWith(color: colors.inkSoft)),
         ],
         if (missing > 0) ...[
           const SizedBox(height: 4),
