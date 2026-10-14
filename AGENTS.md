@@ -30,7 +30,8 @@ code anywhere. Software engineering course project, VIT Chennai.
 ## The stack — fixed
 
 Flutter + Dart, Provider, Supabase (Postgres + Auth, free tier), Hive,
-flutter_map + OpenStreetMap, OSRM public demo server, Overpass API,
+flutter_map + OpenStreetMap, Nominatim (destination coordinates),
+OSRM public demo server, Overpass API,
 geolocator, url_launcher (`tel:`), http, intl. The full dependency list is
 `pubspec.yaml`. **Do not add a package** — if a task seems to need one,
 stop and ask the team first.

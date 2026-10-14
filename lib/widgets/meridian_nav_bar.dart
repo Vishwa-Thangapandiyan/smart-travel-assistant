@@ -12,7 +12,7 @@ class NavTab {
 }
 
 const navTabs = [
-  NavTab('Days', Icons.route_outlined),
+  NavTab('Trips', Icons.route_outlined),
   NavTab('Map', Icons.map_outlined),
   NavTab('Budget', Icons.account_balance_wallet_outlined),
   NavTab('Explore', Icons.explore_outlined),
