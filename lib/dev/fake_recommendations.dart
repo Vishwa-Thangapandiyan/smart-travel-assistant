@@ -15,6 +15,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['garden', 'glasshouse'],
     latitude: 12.94653,
     longitude: 77.58004,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/Glass_house_in_Lalbagh%2C_Bangalore.JPG/960px-Glass_house_in_Lalbagh%2C_Bangalore.JPG',
   ),
   Recommendation(
     id: 'rec-bangalore-2',
@@ -27,6 +28,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['park', 'walk'],
     latitude: 12.97425,
     longitude: 77.59219,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Cubbon_Park_W.jpg/960px-Cubbon_Park_W.jpg',
   ),
   Recommendation(
     id: 'rec-bangalore-3',
@@ -39,6 +41,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['palace', 'historical'],
     latitude: 12.9986,
     longitude: 77.59201,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Bangalore_Mysore_Maharaja_Palace.jpg/960px-Bangalore_Mysore_Maharaja_Palace.jpg',
   ),
   Recommendation(
     id: 'rec-bangalore-4',
@@ -51,6 +54,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['palace', 'historical'],
     latitude: 12.95965,
     longitude: 77.57368,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/1/13/Tippu_Sultan%27s_Summer_palace.jpg/960px-Tippu_Sultan%27s_Summer_palace.jpg',
   ),
   Recommendation(
     id: 'rec-bangalore-5',
@@ -63,6 +67,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['architecture', 'landmark'],
     latitude: 12.97975,
     longitude: 77.59062,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Lighting_of_Vidhana_Soudha.jpg/960px-Lighting_of_Vidhana_Soudha.jpg',
   ),
   Recommendation(
     id: 'rec-bangalore-6',
@@ -75,6 +80,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['science', 'kids'],
     latitude: 12.9752,
     longitude: 77.59643,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Visvesvaraya_Industrial_and_Technological_Museum%2C_Bangalore_%282025%29_02.jpg/960px-Visvesvaraya_Industrial_and_Technological_Museum%2C_Bangalore_%282025%29_02.jpg',
   ),
   Recommendation(
     id: 'rec-bangalore-7',
@@ -87,6 +93,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['art'],
     latitude: 12.98952,
     longitude: 77.5881,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/National_Gallery_of_Modern_Art_-_NGMA_-_Bangalore_6645.JPG/960px-National_Gallery_of_Modern_Art_-_NGMA_-_Bangalore_6645.JPG',
   ),
   Recommendation(
     id: 'rec-bangalore-8',
@@ -99,6 +106,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['breakfast', 'south indian'],
     latitude: 12.95517,
     longitude: 77.58552,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Mavalli_Tiffin_Room_%286%29%2C_Lalbagh_Road%2C_Bengaluru.jpg/960px-Mavalli_Tiffin_Room_%286%29%2C_Lalbagh_Road%2C_Bengaluru.jpg',
   ),
   Recommendation(
     id: 'rec-bangalore-9',
@@ -111,6 +119,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['dosa', 'south indian'],
     latitude: 12.94501,
     longitude: 77.57147,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9d/VidyarthiBhavanEntrance.jpg/960px-VidyarthiBhavanEntrance.jpg',
   ),
   Recommendation(
     id: 'rec-bangalore-10',
@@ -135,6 +144,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['street', 'clothes'],
     latitude: 12.98222,
     longitude: 77.60825,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Commercial_Street%2C_Bangalore_%287870987476%29.jpg/960px-Commercial_Street%2C_Bangalore_%287870987476%29.jpg',
   ),
   Recommendation(
     id: 'rec-bangalore-12',
@@ -147,6 +157,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['temple'],
     latitude: 13.01168,
     longitude: 77.55165,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/ISKCON_Bangalore_Temple.jpg/960px-ISKCON_Bangalore_Temple.jpg',
   ),
   Recommendation(
     id: 'rec-bangalore-13',
@@ -159,6 +170,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['viewpoint', 'day trip'],
     latitude: 13.53793,
     longitude: 77.73244,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Sunrise_at_Nandi_Hills.jpg/960px-Sunrise_at_Nandi_Hills.jpg',
   ),
   Recommendation(
     id: 'rec-chennai-1',
@@ -171,6 +183,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['beach', 'sunset'],
     latitude: 13.05328,
     longitude: 80.28331,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/Cloudy_Marina_beach.jpg/960px-Cloudy_Marina_beach.jpg',
   ),
   Recommendation(
     id: 'rec-chennai-2',
@@ -183,6 +196,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['temple', 'architecture'],
     latitude: 13.03343,
     longitude: 80.2687,
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Kapaleeswarar1.jpg',
   ),
   Recommendation(
     id: 'rec-chennai-3',
@@ -195,6 +209,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['fort', 'historical'],
     latitude: 13.07986,
     longitude: 80.28467,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Fort_St._George%2C_Chennai_2.jpg/960px-Fort_St._George%2C_Chennai_2.jpg',
   ),
   Recommendation(
     id: 'rec-chennai-4',
@@ -207,6 +222,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['bronzes', 'history'],
     latitude: 13.07128,
     longitude: 80.25704,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Madras_museum_theatre_in_October_2007.jpg/960px-Madras_museum_theatre_in_October_2007.jpg',
   ),
   Recommendation(
     id: 'rec-chennai-5',
@@ -219,6 +235,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['church', 'architecture'],
     latitude: 13.03359,
     longitude: 80.27779,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/Santhome_Basilica.jpg/960px-Santhome_Basilica.jpg',
   ),
   Recommendation(
     id: 'rec-chennai-6',
@@ -231,6 +248,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['beach', 'cafes'],
     latitude: 12.99695,
     longitude: 80.27087,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/Elliots_Beach_at_Besant_Nagar%2C_Chennai.JPG/960px-Elliots_Beach_at_Besant_Nagar%2C_Chennai.JPG',
   ),
   Recommendation(
     id: 'rec-chennai-7',
@@ -243,6 +261,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['wildlife'],
     latitude: 13.0,
     longitude: 80.22804,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Guindy_national_park.jpg/960px-Guindy_national_park.jpg',
   ),
   Recommendation(
     id: 'rec-chennai-8',
@@ -255,6 +274,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['idli', 'breakfast'],
     latitude: 13.03779,
     longitude: 80.23019,
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Murugan_Idly_kadai.jpg',
   ),
   Recommendation(
     id: 'rec-chennai-9',
@@ -279,6 +299,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['street', 'clothes'],
     latitude: 13.04079,
     longitude: 80.23772,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Pondy_Bazaar_01.jpg/960px-Pondy_Bazaar_01.jpg',
   ),
   Recommendation(
     id: 'rec-chennai-11',
@@ -291,6 +312,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['mall'],
     latitude: 13.05882,
     longitude: 80.2641,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Express_avenue_chennai.jpg/960px-Express_avenue_chennai.jpg',
   ),
   Recommendation(
     id: 'rec-chennai-12',
@@ -303,6 +325,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['unesco', 'day trip'],
     latitude: 12.61648,
     longitude: 80.19923,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Shore_Temple_-Mamallapuram_-Tamil_Nadu_-N-TN-C55.jpg/960px-Shore_Temple_-Mamallapuram_-Tamil_Nadu_-N-TN-C55.jpg',
   ),
   Recommendation(
     id: 'rec-goa-1',
@@ -315,6 +338,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['historical', 'viewpoint'],
     latitude: 15.49239,
     longitude: 73.7736,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Fort_aguada.jpg/960px-Fort_aguada.jpg',
   ),
   Recommendation(
     id: 'rec-goa-2',
@@ -339,6 +363,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['church', 'unesco'],
     latitude: 15.5007,
     longitude: 73.9117,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Front_Elevation_of_Basilica_of_Bom_Jesus.jpg/960px-Front_Elevation_of_Basilica_of_Bom_Jesus.jpg',
   ),
   Recommendation(
     id: 'rec-goa-4',
@@ -351,6 +376,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['church', 'unesco'],
     latitude: 15.50373,
     longitude: 73.91219,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Se_Cathedral_from_Rua_Direita.jpg/960px-Se_Cathedral_from_Rua_Direita.jpg',
   ),
   Recommendation(
     id: 'rec-goa-5',
@@ -363,6 +389,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['heritage', 'walk'],
     latitude: 15.49666,
     longitude: 73.83108,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Road_along_Vasco-da-gama_residence_in_Fontainhas%2C_Panaji.jpg/960px-Road_along_Vasco-da-gama_residence_in_Fontainhas%2C_Panaji.jpg',
   ),
   Recommendation(
     id: 'rec-goa-6',
@@ -375,6 +402,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['beach', 'nightlife'],
     latitude: 15.55737,
     longitude: 73.75098,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/Baga_Beach%2C_Goa.jpg/960px-Baga_Beach%2C_Goa.jpg',
   ),
   Recommendation(
     id: 'rec-goa-7',
@@ -387,6 +415,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['beach', 'calm'],
     latitude: 15.00931,
     longitude: 74.02423,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Palolem_Beach%2C_South_Goa.jpg/960px-Palolem_Beach%2C_South_Goa.jpg',
   ),
   Recommendation(
     id: 'rec-goa-8',
@@ -399,6 +428,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['waterfall', 'day trip'],
     latitude: 15.31562,
     longitude: 74.31425,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/Doodhsagar_Fall.jpg/960px-Doodhsagar_Fall.jpg',
   ),
   Recommendation(
     id: 'rec-goa-9',
@@ -411,6 +441,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['fort', 'viewpoint'],
     latitude: 15.60595,
     longitude: 73.73528,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/3/35/Fort_Chapora_26012016.jpg/960px-Fort_Chapora_26012016.jpg',
   ),
   Recommendation(
     id: 'rec-goa-10',
@@ -423,6 +454,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['market'],
     latitude: 15.57639,
     longitude: 73.74398,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Anjuna_Flea_Market%2C_January%2C_2018-1.jpg/960px-Anjuna_Flea_Market%2C_January%2C_2018-1.jpg',
   ),
   Recommendation(
     id: 'rec-goa-11',
@@ -447,6 +479,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['art', 'contemporary'],
     latitude: 15.52564,
     longitude: 73.79531,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Scenes_from_the_Museum_of_Goa_%28MoG%29_in_Saligao-Pilerne%2C_Goa_..._06.jpg/960px-Scenes_from_the_Museum_of_Goa_%28MoG%29_in_Saligao-Pilerne%2C_Goa_..._06.jpg',
   ),
   Recommendation(
     id: 'rec-jaipur-1',
@@ -459,6 +492,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['fort', 'unesco'],
     latitude: 26.98547,
     longitude: 75.85397,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Jaipur_03-2016_02_Amber_Fort.jpg/960px-Jaipur_03-2016_02_Amber_Fort.jpg',
   ),
   Recommendation(
     id: 'rec-jaipur-2',
@@ -471,6 +505,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['palace', 'landmark'],
     latitude: 26.92393,
     longitude: 75.82687,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/East_facade_Hawa_Mahal_Jaipur_from_ground_level_%28July_2022%29_-_img_01.jpg/960px-East_facade_Hawa_Mahal_Jaipur_from_ground_level_%28July_2022%29_-_img_01.jpg',
   ),
   Recommendation(
     id: 'rec-jaipur-3',
@@ -483,6 +518,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['palace', 'museum'],
     latitude: 26.92621,
     longitude: 75.82383,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Chandra_Mahal%2C_City_Palace%2C_Jaipur%2C_20191218_0951_9043.jpg/960px-Chandra_Mahal%2C_City_Palace%2C_Jaipur%2C_20191218_0951_9043.jpg',
   ),
   Recommendation(
     id: 'rec-jaipur-4',
@@ -495,6 +531,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['unesco', 'science'],
     latitude: 26.92477,
     longitude: 75.8245,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Jantar_Mantar_at_Jaipur.jpg/960px-Jantar_Mantar_at_Jaipur.jpg',
   ),
   Recommendation(
     id: 'rec-jaipur-5',
@@ -507,6 +544,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['fort', 'sunset'],
     latitude: 26.94003,
     longitude: 75.81653,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Nahargarh_13.jpg/960px-Nahargarh_13.jpg',
   ),
   Recommendation(
     id: 'rec-jaipur-6',
@@ -519,6 +557,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['fort'],
     latitude: 26.98372,
     longitude: 75.84525,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Rajasthan-Jaipur-Jaigarh-Fort-compound-Apr-2004-00.JPG/960px-Rajasthan-Jaipur-Jaigarh-Fort-compound-Apr-2004-00.JPG',
   ),
   Recommendation(
     id: 'rec-jaipur-7',
@@ -531,6 +570,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['history', 'architecture'],
     latitude: 26.91169,
     longitude: 75.8195,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Albert_Hall_%28_Jaipur_%29.jpg/960px-Albert_Hall_%28_Jaipur_%29.jpg',
   ),
   Recommendation(
     id: 'rec-jaipur-8',
@@ -543,6 +583,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['palace', 'lake'],
     latitude: 26.95347,
     longitude: 75.84613,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Jaipur_03-2016_39_Jal_Mahal_-_Water_Palace.jpg/960px-Jaipur_03-2016_39_Jal_Mahal_-_Water_Palace.jpg',
   ),
   Recommendation(
     id: 'rec-jaipur-9',
@@ -555,6 +596,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['photography'],
     latitude: 26.8415,
     longitude: 75.80138,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Patrika_Gate_Jaipur_2025.jpg/960px-Patrika_Gate_Jaipur_2025.jpg',
   ),
   Recommendation(
     id: 'rec-jaipur-10',
@@ -603,6 +645,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['market', 'jewellery'],
     latitude: 26.91585,
     longitude: 75.82484,
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5f/Johari_Bazar.jpg',
   ),
   Recommendation(
     id: 'rec-mysore-1',
@@ -615,6 +658,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['palace', 'landmark'],
     latitude: 12.30522,
     longitude: 76.65538,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/Mysore_Palace_%281%29.jpg/960px-Mysore_Palace_%281%29.jpg',
   ),
   Recommendation(
     id: 'rec-mysore-2',
@@ -627,6 +671,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['temple', 'viewpoint'],
     latitude: 12.27247,
     longitude: 76.6707,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Chamundeshwari_Temple_Mysore.jpg/960px-Chamundeshwari_Temple_Mysore.jpg',
   ),
   Recommendation(
     id: 'rec-mysore-3',
@@ -639,6 +684,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['garden', 'fountains'],
     latitude: 12.42083,
     longitude: 76.5741,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Brindavan_Gardens.JPG/960px-Brindavan_Gardens.JPG',
   ),
   Recommendation(
     id: 'rec-mysore-4',
@@ -651,6 +697,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['church', 'architecture'],
     latitude: 12.32099,
     longitude: 76.65828,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/India_-_St._Philomena%27s_Church_02.jpg/960px-India_-_St._Philomena%27s_Church_02.jpg',
   ),
   Recommendation(
     id: 'rec-mysore-5',
@@ -663,6 +710,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['zoo', 'kids'],
     latitude: 12.30064,
     longitude: 76.66827,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Entrance_of_Mysore_Zoo.jpg/960px-Entrance_of_Mysore_Zoo.jpg',
   ),
   Recommendation(
     id: 'rec-mysore-6',
@@ -675,6 +723,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['art', 'palace'],
     latitude: 12.30681,
     longitude: 76.65094,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/A_view_of_Jaganmohan_Palace.jpg/960px-A_view_of_Jaganmohan_Palace.jpg',
   ),
   Recommendation(
     id: 'rec-mysore-7',
@@ -687,6 +736,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['trains', 'kids'],
     latitude: 12.31588,
     longitude: 76.64386,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Mysuru_Rail_Museum_-_Locomotive_YDM4_6200.jpg/960px-Mysuru_Rail_Museum_-_Locomotive_YDM4_6200.jpg',
   ),
   Recommendation(
     id: 'rec-mysore-8',
@@ -699,6 +749,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['lake', 'birds'],
     latitude: 12.30218,
     longitude: 76.67328,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Karanji_lake_pic.jpg/960px-Karanji_lake_pic.jpg',
   ),
   Recommendation(
     id: 'rec-mysore-9',
@@ -711,6 +762,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['market'],
     latitude: 12.31102,
     longitude: 76.65202,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Devaraja_Market%2C_Mysore_%28306989724%29.jpg/960px-Devaraja_Market%2C_Mysore_%28306989724%29.jpg',
   ),
   Recommendation(
     id: 'rec-mysore-10',
@@ -723,6 +775,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['dosa', 'breakfast'],
     latitude: 12.30698,
     longitude: 76.60903,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Mylari_dosa_01.jpg/960px-Mylari_dosa_01.jpg',
   ),
   Recommendation(
     id: 'rec-mysore-11',
@@ -747,5 +800,6 @@ const fakeRecommendations = <Recommendation>[
     tags: ['temple', 'day trip'],
     latitude: 12.42508,
     longitude: 76.67929,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Sri_Ranganathaswami_Temple%2C_Srirangaptna.jpg/960px-Sri_Ranganathaswami_Temple%2C_Srirangaptna.jpg',
   ),
 ];

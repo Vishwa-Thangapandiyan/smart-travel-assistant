@@ -689,6 +689,9 @@ RESULT
 **Flutter → Nominatim**
 *Why:* a typed destination ("Bangalore") has no coordinates, and the map needs them. *Sends:* the destination name, once, when the user taps Create on a new trip. *Returns:* the best-matching place's coordinates and full name. If it finds nothing or can't be reached, the trip is saved without coordinates. Decided 14 Oct 2026 (issue #9).
 
+**Flutter → Wikimedia Commons**
+*Why:* a place on Explore is easier to choose with a photo of it. *Sends:* a request for one photo whose address is stored in `recommendations.image_url` (hand-picked, free-licensed, credited in `lib/features/recommendations/PHOTO-CREDITS.md`). *Returns:* the image. Offline or not found, the app shows a plain tile instead. Decided 15 Oct 2026.
+
 **Flutter → Overpass**
 *Why:* to find hospitals and police stations near a position. *Sends:* "amenity=hospital within 5km of these coordinates". *Returns:* matching OpenStreetMap entries with names and coordinates.
 

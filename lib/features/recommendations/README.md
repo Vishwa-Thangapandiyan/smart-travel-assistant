@@ -21,7 +21,11 @@ degrade gracefully if time runs short, so it ships last.
    category, price and rating.
 3. "Add to itinerary" from a card: build a new `ItineraryItem` from the
    tapped `Recommendation` and write it through `TripProvider`.
-4. Optional, stop by 8 Nov 2026: a similarity ranking on top. If built,
+4. A place's own screen: tap a card for its photo, facts, a small map
+   and Add to a day (`place_detail_screen.dart`). 54 of the 62 places
+   have a free Wikimedia Commons photo in `image_url`, credited in
+   `PHOTO-CREDITS.md`; the rest show a plain tile.
+5. Optional, stop by 8 Nov 2026: a similarity ranking on top. If built,
    describe it in code and docs as a ranking function, never a model.
 
 ## Done when

@@ -33,6 +33,16 @@ class MeridianText {
     letterSpacing: 0.4,
   );
 
+  /// A place's name over its photo, big, like a poster.
+  static const monoDisplay = TextStyle(
+    fontFamily: _mono,
+    fontFamilyFallback: [_sans],
+    fontSize: 40,
+    fontWeight: FontWeight.w500,
+    letterSpacing: -1.6,
+    height: 1.05,
+  );
+
   /// The day heading, e.g. "Saturday, 21 Nov".
   static const monoHeading = TextStyle(
     fontFamily: _mono,
