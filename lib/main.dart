@@ -29,6 +29,15 @@ Future<void> main() async {
         'SUPABASE_URL is set but SUPABASE_ANON_KEY is missing — see RUN.md.',
       );
     }
+    // A real key is only letters, digits, dots, dashes and underscores.
+    // Copying it from a screen that masks secrets gives "•" instead, which
+    // otherwise fails much later as a confusing "couldn't reach" error.
+    if (!RegExp(r'^[A-Za-z0-9._-]+$').hasMatch(supabaseAnonKey)) {
+      throw StateError(
+        'SUPABASE_ANON_KEY has characters a key can\'t have (often "•" from a masked copy). '
+        'Copy it again from Supabase → Project Settings → API — see RUN.md.',
+      );
+    }
     // Supabase renamed the anon key to the "publishable" key; it is the
     // same public value, so the --dart-define name stays as it is.
     await Supabase.initialize(url: supabaseUrl, publishableKey: supabaseAnonKey);

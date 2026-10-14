@@ -10,7 +10,7 @@ passed with no feature code merged). Team-wide phases are in `README.md`
 
 ## Phase A — 14 Oct – 19 Oct: app shell (unblocks everyone)
 
-- [ ] #2 Set up the Supabase project and load the schema
+- [x] #2 Set up the Supabase project and load the schema
 - [x] #3 App shell: theme, navigation and placeholder screens
 - [x] #4 Fake data mode for every service, plus a smoke test
 - [ ] #5 Update the WBS, Gantt chart and schema comments to the re-plan
@@ -21,7 +21,7 @@ passed with no feature code merged). Team-wide phases are in `README.md`
 Accounts — `lib/features/accounts/README.md`
 - [ ] #6 Sign-up and sign-in, including Google (REQ-1.1)
 - [ ] #7 Profile screen (REQ-1.2, REQ-1.3)
-- [ ] #8 Human-readable auth errors (REQ-1.4)
+- [x] #8 Human-readable auth errors (REQ-1.4)
 
 Itinerary — `lib/features/itinerary/README.md`
 - [x] #9 Create a trip, and the real `trip_service` (REQ-2.1)

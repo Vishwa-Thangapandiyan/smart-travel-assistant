@@ -4,6 +4,7 @@
 // Design: design/screens/night-01-sign-in.png. Google sign-in and
 // "Forgot password?" need setup outside the app first (issue #34).
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +31,7 @@ class _SignInScreenState extends State<SignInScreen> {
   String? _emailError;
   String? _passwordError;
   String? _serverError;
+  String? _errorDetails; // the raw error, shown only in debug builds
   String? _notice;
 
   @override
@@ -74,7 +76,14 @@ class _SignInScreenState extends State<SignInScreen> {
       }
       // On success AuthGate swaps this screen for the app.
     } on Exception catch (error) {
-      if (mounted) setState(() => _serverError = authErrorMessage(error));
+      // The raw error goes to the flutter run terminal (debug builds only) for whoever is fixing it.
+      debugPrint('Sign-in failed: $error');
+      if (mounted) {
+        setState(() {
+          _serverError = authErrorMessage(error);
+          _errorDetails = kDebugMode ? '$error' : null;
+        });
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -137,6 +146,9 @@ class _SignInScreenState extends State<SignInScreen> {
             const SizedBox(height: 24),
             if (_serverError != null) ...[
               Text(_serverError!, style: text.bodyMedium?.copyWith(color: colors.coral)),
+              if (_errorDetails != null)
+                SelectableText('Debug details: $_errorDetails',
+                    style: MeridianText.monoData.copyWith(fontSize: 10, color: colors.inkSoft)),
               const SizedBox(height: 12),
             ],
             if (_notice != null) ...[

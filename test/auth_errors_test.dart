@@ -33,9 +33,17 @@ void main() {
     expect(authErrorMessage(const AuthException('rate limit', code: 'over_request_rate_limit')), contains('Wait'));
   });
 
-  test('no internet says so', () {
-    expect(authErrorMessage(AuthRetryableFetchException(message: 'fetch failed')), contains('No connection'));
-    expect(authErrorMessage(const SocketException('Failed host lookup')), contains('No connection'));
+  test('no internet says the server could not be reached', () {
+    expect(authErrorMessage(AuthRetryableFetchException(message: 'fetch failed')), contains('Couldn\'t reach'));
+    expect(authErrorMessage(const SocketException('Failed host lookup')), contains('Couldn\'t reach'));
+  });
+
+  test('a server error is not mistaken for no internet', () {
+    final message = authErrorMessage(
+        AuthRetryableFetchException(message: '{"msg":"Database error saving new user"}', statusCode: '500'));
+
+    expect(message, contains('error 500'));
+    expect(message, isNot(contains('internet')));
   });
 
   test('anything else gets a calm general message, never the raw error', () {

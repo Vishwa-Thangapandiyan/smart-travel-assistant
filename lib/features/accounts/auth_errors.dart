@@ -7,8 +7,13 @@ import 'dart:io';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 String authErrorMessage(Object error) {
+  // The same exception type means "server error" when it carries a status
+  // code, and "couldn't reach the server" when it doesn't.
+  if (error is AuthRetryableFetchException && error.statusCode != null) {
+    return 'The sign-in server had a problem (error ${error.statusCode}). Try again in a minute.';
+  }
   if (error is AuthRetryableFetchException || error is SocketException) {
-    return 'No connection. Check your internet and try again.';
+    return 'Couldn\'t reach the sign-in server. Check your internet and try again.';
   }
   if (error is AuthException) {
     switch (error.code) {

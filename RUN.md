@@ -35,6 +35,13 @@ If `SUPABASE_URL` is set but the key is missing, the app throws a clear
 error on startup — see the check at the top of `main()` in
 `lib/main.dart`.
 
+**Copy the key carefully.** Some terminals and chat apps hide anything
+that looks like a secret by showing `•` dots — and copying then copies
+the dots. The app would fail with "Couldn't reach the sign-in server".
+It now refuses to start instead, with a message saying so. Copy the key
+straight from Supabase → Project Settings → API, or from the group chat
+on a screen that shows it in full. The URL is the part before `/rest/v1/`.
+
 ## Tests
 
 ```bash
@@ -58,6 +65,18 @@ with:
   ```bash
   alias flutter-run-travel='flutter run --dart-define=SUPABASE_URL=... --dart-define=SUPABASE_ANON_KEY=...'
   ```
+
+- **A small script outside the repo.** For example `~/.local/bin/meridian-run`
+  (that folder is on your PATH on Fedora and Ubuntu):
+
+  ```bash
+  #!/bin/bash
+  cd ~/Documents/smart-travel-assistant || exit 1
+  exec flutter run --dart-define=SUPABASE_URL=... --dart-define=SUPABASE_ANON_KEY=... "$@"
+  ```
+
+  `chmod +x` it, then just type `meridian-run`. It lives in your home
+  folder, not the repo, so it can't be committed.
 
 - **VS Code launch config.** If you use VS Code's Flutter extension, add
   an entry to `.vscode/launch.json` with a `"toolArgs"` array containing
