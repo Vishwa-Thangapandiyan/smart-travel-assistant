@@ -148,8 +148,15 @@ What each screen must get right:
 - **Sign in** — a real form: email, password (show toggle), forgot
   password, *Sign in* (primary), *Continue with Google*, *Create an
   account*. Errors appear inline under the field, in plain words.
-- **Trips** — globe with destination chips, the upcoming trip as an
-  inverted card with "37 days to go", other trips as rows, `+` to create.
+- **Trips** — the next trip as a tall poster card: the city's photo
+  (the five Explore cities have one), "NEXT TRIP", the days to go as a
+  now-number in the corner, and the city in mono-display with its dates
+  over a dark fade. Text on a photo always uses the night ink, in both
+  modes. A city with no photo gets the plain inverted card instead.
+  Below: *Later* and *Done* sections, each trip a row with a small photo,
+  name and mono dates; past trips are dimmed. No trips → a "Where to
+  next?" card with *Plan a trip*. `+` creates a trip. (This replaces the
+  globe in `night-02-trips.png`.)
 - **Day** — back to the trip, *Saved offline* chip, day switcher, mono day
   heading with stop count and total distance, the stop rail, the now card,
   later rows, *Add a stop* + *From suggestions*. Itinerary is built by

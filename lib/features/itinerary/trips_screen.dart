@@ -1,6 +1,7 @@
-// Owner: Vishwa. The first tab: the next trip as a cream card with days to
-// go, other trips as rows, and + to create one (REQ-2.1).
-// Design: design/screens/night-02-trips.png. The globe comes later.
+// Owner: Vishwa. The first tab: the next trip as a big photo card with days
+// to go, then later and past trips as rows, and + to create one (REQ-2.1).
+// Design: DESIGN.md §7, "Trips". A city Explore doesn't cover has no photo,
+// so its card is the plain inverted (cream by night) card instead.
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,8 +10,10 @@ import 'package:provider/provider.dart';
 import '../../models/trip.dart';
 import '../../theme/meridian_colors.dart';
 import '../../theme/meridian_theme.dart';
+import '../../widgets/web_photo.dart';
 import '../accounts/account_sheet.dart';
 import '../accounts/accounts_provider.dart';
+import '../recommendations/place_photo.dart' show cityPhotoUrl;
 import 'destination_lookup.dart';
 import 'itinerary_provider.dart';
 import 'new_trip_screen.dart';
@@ -70,7 +73,9 @@ class _TripsScreenState extends State<TripsScreen> {
 
     final today = DateTime.now();
     final upcoming = nextTrip(trips, today: today);
-    final others = trips.where((t) => t != upcoming).toList();
+    final later = trips.where((t) => t != upcoming && daysUntil(t.endDate, today: today) >= 0).toList();
+    // Most recent first: the trip you just came back from is the one you look for.
+    final done = trips.where((t) => daysUntil(t.endDate, today: today) < 0).toList().reversed.toList();
 
     return SafeArea(
       child: ListView(
@@ -97,116 +102,221 @@ class _TripsScreenState extends State<TripsScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 24),
-          if (_loadError != null)
+          const SizedBox(height: 20),
+          if (_loadError != null) ...[
             Text(_loadError!, style: text.bodyMedium?.copyWith(color: colors.coral)),
-          if (trips.isEmpty && _loadError == null)
-            Text('No trips yet. Tap + to plan one.',
-                style: text.bodyLarge?.copyWith(color: colors.inkSoft)),
-          if (upcoming != null)
-            _UpcomingCard(trip: upcoming, today: today, onTap: () => _openTrip(upcoming)),
-          for (final trip in others)
-            _TripRow(trip: trip, today: today, onTap: () => _openTrip(trip)),
+            const SizedBox(height: 16),
+          ],
+          if (trips.isEmpty && _loadError == null) _NoTrips(onPlan: _newTrip),
+          if (upcoming != null) _NextTripCard(trip: upcoming, today: today, onTap: () => _openTrip(upcoming)),
+          if (later.isNotEmpty) ...[
+            const _SectionLabel('LATER'),
+            for (final trip in later) _TripRow(trip: trip, done: false, onTap: () => _openTrip(trip)),
+          ],
+          if (done.isNotEmpty) ...[
+            const _SectionLabel('DONE'),
+            for (final trip in done) _TripRow(trip: trip, done: true, onTap: () => _openTrip(trip)),
+          ],
         ],
       ),
     );
   }
 }
 
-/// The next trip, drawn inverted: cream card, dark ink.
-class _UpcomingCard extends StatelessWidget {
+/// The next trip, poster-style: the city's photo filling a tall card, the
+/// name in big mono over it, and the days to go in the corner.
+class _NextTripCard extends StatelessWidget {
   final Trip trip;
   final DateTime today;
   final VoidCallback onTap;
 
-  const _UpcomingCard({required this.trip, required this.today, required this.onTap});
+  const _NextTripCard({required this.trip, required this.today, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<MeridianColors>()!;
-    final text = Theme.of(context).textTheme;
+    final photo = cityPhotoUrl(trip.destination);
     final days = daysUntil(trip.startDate, today: today);
 
-    return Material(
-      color: colors.ink,
-      borderRadius: BorderRadius.circular(24),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(24),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(trip.destination,
-                        style: text.headlineMedium?.copyWith(color: colors.ground)),
-                    const SizedBox(height: 4),
-                    Text(tripDateRange(trip),
-                        style: MeridianText.monoData.copyWith(color: colors.ground)),
-                    const SizedBox(height: 16),
-                    Text('${trip.numberOfDays} days',
-                        style: MeridianText.monoData.copyWith(color: colors.ground)),
-                  ],
+    // On a photo the text is always the night palette's light ink over a
+    // dark fade, in both modes, so it reads on any photo. Without a photo
+    // the card is simply inverted: ink background, ground-coloured text.
+    const night = MeridianColors.night;
+    final ink = photo == null ? colors.ground : night.ink;
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(28),
+      child: SizedBox(
+        height: 420,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            if (photo == null)
+              ColoredBox(color: colors.ink)
+            else ...[
+              WebPhoto(url: photo, placeholder: ColoredBox(color: night.ember)),
+              // Dark at the top for the days to go, clear in the middle,
+              // dark again at the bottom for the name.
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const [0, 0.3, 0.5, 1],
+                    colors: [
+                      night.ground.withValues(alpha: 0.55),
+                      night.ground.withValues(alpha: 0),
+                      night.ground.withValues(alpha: 0),
+                      night.ground.withValues(alpha: 0.9),
+                    ],
+                  ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+            ],
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (days > 0) Text('$days', style: MeridianText.nowNumber.copyWith(color: colors.ground)),
-                  const SizedBox(height: 6),
-                  Text(days > 0 ? 'days to go' : 'on now',
-                      style: MeridianText.monoData.copyWith(color: colors.ground)),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text('NEXT TRIP', style: MeridianText.monoData.copyWith(color: ink, letterSpacing: 2)),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(days > 0 ? '$days' : '${1 - days}/${trip.numberOfDays}',
+                              style: MeridianText.nowNumber.copyWith(color: ink)),
+                          const SizedBox(height: 6),
+                          Text(days > 0 ? 'DAYS TO GO' : 'DAY · ON NOW',
+                              style: MeridianText.monoData.copyWith(color: ink)),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Text(trip.destination, style: MeridianText.monoDisplay.copyWith(color: ink)),
+                  const SizedBox(height: 8),
+                  Text('${tripDateRange(trip)} · ${trip.numberOfDays} days'.toUpperCase(),
+                      style: MeridianText.monoData.copyWith(color: ink)),
                 ],
               ),
-            ],
-          ),
+            ),
+            // On top of everything, so the whole card is one tap target.
+            Material(
+              type: MaterialType.transparency,
+              child: InkWell(onTap: onTap),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class _TripRow extends StatelessWidget {
-  final Trip trip;
-  final DateTime today;
-  final VoidCallback onTap;
+/// Shown before the first trip: one clear way to start.
+class _NoTrips extends StatelessWidget {
+  final VoidCallback onPlan;
 
-  const _TripRow({required this.trip, required this.today, required this.onTap});
+  const _NoTrips({required this.onPlan});
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<MeridianColors>()!;
     final text = Theme.of(context).textTheme;
-    final done = daysUntil(trip.endDate, today: today) < 0;
-    final month = DateFormat('MMM yyyy').format(trip.startDate);
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(color: colors.ember, borderRadius: BorderRadius.circular(28)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Where to next?', style: MeridianText.monoDisplay.copyWith(color: colors.ink)),
+          const SizedBox(height: 12),
+          Text('Plan a trip, then add each day\'s stops yourself.',
+              style: text.bodyLarge?.copyWith(color: colors.inkSoft)),
+          const SizedBox(height: 24),
+          FilledButton.icon(onPressed: onPlan, icon: const Icon(Icons.add), label: const Text('Plan a trip')),
+        ],
+      ),
+    );
+  }
+}
+
+class _SectionLabel extends StatelessWidget {
+  final String label;
+
+  const _SectionLabel(this.label);
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).extension<MeridianColors>()!;
 
     return Padding(
-      padding: const EdgeInsets.only(top: 12),
-      child: Material(
-        color: done ? Colors.transparent : colors.surface,
-        borderRadius: BorderRadius.circular(16),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(trip.destination,
-                      style: text.titleLarge?.copyWith(color: done ? colors.inkSoft : colors.ink)),
+      padding: const EdgeInsets.fromLTRB(4, 28, 4, 4),
+      child: Text(label, style: MeridianText.monoData.copyWith(color: colors.inkSoft, letterSpacing: 2)),
+    );
+  }
+}
+
+/// A later or past trip: the city's photo small, name, and its dates.
+class _TripRow extends StatelessWidget {
+  final Trip trip;
+  final bool done;
+  final VoidCallback onTap;
+
+  const _TripRow({required this.trip, required this.done, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).extension<MeridianColors>()!;
+    final text = Theme.of(context).textTheme;
+
+    final row = InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: SizedBox.square(
+                dimension: 64,
+                child: WebPhoto(
+                  url: cityPhotoUrl(trip.destination),
+                  placeholder: Container(
+                    color: colors.ember,
+                    alignment: Alignment.center,
+                    child: Text(trip.destination.characters.first.toUpperCase(),
+                        style: MeridianText.monoHeading.copyWith(color: colors.inkSoft)),
+                  ),
                 ),
-                Text(done ? '$month · done' : month,
-                    style: MeridianText.monoData.copyWith(color: colors.inkSoft)),
-              ],
+              ),
             ),
-          ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(trip.destination, style: text.titleLarge, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  const SizedBox(height: 4),
+                  Text(
+                    done ? '${DateFormat('MMM yyyy').format(trip.startDate)} · done'.toUpperCase() : tripDateRange(trip).toUpperCase(),
+                    style: MeridianText.monoData.copyWith(color: colors.inkSoft),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right, color: colors.inkSoft),
+          ],
         ),
       ),
     );
+
+    // Past trips step back so the ones ahead stand out.
+    return done ? Opacity(opacity: 0.6, child: row) : row;
   }
 }
