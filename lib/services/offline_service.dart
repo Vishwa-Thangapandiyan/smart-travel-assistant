@@ -1,9 +1,7 @@
 // Owner: Sanjay (Offline, REQ-4.3). Signature fixed in
 // lib/services/README.md. The real Hive version arrives with issue #25.
 
-import 'dart:typed_data';
-
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart'; // also provides Uint8List
 
 import '../dev/app_config.dart';
 import '../dev/fake_data.dart';

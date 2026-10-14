@@ -6,7 +6,19 @@ decided not to add a package (like `flutter_dotenv`) just to simulate one
 Supabase values get passed at build/run time with `--dart-define`, and
 `lib/main.dart` reads them with `String.fromEnvironment`.
 
-## The command
+## Fake data mode — no keys needed
+
+```bash
+flutter run
+```
+
+With no Supabase config, the app runs on fake data: a demo user already
+signed in, the demo Bangalore trip, a straight-line route, nearby
+hospitals and police. This is how you build your feature before anyone
+else's real service exists — see `lib/services/README.md`. To force fake
+data even with keys set, add `--dart-define=USE_FAKE_DATA=true`.
+
+## With the real Supabase project
 
 ```bash
 flutter run \
@@ -16,16 +28,22 @@ flutter run \
 
 Replace both values with the real ones from the group chat (posted by
 Vishwa after he creates the Supabase project — see his `PLANNER.md`,
-Phase A).
+Phase A). In this mode any service whose owner hasn't built it yet throws
+an error naming its GitHub issue, instead of quietly showing fake data.
 
-Once the app shell is merged, the app can also run with fake data and no
-Supabase at all (`--dart-define=USE_FAKE_DATA=true`) — see
-`lib/services/README.md`. The app shell PR documents the exact command
-here.
+If `SUPABASE_URL` is set but the key is missing, the app throws a clear
+error on startup — see the check at the top of `main()` in
+`lib/main.dart`.
 
-If you forget either `--dart-define`, the app throws a clear error on
-startup instead of failing silently later — see the check at the top of
-`main()` in `lib/main.dart`.
+## Tests
+
+```bash
+flutter analyze
+flutter test
+```
+
+Both run on fake data, with no network and no keys — the same two checks
+CI runs on every pull request.
 
 ## Making this less annoying to retype
 
@@ -63,5 +81,5 @@ Same idea, different command:
 flutter build apk --dart-define=SUPABASE_URL=... --dart-define=SUPABASE_ANON_KEY=...
 ```
 
-Nobody needs this until Sprint 6 (deploy). Documented here now so it's not
-a surprise later.
+Nobody needs this until Phase D (release, issue #34). Documented here now
+so it's not a surprise later.
