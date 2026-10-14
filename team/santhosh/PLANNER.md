@@ -14,16 +14,16 @@ Dates were re-planned on 14 Oct 2026. Team-wide phases are in
       (`START-HERE.md` §1)
 - [ ] Codex set up, with `commit_attribution = ""` in
       `~/.codex/config.toml` (see your README)
-- [ ] Repo cloned; app runs in fake data mode once #3 and #4 are merged
+- [x] Repo cloned; app runs in fake data mode once #3 and #4 are merged
       (`RUN.md`)
 
 ## Phase B — from the app shell merge (#3, #4) to 1 Nov
 
 Budget — branch `flex/budget`
-- [ ] #27 Per-category budget for a trip (REQ-3.1)
-- [ ] #28 Expense form (REQ-3.2, REQ-3.3)
-- [ ] #29 Live balances in `BudgetProvider` (REQ-3.4)
-- [ ] #30 90% alert without divide-by-zero (REQ-3.5)
+- [x] #27 Per-category budget for a trip (REQ-3.1)
+- [x] #28 Expense form (REQ-3.2, REQ-3.3)
+- [x] #29 Live balances in `BudgetProvider` (REQ-3.4)
+- [x] #30 90% alert without divide-by-zero (REQ-3.5)
 
 ## Phase C — 2 Nov – 8 Nov: integration and testing
 
