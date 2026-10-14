@@ -33,7 +33,7 @@ Future<Trip?> getTrip(String tripId) async {
 /// Sorted by day_number, then order_index.
 Future<List<ItineraryItem>> getItineraryItems(String tripId) async {
   if (useFakeData) {
-    final items = demoItems.where((i) => i.tripId == tripId).toList();
+    final items = fakeItems.where((i) => i.tripId == tripId).toList();
     items.sort((a, b) {
       final byDay = a.dayNumber.compareTo(b.dayNumber);
       return byDay != 0 ? byDay : a.orderIndex.compareTo(b.orderIndex);

@@ -13,7 +13,7 @@ import '../accounts/accounts_provider.dart';
 import 'destination_lookup.dart';
 import 'itinerary_provider.dart';
 import 'new_trip_screen.dart';
-import 'trip_days_screen.dart';
+import 'day_screen.dart';
 
 /// Whole days from [today] to [start]: 0 on the day you leave, negative after.
 int daysUntil(DateTime start, {required DateTime today}) {
@@ -63,7 +63,9 @@ class _TripsScreenState extends State<TripsScreen> {
   }
 
   void _openTrip(Trip trip) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => TripDaysScreen(trip: trip)));
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => DayScreen(trip: trip, lookUp: widget.lookUp ?? lookUpDestination),
+    ));
   }
 
   Future<void> _newTrip() async {

@@ -26,10 +26,15 @@ final demoTrip = Trip(
 // here so the Trips screen shows them until the app restarts.
 final fakeTrips = <Trip>[demoTrip];
 
-/// For tests: forget created trips, keep the demo trip.
-void resetFakeTrips() => fakeTrips
-  ..clear()
-  ..add(demoTrip);
+/// For tests: forget created trips and stop changes, keep the demo trip.
+void resetFakeTrips() {
+  fakeTrips
+    ..clear()
+    ..add(demoTrip);
+  fakeItems
+    ..clear()
+    ..addAll(demoItems);
+}
 
 ItineraryItem _stop(int day, int order, String title, double lat, double lng,
     {String? time, String? notes}) {
@@ -60,6 +65,10 @@ final demoItems = <ItineraryItem>[
   _stop(3, 1, 'Commercial Street', 12.9822, 77.6083, time: '15:00:00'),
   _stop(4, 0, 'Kempegowda International Airport', 13.1986, 77.7066, time: '11:00:00'),
 ];
+
+// Every fake stop. Stops added, edited, moved or deleted in fake data mode
+// change this list, so the screens show the change until the app restarts.
+final fakeItems = <ItineraryItem>[...demoItems];
 
 const demoGuideText =
     'Bangalore: mild weather year round. Auto-rickshaws and the Namma Metro '

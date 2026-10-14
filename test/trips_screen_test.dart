@@ -103,9 +103,8 @@ void main() {
     expect(saved.destination, 'Goa');
     expect(saved.latitude, 15.6);
     expect(saved.numberOfDays, 3);
-    // Scene 3: the new trip opens with its days worked out from the dates.
-    expect(find.text('Day 1'), findsOneWidget);
-    expect(find.text('Day 3'), findsOneWidget);
-    expect(find.text('No stops yet'), findsNWidgets(3));
+    // Scene 3: the new trip opens on its first, empty day.
+    expect(find.text('DAY 1 · 0 STOPS'), findsOneWidget);
+    expect(find.text('No stops yet'), findsOneWidget);
   });
 }

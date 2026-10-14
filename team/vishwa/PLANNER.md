@@ -25,9 +25,9 @@ Accounts — `lib/features/accounts/README.md`
 
 Itinerary — `lib/features/itinerary/README.md`
 - [x] #9 Create a trip, and the real `trip_service` (REQ-2.1)
-- [ ] #10 Add, edit and delete stops per day (REQ-2.2)
-- [ ] #11 Reorder stops within a day (REQ-2.3)
-- [ ] #12 Notes on a stop (REQ-2.4)
+- [x] #10 Add, edit and delete stops per day (REQ-2.2)
+- [x] #11 Reorder stops within a day (REQ-2.3)
+- [x] #12 Notes on a stop (REQ-2.4)
 
 Maps & routing — `lib/features/maps/README.md`
 - [ ] #13 OpenStreetMap with stop markers and attribution (REQ-4.1)

@@ -13,6 +13,7 @@ import '../accounts/accounts_provider.dart';
 import 'destination_lookup.dart';
 import 'itinerary_provider.dart';
 import 'new_trip_check.dart';
+import 'place_match_tile.dart';
 
 class NewTripScreen extends StatefulWidget {
   final LookUpDestination lookUp;
@@ -162,7 +163,7 @@ class _NewTripScreenState extends State<NewTripScreen> {
                     style: text.bodySmall),
               ),
             for (final match in _matches)
-              _MatchTile(
+              PlaceMatchTile(
                 match: match,
                 picked: match == _picked,
                 onTap: () => setState(() => _picked = match),
@@ -191,40 +192,6 @@ class _NewTripScreenState extends State<NewTripScreen> {
               child: Text(_saving ? 'Saving…' : 'Create trip'),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-/// One Nominatim result; the picked one is outlined in amber.
-class _MatchTile extends StatelessWidget {
-  final DestinationMatch match;
-  final bool picked;
-  final VoidCallback onTap;
-
-  const _MatchTile({required this.match, required this.picked, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<MeridianColors>()!;
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Material(
-        color: colors.surface,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: BorderSide(color: picked ? colors.amber : colors.line),
-        ),
-        child: ListTile(
-          onTap: onTap,
-          title: Text(match.placeName),
-          subtitle: Text(match.region, maxLines: 1, overflow: TextOverflow.ellipsis),
-          trailing: Icon(
-            picked ? Icons.check_circle : Icons.circle_outlined,
-            color: picked ? colors.amber : colors.inkSoft,
-          ),
         ),
       ),
     );
