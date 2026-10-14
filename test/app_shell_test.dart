@@ -17,11 +17,19 @@ void main() {
     await tester.pumpWidget(const MeridianApp());
     await tester.pumpAndSettle();
 
-    for (final tab in ['Map', 'Budget', 'Explore', 'Trips']) {
+    // What each tab shows that no other tab does. The Map has no title —
+    // it is all map — but always shows the OpenStreetMap credit.
+    const marks = {
+      'Map': '© OpenStreetMap contributors',
+      'Budget': 'Budget',
+      'Explore': 'Explore',
+      'Trips': 'Trips',
+    };
+    for (final tab in marks.keys) {
       await tester.tap(find.byTooltip(tab));
       await tester.pumpAndSettle();
 
-      expect(find.text(tab), findsOneWidget, reason: '$tab screen should show its title');
+      expect(find.text(marks[tab]!), findsOneWidget, reason: '$tab screen should be showing');
       expect(find.bySemanticsLabel('Emergency help'), findsOneWidget, reason: 'SOS missing on $tab');
     }
   });

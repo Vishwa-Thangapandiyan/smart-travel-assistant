@@ -32,6 +32,12 @@ String tripDateRange(Trip trip) {
   return '$start – $end';
 }
 
+/// The trip to show first: the earliest one that hasn't ended yet.
+/// [trips] must be sorted by start date. Null when every trip is over.
+Trip? nextTrip(List<Trip> trips, {required DateTime today}) {
+  return trips.where((t) => daysUntil(t.endDate, today: today) >= 0).firstOrNull;
+}
+
 class TripsScreen extends StatefulWidget {
   /// Tests pass a stand-in; the app uses Nominatim.
   final LookUpDestination? lookUp;
@@ -84,8 +90,7 @@ class _TripsScreenState extends State<TripsScreen> {
     final trips = context.watch<ItineraryProvider>().trips;
 
     final today = DateTime.now();
-    // The next trip is the first one that hasn't ended yet; trips are sorted by start date.
-    final upcoming = trips.where((t) => daysUntil(t.endDate, today: today) >= 0).firstOrNull;
+    final upcoming = nextTrip(trips, today: today);
     final others = trips.where((t) => t != upcoming).toList();
 
     return SafeArea(

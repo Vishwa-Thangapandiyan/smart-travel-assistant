@@ -12,6 +12,7 @@ import '../../models/itinerary_item.dart';
 import '../../models/trip.dart';
 import '../../theme/meridian_colors.dart';
 import '../../theme/meridian_theme.dart';
+import 'day_switcher.dart';
 import 'destination_lookup.dart';
 import 'itinerary_provider.dart';
 import 'stop_form_screen.dart';
@@ -78,7 +79,7 @@ class _DayScreenState extends State<DayScreen> {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 4, 20, 40),
           children: [
-            _DaySwitcher(
+            DaySwitcher(
               days: widget.trip.numberOfDays,
               selected: _day,
               labelOf: (day) => DateFormat('EEE d').format(_dateOf(day)),
@@ -116,47 +117,6 @@ class _DayScreenState extends State<DayScreen> {
                 label: const Text('Add a stop'),
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// The pill of days at the top; the selected day is cream.
-class _DaySwitcher extends StatelessWidget {
-  final int days;
-  final int selected;
-  final String Function(int day) labelOf;
-  final ValueChanged<int> onSelect;
-
-  const _DaySwitcher({required this.days, required this.selected, required this.labelOf, required this.onSelect});
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<MeridianColors>()!;
-
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: ShapeDecoration(
-        color: colors.surface,
-        shape: StadiumBorder(side: BorderSide(color: colors.line)),
-      ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            for (var day = 1; day <= days; day++)
-              TextButton(
-                onPressed: () => onSelect(day),
-                style: TextButton.styleFrom(
-                  backgroundColor: day == selected ? colors.ink : Colors.transparent,
-                  foregroundColor: day == selected ? colors.ground : colors.inkSoft,
-                  shape: const StadiumBorder(),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                ),
-                child: Text(labelOf(day), style: MeridianText.monoData),
-              ),
           ],
         ),
       ),

@@ -111,11 +111,6 @@ void main() {
     tearDown(() => debugUseFakeData = null);
 
     test('fails loudly instead of quietly returning fake data', () {
-      expect(
-        () => getRoute(originLat: 0, originLng: 0, destLat: 1, destLng: 1),
-        throwsA(isA<UnimplementedError>()),
-      );
-      expect(() => getCurrentPosition(), throwsA(isA<UnimplementedError>()));
       expect(() => downloadTrip('t'), throwsA(isA<UnimplementedError>()));
       expect(
         () => findNearbyEmergencyServices(latitude: 0, longitude: 0),

@@ -33,9 +33,9 @@ telling Sanjay first.
 
 ## Done when
 
-- [ ] Map renders with visible tiles and correct markers — REQ-4.1
-- [ ] OSM attribution is visible — REQ-4.1
-- [ ] Routing between stops works via OSRM through
+- [x] Map renders with visible tiles and correct markers — REQ-4.1
+- [x] OSM attribution is visible — REQ-4.1
+- [x] Routing between stops works via OSRM through
       `routing_service.dart` — REQ-4.2
-- [ ] `location_service.dart` is real and matches its signature
-- [ ] A map with zero stops shows a sensible empty state, no crash
+- [x] `location_service.dart` is real and matches its signature
+- [x] A map with zero stops shows a sensible empty state, no crash

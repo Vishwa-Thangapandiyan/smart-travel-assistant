@@ -1,8 +1,12 @@
 // Owner: Vishwa (Maps). Called by Maps and by Emergency's directions;
-// signature fixed in lib/services/README.md. The real OSRM version
-// arrives with issue #14.
+// signature fixed in lib/services/README.md. Asks the public OSRM demo
+// server for the road route. Throws on failure or a slow answer — callers
+// keep their pins and show no line. Nothing is cached.
 
+import 'dart:convert';
 import 'dart:math';
+
+import 'package:http/http.dart' as http;
 
 import '../dev/app_config.dart';
 
@@ -23,31 +27,87 @@ class RouteResult {
   });
 }
 
+/// OSRM answered, but not with a route (error status, or no road found).
+class RouteException implements Exception {
+  final String message;
+  const RouteException(this.message);
+
+  @override
+  String toString() => 'RouteException: $message';
+}
+
 Future<RouteResult> getRoute({
   required double originLat,
   required double originLng,
   required double destLat,
   required double destLng,
-}) async {
-  if (!useFakeData) notBuiltYet('routing_service', 14);
+}) {
+  return getRouteThrough([RoutePoint(originLat, originLng), RoutePoint(destLat, destLng)]);
+}
 
-  // Fake: a straight line at city driving speed. Good enough to draw and
-  // to show a distance; the real route follows roads.
-  const steps = 8;
-  final points = [
-    for (var i = 0; i <= steps; i++)
-      RoutePoint(
-        originLat + (destLat - originLat) * i / steps,
-        originLng + (destLng - originLng) * i / steps,
-      ),
-  ];
-  final meters = distanceBetween(originLat, originLng, destLat, destLng);
+/// The road route through every stop in order, in one OSRM request — the
+/// Map screen uses this for a whole day. Needs at least two stops.
+Future<RouteResult> getRouteThrough(List<RoutePoint> stops, {http.Client? client}) async {
+  if (stops.length < 2) throw ArgumentError('A route needs at least two stops.');
+  if (useFakeData) return _straightLines(stops);
+
+  // OSRM wants "longitude,latitude" pairs joined by semicolons.
+  final path = stops.map((s) => '${s.longitude},${s.latitude}').join(';');
+  final url = Uri.https('router.project-osrm.org', '/route/v1/driving/$path', {
+    'overview': 'full',
+    'geometries': 'geojson',
+  });
+  final httpClient = client ?? http.Client();
+
+  try {
+    final response = await httpClient.get(url, headers: {
+      'User-Agent': 'Meridian travel planner (VIT Chennai student project)',
+    }).timeout(const Duration(seconds: 12));
+    if (response.statusCode != 200) {
+      throw RouteException('OSRM answered ${response.statusCode}');
+    }
+
+    final body = jsonDecode(response.body) as Map<String, dynamic>;
+    final routes = body['routes'] as List<dynamic>? ?? [];
+    if (body['code'] != 'Ok' || routes.isEmpty) {
+      throw RouteException('OSRM found no route (${body['code']})');
+    }
+
+    final route = routes.first as Map<String, dynamic>;
+    final coordinates = (route['geometry'] as Map<String, dynamic>)['coordinates'] as List<dynamic>;
+    return RouteResult(
+      // GeoJSON is [longitude, latitude]; flip each pair.
+      points: [
+        for (final pair in coordinates.cast<List<dynamic>>())
+          RoutePoint((pair[1] as num).toDouble(), (pair[0] as num).toDouble()),
+      ],
+      distanceMeters: (route['distance'] as num).toDouble(),
+      durationSeconds: (route['duration'] as num).toDouble(),
+    );
+  } finally {
+    if (client == null) httpClient.close();
+  }
+}
+
+// Fake data mode: straight lines between the stops at city driving speed.
+// Good enough to draw and to show a distance; the real route follows roads.
+RouteResult _straightLines(List<RoutePoint> stops) {
+  final points = <RoutePoint>[stops.first];
+  var meters = 0.0;
+  for (var i = 1; i < stops.length; i++) {
+    final from = stops[i - 1];
+    final to = stops[i];
+    const steps = 8;
+    for (var step = 1; step <= steps; step++) {
+      points.add(RoutePoint(
+        from.latitude + (to.latitude - from.latitude) * step / steps,
+        from.longitude + (to.longitude - from.longitude) * step / steps,
+      ));
+    }
+    meters += distanceBetween(from.latitude, from.longitude, to.latitude, to.longitude);
+  }
   const metersPerSecond = 25 * 1000 / 3600; // 25 km/h in city traffic
-  return RouteResult(
-    points: points,
-    distanceMeters: meters,
-    durationSeconds: meters / metersPerSecond,
-  );
+  return RouteResult(points: points, distanceMeters: meters, durationSeconds: meters / metersPerSecond);
 }
 
 /// Straight-line distance in metres (haversine formula).
