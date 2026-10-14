@@ -16,7 +16,7 @@ class MeridianText {
   /// The huge "now" numbers: next stop time, money left, days to go.
   static const nowNumber = TextStyle(
     fontFamily: _sans,
-    fontSize: 64,
+    fontSize: 52,
     fontWeight: FontWeight.w600,
     letterSpacing: -3.5,
     height: 0.9,
@@ -37,9 +37,9 @@ class MeridianText {
   static const monoHeading = TextStyle(
     fontFamily: _mono,
     fontFamilyFallback: [_sans],
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: FontWeight.w500,
-    letterSpacing: -0.5,
+    letterSpacing: -0.4,
   );
 }
 
@@ -75,12 +75,12 @@ ThemeData meridianTheme(Brightness brightness) {
     dividerColor: c.line,
     textTheme: base.textTheme.copyWith(
       headlineMedium: base.textTheme.headlineMedium?.copyWith(
-          fontSize: 30, fontWeight: FontWeight.w600, letterSpacing: -0.75, color: c.ink),
+          fontSize: 26, fontWeight: FontWeight.w600, letterSpacing: -0.65, color: c.ink),
       titleLarge: base.textTheme.titleLarge?.copyWith(
-          fontSize: 20, fontWeight: FontWeight.w600, letterSpacing: -0.3, color: c.ink),
-      bodyLarge: base.textTheme.bodyLarge?.copyWith(fontSize: 16, height: 1.5, color: c.ink),
+          fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: -0.3, color: c.ink),
+      bodyLarge: base.textTheme.bodyLarge?.copyWith(fontSize: 15, height: 1.5, color: c.ink),
       bodyMedium: base.textTheme.bodyMedium?.copyWith(fontSize: 14, color: c.ink),
-      bodySmall: base.textTheme.bodySmall?.copyWith(fontSize: 13, color: c.inkSoft),
+      bodySmall: base.textTheme.bodySmall?.copyWith(fontSize: 12, color: c.inkSoft),
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
@@ -88,7 +88,7 @@ ThemeData meridianTheme(Brightness brightness) {
         foregroundColor: c.onAmber,
         minimumSize: buttonSize,
         shape: pill,
-        textStyle: const TextStyle(fontFamily: _sans, fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: const TextStyle(fontFamily: _sans, fontSize: 15, fontWeight: FontWeight.w600),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(

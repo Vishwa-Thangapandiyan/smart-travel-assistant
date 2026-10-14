@@ -12,21 +12,27 @@ const _bangalore = [
     'lon': '77.5901604',
     'display_name': 'Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, India',
   },
+  {
+    'lat': '13.2257',
+    'lon': '77.5750',
+    'display_name': 'Bangalore Rural, Karnataka, India',
+  },
 ];
 
 void main() {
-  test('a known city comes back with its coordinates and full name', () async {
+  test('matches come back best first, with coordinates and names', () async {
     final client = MockClient((_) async => http.Response(jsonEncode(_bangalore), 200));
 
-    final match = await lookUpDestination('Bangalore', client: client);
+    final matches = await lookUpDestination('Bangalore', client: client);
 
-    expect(match, isNotNull);
-    expect(match!.latitude, 12.9767936);
-    expect(match.longitude, 77.5901604);
-    expect(match.name, startsWith('Bengaluru'));
+    expect(matches, hasLength(2));
+    expect(matches.first.latitude, 12.9767936);
+    expect(matches.first.longitude, 77.5901604);
+    expect(matches.first.placeName, 'Bengaluru');
+    expect(matches.first.region, 'Bangalore North, Bengaluru Urban, Karnataka, India');
   });
 
-  test('asks Nominatim for one result and names the app, as its policy requires', () async {
+  test('asks Nominatim for at most three results and names the app, as its policy requires', () async {
     late http.Request sent;
     final client = MockClient((request) async {
       sent = request;
@@ -37,21 +43,21 @@ void main() {
 
     expect(sent.url.host, 'nominatim.openstreetmap.org');
     expect(sent.url.queryParameters['q'], 'Bangalore');
-    expect(sent.url.queryParameters['limit'], '1');
+    expect(sent.url.queryParameters['limit'], '3');
     expect(sent.headers['User-Agent'], contains('Meridian'));
   });
 
-  test('a name Nominatim does not know gives null', () async {
+  test('a name Nominatim does not know gives no matches', () async {
     final client = MockClient((_) async => http.Response('[]', 200));
 
-    expect(await lookUpDestination('Qwertyuiop', client: client), isNull);
+    expect(await lookUpDestination('Qwertyuiop', client: client), isEmpty);
   });
 
-  test('a server error or no internet gives null instead of crashing', () async {
+  test('a server error or no internet gives no matches instead of crashing', () async {
     final down = MockClient((_) async => http.Response('busy', 503));
     final offline = MockClient((_) async => throw http.ClientException('no internet'));
 
-    expect(await lookUpDestination('Bangalore', client: down), isNull);
-    expect(await lookUpDestination('Bangalore', client: offline), isNull);
+    expect(await lookUpDestination('Bangalore', client: down), isEmpty);
+    expect(await lookUpDestination('Bangalore', client: offline), isEmpty);
   });
 }

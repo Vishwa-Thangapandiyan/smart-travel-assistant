@@ -72,15 +72,18 @@ dependencies, `AGENTS.md` rule 5).
 
 | Style | Size / weight | Tracking | Example |
 | --- | --- | --- | --- |
-| now-number | 64–112 / 600–700 | −5 to −6% | `12:30`, `₹3,940`, `37` |
-| title | 28–36 / 600 | −2.5% | Bangalore |
-| heading | 20–22 / 600 | −1.5% | Bangalore Palace |
-| body | 16 / 400 | 0 | Audio tour at the gate |
-| small | 13 / 400 | 0 | Walk to the State Library |
-| mono-heading | 24–26 / 500 mono | −2% | Saturday, 21 Nov |
+| now-number | 52–88 / 600–700 | −5 to −6% | `12:30`, `₹3,940`, `37` |
+| title | 26 / 600 | −2.5% | Bangalore |
+| heading | 18 / 600 | −1.5% | Bangalore Palace |
+| body | 15 / 400 | 0 | Audio tour at the gate |
+| small | 12 / 400 | 0 | Walk to the State Library |
+| mono-heading | 20 / 500 mono | −2% | Saturday, 21 Nov |
 | mono-data | 11–12 / 500 mono, caps where a label | +4–8% for caps | NEXT · 7.1 KM · 12 MIN |
 
 Numbers use tabular figures so they don't jump while they change.
+
+Sizes were stepped down on 14 Oct 2026 after checking on a real phone —
+the pictures in `design/screens/` use the earlier, larger scale.
 
 ## 5. Space, shape, touch
 

@@ -67,11 +67,15 @@ void main() {
     expect(fakeTrips, hasLength(1));
   });
 
-  testWidgets('a new trip is looked up, saved, and its empty days shown', (tester) async {
+  testWidgets('search offers up to three places and the picked one is saved', (tester) async {
     String? lookedUp;
-    Future<DestinationMatch?> fakeLookUp(String name) async {
+    Future<List<DestinationMatch>> fakeLookUp(String name) async {
       lookedUp = name;
-      return const DestinationMatch(name: 'Goa, India', latitude: 15.3, longitude: 74.08);
+      return const [
+        DestinationMatch(name: 'Goa, India', latitude: 15.3, longitude: 74.08),
+        DestinationMatch(name: 'North Goa, Goa, India', latitude: 15.6, longitude: 73.9),
+        DestinationMatch(name: 'South Goa, Goa, India', latitude: 15.1, longitude: 74.1),
+      ];
     }
 
     await tester.pumpWidget(_app(lookUp: fakeLookUp));
@@ -80,6 +84,15 @@ void main() {
     await tester.tap(find.byTooltip('New trip'));
     await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextField), 'Goa');
+    await tester.tap(find.byTooltip('Search'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Goa'), findsWidgets);
+    expect(find.text('North Goa'), findsOneWidget);
+    expect(find.text('South Goa'), findsOneWidget);
+    await tester.tap(find.text('North Goa'));
+    await tester.pumpAndSettle();
+
     await _pickDay(tester, 'Leave on', '20');
     await _pickDay(tester, 'Come back on', '22');
     await tester.tap(find.text('Create trip'));
@@ -88,7 +101,7 @@ void main() {
     expect(lookedUp, 'Goa');
     final saved = fakeTrips.last;
     expect(saved.destination, 'Goa');
-    expect(saved.latitude, 15.3);
+    expect(saved.latitude, 15.6);
     expect(saved.numberOfDays, 3);
     // Scene 3: the new trip opens with its days worked out from the dates.
     expect(find.text('Day 1'), findsOneWidget);
