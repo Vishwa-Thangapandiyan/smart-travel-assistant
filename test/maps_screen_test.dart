@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_travel_assistant/dev/app_config.dart';
@@ -8,7 +9,7 @@ import 'package:smart_travel_assistant/features/itinerary/itinerary_provider.dar
 import 'package:smart_travel_assistant/features/maps/maps_screen.dart';
 import 'package:smart_travel_assistant/theme/meridian_theme.dart';
 
-Widget _app(ItineraryProvider itinerary) {
+Widget _app(ItineraryProvider itinerary, {double systemBarHeight = 0}) {
   return MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => AccountsProvider()),
@@ -16,6 +17,11 @@ Widget _app(ItineraryProvider itinerary) {
     ],
     child: MaterialApp(
       theme: meridianTheme(Brightness.dark),
+      // A phone's own button bar at the bottom of the screen.
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(padding: EdgeInsets.only(bottom: systemBarHeight)),
+        child: child!,
+      ),
       home: const Scaffold(body: MapsScreen(showTiles: false)),
     ),
   );
@@ -31,10 +37,10 @@ void main() {
   });
   tearDown(() => debugUseFakeData = null);
 
-  Future<void> show(WidgetTester tester) async {
+  Future<void> show(WidgetTester tester, {double systemBarHeight = 0}) async {
     await tester.binding.setSurfaceSize(const Size(420, 900));
     addTearDown(() => tester.binding.setSurfaceSize(null));
-    await tester.pumpWidget(_app(itinerary));
+    await tester.pumpWidget(_app(itinerary, systemBarHeight: systemBarHeight));
     await tester.pumpAndSettle();
   }
 
@@ -52,7 +58,7 @@ void main() {
     await show(tester);
 
     expect(find.textContaining(' km · '), findsOneWidget);
-    expect(find.textContaining('min straight line, demo data'), findsOneWidget);
+    expect(find.textContaining('min · demo line'), findsOneWidget);
   });
 
   testWidgets('switching to day 2 pins its five stops; tapping a pin selects it', (tester) async {
@@ -91,5 +97,29 @@ void main() {
     await show(tester);
 
     expect(find.text('© OpenStreetMap contributors'), findsOneWidget);
+  });
+
+  testWidgets('pinching never rotates the map; it stays north-up', (tester) async {
+    await show(tester);
+
+    final options = tester.widget<FlutterMap>(find.byType(FlutterMap)).options;
+    expect(options.interactionOptions.flags & InteractiveFlag.rotate, 0);
+    expect(options.minZoom, isNotNull);
+  });
+
+  testWidgets('the stop card sits above the nav bar and the phone\'s own button bar', (tester) async {
+    await show(tester, systemBarHeight: 48);
+
+    // The floating nav bar is 68 tall with a 16 margin, above the system bar.
+    const navBarTop = 900 - 48 - 16 - 68;
+    final card = tester.getRect(find.ancestor(of: find.text('Vidhana Soudha'), matching: find.byType(Container)).first);
+    expect(card.bottom, lessThan(navBarTop));
+  });
+
+  testWidgets('the route line fits on one line', (tester) async {
+    await show(tester);
+
+    final line = find.textContaining(' km · ');
+    expect(tester.getSize(line).height, lessThan(20));
   });
 }
