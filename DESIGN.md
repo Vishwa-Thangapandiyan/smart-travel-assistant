@@ -31,9 +31,11 @@ they ever disagree with the canvas, raise it rather than guessing.
 ## 2. Modes
 
 Night (dark) is the primary look; Day (light, cream paper) is the same app
-for bright sunlight. Both must exist. Proposed: follow the phone's system
-setting — **not yet decided by the team**, so don't build a manual toggle
-until it is.
+for bright sunlight. Both must exist. Decided: the app follows the phone's
+system setting, and the Account sheet has a Phone / Day / Night switch
+that overrides it. The choice is kept on the phone (Hive box `settings`,
+`lib/theme/theme_provider.dart`). Read colours from the theme, never test
+for a mode yourself: the map's night tiles key off `Theme.of(context).brightness`.
 
 ## 3. Colour
 

@@ -1,11 +1,12 @@
 // Owner: Vishwa. The account sheet opened from the Trips header: who is
-// signed in, Edit profile, and Sign out.
+// signed in, Edit profile, Day or Night, and Sign out.
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../dev/app_config.dart';
 import '../../theme/meridian_colors.dart';
+import '../../theme/theme_provider.dart';
 import '../itinerary/itinerary_provider.dart';
 import 'accounts_provider.dart';
 import 'profile_screen.dart';
@@ -18,6 +19,7 @@ Future<void> showAccountSheet(BuildContext context) {
       final colors = Theme.of(context).extension<MeridianColors>()!;
       final text = Theme.of(context).textTheme;
       final accounts = context.read<AccountsProvider>();
+      final theme = context.watch<ThemeProvider>();
 
       return SafeArea(
         child: Padding(
@@ -37,7 +39,23 @@ Future<void> showAccountSheet(BuildContext context) {
                 icon: const Icon(Icons.person_outline),
                 label: const Text('Edit profile'),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 20),
+              Text('Look', style: text.bodySmall),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: SegmentedButton<ThemeMode>(
+                  segments: const [
+                    ButtonSegment(value: ThemeMode.system, icon: Icon(Icons.brightness_auto_outlined), label: Text('Phone')),
+                    ButtonSegment(value: ThemeMode.light, icon: Icon(Icons.light_mode_outlined), label: Text('Day')),
+                    ButtonSegment(value: ThemeMode.dark, icon: Icon(Icons.dark_mode_outlined), label: Text('Night')),
+                  ],
+                  selected: {theme.mode},
+                  showSelectedIcon: false,
+                  onSelectionChanged: (picked) => theme.setMode(picked.single),
+                ),
+              ),
+              const SizedBox(height: 20),
               if (useFakeData)
                 Text('Demo mode: no account, nothing is saved after the app closes.',
                     style: text.bodyMedium?.copyWith(color: colors.inkSoft))
