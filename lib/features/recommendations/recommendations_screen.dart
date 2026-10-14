@@ -15,16 +15,8 @@ import '../../theme/meridian_colors.dart';
 import '../../theme/meridian_theme.dart';
 import '../accounts/accounts_provider.dart';
 import '../itinerary/itinerary_provider.dart';
+import 'place_categories.dart';
 import 'recommendations_provider.dart';
-
-// Category values in the table, and what the chips call them.
-const _categories = {
-  'attraction': 'Sights',
-  'restaurant': 'Food',
-  'nature': 'Nature',
-  'museum': 'Museums',
-  'shopping': 'Shopping',
-};
 
 const _categoryIcons = {
   'attraction': Icons.account_balance_outlined,
@@ -144,7 +136,7 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
           const SizedBox(height: 16),
           _ChipRow(children: [
             _Chip(label: 'All', selected: feed.category == null, onTap: () => _filter(() => feed.setCategory(null))),
-            for (final entry in _categories.entries)
+            for (final entry in placeCategories.entries)
               _Chip(
                 label: entry.value,
                 selected: feed.category == entry.key,
@@ -275,7 +267,7 @@ class _PlaceCard extends StatelessWidget {
     final colors = Theme.of(context).extension<MeridianColors>()!;
     final text = Theme.of(context).textTheme;
     final facts = [
-      _categories[place.category] ?? place.category,
+      placeCategories[place.category] ?? place.category,
       if (place.rating != null) '★ ${place.rating}',
       if (place.priceLevel != null) priceLabel(place.priceLevel!),
     ].join(' · ');

@@ -11,6 +11,24 @@ import '../../dev/fake_recommendations.dart';
 import '../../models/recommendation.dart';
 import '../../services/supabase_service.dart';
 
+// Other names people type for the seeded cities. A trip saved as
+// "Bengaluru" should still find the places seeded under "Bangalore".
+const _otherNames = {
+  'bengaluru': 'Bangalore',
+  'mysuru': 'Mysore',
+  'madras': 'Chennai',
+  'panaji': 'Goa',
+  'panjim': 'Goa',
+  'pink city': 'Jaipur',
+};
+
+/// The name the places are seeded under, or [destination] itself if it
+/// isn't a known other name.
+String seededDestination(String destination) {
+  final trimmed = destination.trim();
+  return _otherNames[trimmed.toLowerCase()] ?? trimmed;
+}
+
 class RecommendationsProvider extends ChangeNotifier {
   String? _destination;
   String? get destination => _destination;
@@ -47,8 +65,8 @@ class RecommendationsProvider extends ChangeNotifier {
   }
 
   Future<void> _query() async {
-    final destination = _destination;
-    if (destination == null) return;
+    if (_destination == null) return;
+    final destination = seededDestination(_destination!);
 
     if (useFakeData) {
       _places = _fakeQuery(destination);

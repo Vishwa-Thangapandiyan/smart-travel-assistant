@@ -70,4 +70,26 @@ void main() {
 
     expect(provider.places, hasLength(13));
   });
+
+  test('local and old names find the seeded city', () async {
+    await provider.load('Bengaluru');
+    expect(provider.places, hasLength(13));
+
+    await provider.load('mysuru');
+    expect(provider.places, hasLength(12));
+
+    await provider.load('Madras');
+    expect(provider.places.first.destination, 'Chennai');
+
+    await provider.load('Panaji');
+    expect(provider.places.first.destination, 'Goa');
+  });
+
+  test('the seeded name is what the screen shows as the destination', () async {
+    await provider.load('Bengaluru');
+
+    expect(provider.destination, 'Bengaluru');
+    expect(seededDestination('Bengaluru'), 'Bangalore');
+    expect(seededDestination('Zurich'), 'Zurich');
+  });
 }
