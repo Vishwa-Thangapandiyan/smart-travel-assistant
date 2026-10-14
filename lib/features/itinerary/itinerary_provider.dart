@@ -26,6 +26,14 @@ class ItineraryProvider extends ChangeNotifier {
   List<ItineraryItem> _stops = [];
   List<ItineraryItem> get stops => _stops;
 
+  /// Forgets everything, for sign-out.
+  void clear() {
+    _trips = [];
+    _currentTrip = null;
+    _stops = [];
+    notifyListeners();
+  }
+
   Future<void> loadTrips(String userId) async {
     _trips = await getTrips(userId);
     notifyListeners();
