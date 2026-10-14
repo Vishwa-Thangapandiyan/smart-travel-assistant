@@ -8,6 +8,7 @@ import 'package:smart_travel_assistant/features/itinerary/destination_lookup.dar
 import 'package:smart_travel_assistant/features/itinerary/itinerary_provider.dart';
 import 'package:smart_travel_assistant/features/itinerary/trip_dates.dart';
 import 'package:smart_travel_assistant/features/itinerary/trips_screen.dart';
+import 'package:smart_travel_assistant/models/trip.dart';
 import 'package:smart_travel_assistant/theme/meridian_theme.dart';
 
 // The Trips screen inside just the providers it needs, with a stand-in
@@ -52,6 +53,47 @@ void main() {
 
     expect(find.text('Trips'), findsOneWidget);
     expect(find.text('Bangalore'), findsOneWidget);
+  });
+
+  testWidgets('the next trip is the big card, then later and past trips in their own sections', (tester) async {
+    // Dates relative to today, so the test means the same thing on any day.
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    Trip trip(String id, String destination, int startsIn) => Trip(
+          id: id,
+          userId: demoUserId,
+          destination: destination,
+          startDate: today.add(Duration(days: startsIn)),
+          endDate: today.add(Duration(days: startsIn + 2)),
+          createdAt: today,
+        );
+    fakeTrips
+      ..clear()
+      ..addAll([trip('past', 'Jaipur', -90), trip('next', 'Goa', 10), trip('later', 'Zurich', 60)]);
+
+    await tester.binding.setSurfaceSize(const Size(420, 1400));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    expect(find.text('NEXT TRIP'), findsOneWidget);
+    expect(find.text('10'), findsOneWidget);
+    expect(find.text('DAYS TO GO'), findsOneWidget);
+    expect(find.text('LATER'), findsOneWidget);
+    expect(find.text('Zurich'), findsOneWidget);
+    expect(find.text('DONE'), findsOneWidget);
+    expect(find.textContaining('· DONE'), findsOneWidget);
+  });
+
+  testWidgets('with no trips at all it offers to plan one', (tester) async {
+    fakeTrips.clear();
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    expect(find.text('Where to next?'), findsOneWidget);
+    await tester.tap(find.text('Plan a trip'));
+    await tester.pumpAndSettle();
+    expect(find.text('Create trip'), findsOneWidget);
   });
 
   testWidgets('Create with nothing filled in shows the errors and saves nothing', (tester) async {
