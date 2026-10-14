@@ -3,6 +3,8 @@
 Owner: Sanjay · Branch: `flex/emergency` · SRS 4.5 · Record:
 [`docs/OWNERSHIP.md`](../../../docs/OWNERSHIP.md)
 
+**Design:** follow [`DESIGN.md`](../../../DESIGN.md); screen picture: `design/screens/night-07-sos.png`.
+
 **Start after** Vishwa's app shell and theme are merged (`flex/app-shell`).
 
 Nearby hospitals and police stations, default helpline numbers with

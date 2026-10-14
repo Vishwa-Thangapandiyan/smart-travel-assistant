@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>Meridian — Sign in</title>
+<!-- Exported from the Meridian design canvas. Reference only: the app is
+     Flutter, this file just shows the exact layout and values. See DESIGN.md. -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#f39a2b}a:hover{color:#f7ecdc}
+</style>
+</head>
+<body>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; background: #0b0907; color: #f7ecdc; font-family: 'Manrope', system-ui, sans-serif">
+
+<img src="assets/map-night.jpg" alt="" style="position: absolute; left: 0; top: -40px; width: 390px; height: 844px; object-fit: cover">
+<svg width="390" height="844" viewBox="0 0 390 844" aria-hidden="true" style="position: absolute; left: 0; top: -40px">
+<path d="M106.6 381.7 L112.3 373.0 L117.6 365.1 L123.1 357.7 L130.7 347.3 L135.1 339.0 L139.6 330.5 L143.4 324.2 L153.9 307.4 L156.8 302.5 L160.4 294.5 L164.9 284.8 L168.1 278.3 L171.1 270.4 L173.0 263.9 L174.1 258.9 L173.0 248.9 L172.1 236.2 L171.3 228.6 L170.9 223.5 L171.4 213.4 L172.7 207.6 L173.5 204.3 L180.7 187.3 L180.6 183.6 L182.5 178.2 L182.2 172.0 L183.8 163.6 L186.1 154.1 L187.4 145.8 L191.5 140.9 L198.1 142.3 L200.5 143.8 L202.2 149.8 L201.8 154.7" fill="none" stroke="rgba(11,9,7,0.85)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M106.6 381.7 L112.3 373.0 L117.6 365.1 L123.1 357.7 L130.7 347.3 L135.1 339.0 L139.6 330.5 L143.4 324.2 L153.9 307.4 L156.8 302.5 L160.4 294.5 L164.9 284.8 L168.1 278.3 L171.1 270.4 L173.0 263.9 L174.1 258.9 L173.0 248.9 L172.1 236.2 L171.3 228.6 L170.9 223.5 L171.4 213.4 L172.7 207.6 L173.5 204.3 L180.7 187.3 L180.6 183.6 L182.5 178.2 L182.2 172.0 L183.8 163.6 L186.1 154.1 L187.4 145.8 L191.5 140.9 L198.1 142.3 L200.5 143.8 L202.2 149.8 L201.8 154.7" fill="none" stroke="#f39a2b" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="201.8" cy="154.7" r="26" fill="#f39a2b" fill-opacity="0.22"/>
+<circle cx="201.8" cy="154.7" r="9" fill="#f39a2b" stroke="#0b0907" stroke-width="2"/>
+</svg>
+<div style="position: absolute; left: 0; right: 0; top: 0; height: 360px; background: linear-gradient(to bottom, rgba(11,9,7,0.55), rgba(11,9,7,0) 30%, rgba(11,9,7,0) 70%, #0b0907)"></div>
+
+<div style="position: absolute; left: 20px; top: 22px; display: flex; align-items: center; gap: 8px">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 18 C 9 18, 9 6, 13 6 S 17 14, 19 14" stroke="#f39a2b"/><circle cx="5" cy="18" r="2" fill="#f7ecdc" stroke="none"/><circle cx="19" cy="14" r="2.4" fill="#f39a2b" stroke="none"/></svg>
+<span style="font-size: 18px; font-weight: 600; letter-spacing: -0.01em">Meridian</span>
+</div>
+
+<form style="position: absolute; left: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 26px 20px 22px; border-top-left-radius: 30px; border-top-right-radius: 30px; background: #0b0907; display: flex; flex-direction: column; gap: 14px">
+<div>
+<h1 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.02em">Sign in</h1>
+<p style="margin: 4px 0 0; font-size: 14px; color: rgba(247,236,220,0.6)">Your trips, budget and saved maps follow you.</p>
+</div>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: rgba(247,236,220,0.7)">Email
+<input type="email" value="vishwa@example.com" style="height: 52px; box-sizing: border-box; padding: 0 16px; border-radius: 16px; border: 1px solid rgba(247,236,220,0.16); background: #17120d; color: #f7ecdc; font-family: inherit; font-size: 16px">
+</label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: rgba(247,236,220,0.7)">Password
+<span style="position: relative; display: block">
+<input type="password" value="travelsafe" style="width: 100%; height: 52px; box-sizing: border-box; padding: 0 56px 0 16px; border-radius: 16px; border: 1.5px solid #f39a2b; background: #17120d; color: #f7ecdc; font-family: inherit; font-size: 16px">
+<button type="button" aria-label="Show password" style="position: absolute; right: 4px; top: 4px; width: 44px; height: 44px; border: none; background: transparent; color: rgba(247,236,220,0.6); display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+</span>
+</label>
+<a href="#" style="align-self: flex-end; font-size: 13px; margin-top: -4px">Forgot password?</a>
+<button type="submit" style="min-height: 54px; border-radius: 999px; border: none; background: #f39a2b; color: #1f1104; font-family: inherit; font-size: 16px; font-weight: 600">Sign in</button>
+<div style="display: flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(247,236,220,0.4)"><span style="flex: 1; height: 1px; background: rgba(247,236,220,0.1)"></span>OR<span style="flex: 1; height: 1px; background: rgba(247,236,220,0.1)"></span></div>
+<button type="button" style="min-height: 54px; border-radius: 999px; border: 1px solid rgba(247,236,220,0.2); background: transparent; color: #f7ecdc; font-family: inherit; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px">
+<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.3c0-.8-.1-1.5-.2-2.3H12v4.3h5.9a5 5 0 0 1-2.2 3.3v2.7h3.5c2.1-1.9 3.3-4.7 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.4-1 7.2-2.7l-3.5-2.7c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.5H2.2v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.8 14.2a6.6 6.6 0 0 1 0-4.3V7.1H2.2a11 11 0 0 0 0 9.9l3.6-2.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.1-3.1A11 11 0 0 0 2.2 7.1l3.6 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg>
+Continue with Google</button>
+<div style="text-align: center; font-size: 14px; color: rgba(247,236,220,0.6)">New to Meridian? <a href="#">Create an account</a></div>
+</form>
+</div>
+</body>
+</html>

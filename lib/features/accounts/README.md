@@ -3,6 +3,8 @@
 Owner: Vishwa · Branch: `flex/accounts` · SRS 4.1 · Record:
 [`docs/OWNERSHIP.md`](../../../docs/OWNERSHIP.md)
 
+**Design:** follow [`DESIGN.md`](../../../DESIGN.md); screen picture: `design/screens/night-01-sign-in.png`.
+
 Sign-up, sign-in (including Google), and the user profile. Every other
 table keys on `user_id`, so this has to be solid — but nobody waits on it:
 until it merges, other features use the fake signed-in user from the

@@ -3,6 +3,8 @@
 Owner: Vishwa · Branch: `flex/recommendations` · SRS 4.6 · Record:
 [`docs/OWNERSHIP.md`](../../../docs/OWNERSHIP.md)
 
+**Design:** follow [`DESIGN.md`](../../../DESIGN.md); screen picture: `design/screens/night-06-explore.png`.
+
 A browsable list of places for the trip's destination that can be added
 straight to the itinerary. Ranking is a plain database `ORDER BY` on a
 hand-seeded table — REQ-6.4 makes that the required deliverable, not a
