@@ -3,6 +3,8 @@
 Owner: Vishwa · Branch: `flex/itinerary` · SRS 4.2 · Record:
 [`docs/OWNERSHIP.md`](../../../docs/OWNERSHIP.md)
 
+**Design:** follow [`DESIGN.md`](../../../DESIGN.md); screen picture: `design/screens/night-02-trips.png`, `night-03-day.png`, `day-03-day.png`.
+
 Create a trip, build a day-wise itinerary by hand, reorder stops. Maps,
 Offline and Budget all read the `Trip` and `ItineraryItem` models this
 feature writes, so their fields can't change — see

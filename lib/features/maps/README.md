@@ -3,6 +3,8 @@
 Owner: Vishwa · Branch: `flex/maps` · SRS 4.4 · Record:
 [`docs/OWNERSHIP.md`](../../../docs/OWNERSHIP.md)
 
+**Design:** follow [`DESIGN.md`](../../../DESIGN.md); screen picture: `design/screens/night-04-map-saved-offline.png`, `day-04-map.png`.
+
 Plots a trip's stops on an OpenStreetMap map and draws a road route
 between them. Offline access (REQ-4.3) is a separate feature owned by
 Sanjay — see `lib/features/offline/README.md`.

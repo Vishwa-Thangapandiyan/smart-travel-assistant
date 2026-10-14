@@ -3,6 +3,8 @@
 Owner: Santhosh · Branch: `flex/budget` · SRS 4.3 · Record:
 [`docs/OWNERSHIP.md`](../../../docs/OWNERSHIP.md)
 
+**Design:** follow [`DESIGN.md`](../../../DESIGN.md); screen picture: `design/screens/night-05-budget.png`, `day-05-budget.png`.
+
 **Start after** Vishwa's app shell and theme are merged (`flex/app-shell`).
 
 Set a per-category budget for a trip, log expenses, see what's left, and

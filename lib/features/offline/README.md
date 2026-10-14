@@ -3,6 +3,8 @@
 Owner: Sanjay · Branch: `flex/offline` · SRS 4.4 · Record:
 [`docs/OWNERSHIP.md`](../../../docs/OWNERSHIP.md)
 
+**Design:** follow [`DESIGN.md`](../../../DESIGN.md); screen pictures: `design/screens/night-04-map-saved-offline.png` (saved-map state) and `night-03-day.png` (the "Saved offline" chip).
+
 **Start after** Vishwa's app shell and theme are merged (`flex/app-shell`),
 so the screens use the app's theme from the start.
 

@@ -11,9 +11,11 @@ Documentation authority, most to least:
    behaviour. Wins any disagreement with anything below.
 2. This file — hard rules every contributor and agent follows.
 3. `docs/OWNERSHIP.md` — who owns and builds each feature (canonical).
-4. Feature READMEs (`lib/features/<name>/README.md`) — the spec and
+4. `DESIGN.md` — how every screen looks: colours, type, components, and
+   a reference picture of each screen in `design/screens/`.
+5. Feature READMEs (`lib/features/<name>/README.md`) — the spec and
    "done when" checklist for each feature.
-5. `team/<name>/` — each person's brief and dated planner.
+6. `team/<name>/` — each person's brief and dated planner.
 
 ## What this project is
 
@@ -89,6 +91,9 @@ offline, when cached data expires, SMS emergency alerts.
    person's name — see `docs/WORKFLOW.md`).
 4. Before writing code, read: the feature README, `lib/models/CONTRACT.md`,
    `lib/services/README.md`, and the tables you use in `db/schema.sql`.
+   For any screen, also read `DESIGN.md` and look at that screen's picture
+   in `design/screens/` (the table in `DESIGN.md` §7 says which). Use the
+   app theme from `lib/theme/` — never hard-code colours or fonts.
    Show the plan before large changes.
 5. Build against the service signatures in `lib/services/README.md`. If a
    service you call belongs to someone else and isn't real yet, use its
@@ -112,6 +117,7 @@ offline, when cached data expires, SMS emergency alerts.
 | Who owns what, who builds what | `docs/OWNERSHIP.md` |
 | Your tasks and dates | `team/<name>/README.md`, `team/<name>/PLANNER.md`, GitHub issues labelled `owner: <name>` |
 | A feature's spec and checklist | `lib/features/<feature>/README.md` |
+| How screens look | `DESIGN.md`, `design/screens/`, `design/tokens.json` |
 | Service signatures (incl. other people's) | `lib/services/README.md` |
 | Data classes | `lib/models/CONTRACT.md` |
 | Database | `db/schema.sql`, `db/seed.sql` |
