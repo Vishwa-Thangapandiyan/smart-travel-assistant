@@ -19,11 +19,12 @@ Dates were re-planned on 14 Oct 2026. Team-wide phases are in
 ## Phase B — from the app shell merge (#3, #4) to 1 Nov
 
 Emergency — branch `flex/emergency`
-- [ ] #19 Nearby hospitals and police via Overpass (REQ-5.1)
-- [ ] #20 Default helplines and tap-to-call (REQ-5.3)
-- [ ] #21 Directions to the nearest service (REQ-5.2)
-- [ ] #22 Last-known-location fallback (REQ-5.4)
-- [ ] #23 Safety disclaimer (SRS section 5.2)
+- [x] #19 Nearby hospitals and police via Overpass (REQ-5.1)
+- [x] #20 Default helplines and tap-to-call (REQ-5.3)
+- [x] #21 Directions to the nearest service (REQ-5.2)
+- [x] #22 Last-known-location fallback (REQ-5.4)
+- [x] #23 Safety disclaimer (SRS section 5.2)
+- [x] #48 Email my emergency contact, sent from the phone's mail app
 
 Offline — branch `flex/offline`
 - [ ] #24 Agree where guide text and the static map come from (team decision)

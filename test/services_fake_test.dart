@@ -112,10 +112,6 @@ void main() {
 
     test('fails loudly instead of quietly returning fake data', () {
       expect(() => downloadTrip('t'), throwsA(isA<UnimplementedError>()));
-      expect(
-        () => findNearbyEmergencyServices(latitude: 0, longitude: 0),
-        throwsA(isA<UnimplementedError>()),
-      );
     });
   });
 }

@@ -80,6 +80,11 @@ From `PROJECT-UNDERSTANDING.md` Part 13:
 Still undecided — leave flagged, don't guess: editing a trip while
 offline, when cached data expires, SMS emergency alerts.
 
+Decided (issue #48): **emailing the emergency contact** is a one-off
+`mailto:` link that opens the phone's own mail app with the message
+filled in; the user presses Send. No server, no email service, no keys,
+no background or repeated sending. SMS alerts are still undecided.
+
 ## How to work a task
 
 1. `git checkout main && git pull`.

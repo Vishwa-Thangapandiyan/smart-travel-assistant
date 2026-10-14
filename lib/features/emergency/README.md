@@ -37,16 +37,38 @@ documented signatures (fake data until the real ones merge — never wait).
    `LastKnownLocation` when live location isn't available, **and** visibly
    flag that the shown location may be stale.
 
+8. "Email my emergency contact" (issue #48): opens the phone's own mail
+   app with the contact, subject `Meridian: I need help`, the time and an
+   OpenStreetMap link to the current position (or the last known one,
+   saying how old it is). The user presses Send — the app never sends
+   anything itself. `mailto:` through `url_launcher`; no server, no email
+   service, no keys. The address is stored in `profiles.preferences` as
+   `{"emergency_email": "…"}`, keeping the other keys.
+
+## Where it lives
+
+- `emergency_screen.dart` — the SOS screen: helplines, disclaimer, email
+  button, nearby list.
+- `emergency_provider.dart` — helplines, position (live or saved) and the
+  nearby list. Helplines start as the four national numbers built into
+  the app and are replaced by the `emergency_contacts` rows once they
+  load, so the screen is never without them.
+- `directions_screen.dart` — the route to one place, or the straight-line
+  distance when routing fails.
+- `emergency_email.dart` — the email message and saving the contact.
+
 ## Done when
 
-- [ ] Nearby hospitals and police load from Overpass — REQ-5.1
-- [ ] Unnamed entries and slow or rate-limited responses don't crash the
+- [x] Nearby hospitals and police load from Overpass — REQ-5.1
+- [x] Unnamed entries and slow or rate-limited responses don't crash the
       panel — REQ-5.1
-- [ ] Directions to a chosen service work through `routing_service.dart`,
+- [x] Directions to a chosen service work through `routing_service.dart`,
       with a distance-only fallback — REQ-5.2
-- [ ] Default helplines are always visible, independent of Overpass —
+- [x] Default helplines are always visible, independent of Overpass —
       REQ-5.3
-- [ ] Tap-to-call works via `url_launcher` — REQ-5.3
-- [ ] Last-known location is used as a fallback and marked as possibly
+- [x] Tap-to-call works via `url_launcher` — REQ-5.3
+- [x] Last-known location is used as a fallback and marked as possibly
       stale — REQ-5.4
-- [ ] Safety disclaimer is present and visible — SRS section 5.2
+- [x] Safety disclaimer is present and visible — SRS section 5.2
+- [x] "Email my emergency contact" opens the mail app pre-filled; with no
+      contact saved it asks for one; the address survives a restart — #48

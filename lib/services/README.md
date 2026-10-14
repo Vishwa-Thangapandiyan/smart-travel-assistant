@@ -182,11 +182,13 @@ class OverpassPlace {
   final String amenityType;  // "hospital" or "police"
   final double latitude;
   final double longitude;
+  final String? phone;  // the OSM phone tag, if anyone added one
   const OverpassPlace({
     this.name,
     required this.amenityType,
     required this.latitude,
     required this.longitude,
+    this.phone,
   });
 }
 
@@ -194,8 +196,11 @@ Future<List<OverpassPlace>> findNearbyEmergencyServices({
   required double latitude,
   required double longitude,
   double radiusMeters = 5000,
-});
+});   // throws OverpassException on a non-200 answer (429 rate-limited, 504 busy)
 ```
+
+`phone` was added with issue #19 so a place can show a call button; it
+is optional, so existing callers need no change.
 
 Queries Overpass for `amenity=hospital` and `amenity=police` within the
 radius. Free and keyless. Can be slow, rate-limited or empty — callers
