@@ -2,19 +2,18 @@
 # change outside someone's own folders is visible straight away.
 # Review is NOT required to merge — see docs/WORKFLOW.md.
 # Canonical ownership record: docs/OWNERSHIP.md.
+# Later lines win, so the specific folders below override this default.
 
 # Shared and frozen files, and everything not listed below
 *                                     @Vishwa-Thangapandiyan
 
 # Sanjay — Offline and Emergency
-# TODO: replace SANJAY_GITHUB with Sanjay's GitHub username, then uncomment.
-# /lib/features/offline/              @SANJAY_GITHUB
-# /lib/features/emergency/            @SANJAY_GITHUB
-# /lib/services/offline_service.dart  @SANJAY_GITHUB
-# /lib/services/overpass_service.dart @SANJAY_GITHUB
-# /team/sanjay/                       @SANJAY_GITHUB
+/lib/features/offline/                @SruSanCyborg
+/lib/features/emergency/              @SruSanCyborg
+/lib/services/offline_service.dart    @SruSanCyborg
+/lib/services/overpass_service.dart   @SruSanCyborg
+/team/sanjay/                         @SruSanCyborg
 
 # Santhosh — Budget
-# TODO: replace SANTHOSH_GITHUB with Santhosh's GitHub username, then uncomment.
-# /lib/features/budget/               @SANTHOSH_GITHUB
-# /team/santhosh/                     @SANTHOSH_GITHUB
+/lib/features/budget/                 @hehe876
+/team/santhosh/                       @hehe876

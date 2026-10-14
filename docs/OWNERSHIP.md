@@ -24,6 +24,11 @@ feature's folder and service files.
 Shared and frozen for everyone: `db/schema.sql`, `lib/models/`. Changes
 there need the whole team's agreement first.
 
+GitHub: Vishwa [@Vishwa-Thangapandiyan](https://github.com/Vishwa-Thangapandiyan),
+Sanjay [@SruSanCyborg](https://github.com/SruSanCyborg), Santhosh
+[@hehe876](https://github.com/hehe876). Each task is an issue labelled
+`owner: <name>`; the numbers are in each person's `team/<name>/PLANNER.md`.
+
 ## Why the split looks like this
 
 - **Vishwa takes the most**, including the critical path: the app shell,

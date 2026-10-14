@@ -11,10 +11,21 @@ From the repository root, run `claude` and send:
 ```
 Read AGENTS.md, then team/vishwa/README.md and team/vishwa/PLANNER.md.
 Find my next unticked task, read its feature README, show me the plan,
-then build it on the right flex/ branch, verify it, and open the PR.
+then build it on the right flex/ branch, verify it, and open the PR that closes its issue.
 ```
 
-## First: the app shell (`flex/app-shell`) — everyone else starts after this
+GitHub: [@Vishwa-Thangapandiyan](https://github.com/Vishwa-Thangapandiyan)
+
+## Your issues
+
+Phase A: #2 Supabase, #3 app shell, #4 fake services, #5 WBS/Gantt.
+Phase B: Accounts #6–#8, Itinerary #9–#12, Maps #13–#15,
+Recommendations #16–#18. Phase C: #31 integration. Phase D: #34 release,
+#35 report. Line by line in your `PLANNER.md`;
+[all open on GitHub](https://github.com/Vishwa-Thangapandiyan/smart-travel-assistant/issues?q=is%3Aopen+label%3A%22owner%3A+vishwa%22).
+Close each one by writing `Closes #N` in the PR that finishes it.
+
+## First: the app shell (#3, #4, branch `flex/app-shell`) — everyone else starts after this
 
 Sanjay and Santhosh start building the moment this merges, so it comes
 before everything else. It contains no feature logic:
