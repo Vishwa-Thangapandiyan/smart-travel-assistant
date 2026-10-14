@@ -65,7 +65,7 @@ lightness, not hue alone.
 | Family | Use | Flutter |
 | --- | --- | --- |
 | **Manrope** | Everything in the interface: titles, body, buttons, big numbers | `fontFamily: 'Manrope'` |
-| **JetBrains Mono** | Anything measured — times, money labels, distances, dates — and the day heading | `fontFamily: 'JetBrainsMono'` |
+| **JetBrains Mono** | Anything measured — times, money labels, distances, dates — the day heading, and a place's name over its photo | `fontFamily: 'JetBrainsMono'` |
 
 Both are free (SIL Open Font License). **Bundle them as font files**
 under `assets/fonts/` and declare them in `pubspec.yaml`'s `flutter:
@@ -79,6 +79,7 @@ dependencies, `AGENTS.md` rule 5).
 | heading | 18 / 600 | −1.5% | Bangalore Palace |
 | body | 15 / 400 | 0 | Audio tour at the gate |
 | small | 12 / 400 | 0 | Walk to the State Library |
+| mono-display | 40 / 500 mono, line height 1.05 | −4% | Lalbagh Botanical Garden (over its photo) |
 | mono-heading | 20 / 500 mono | −2% | Saturday, 21 Nov |
 | mono-data | 11–12 / 500 mono, caps where a label | +4–8% for caps | NEXT · 7.1 KM · 12 MIN |
 
@@ -162,7 +163,16 @@ What each screen must get right:
   carry prices — only what you log counts here", *Log an expense*.
 - **Explore** — destination as a big mono headline, filter chips, "Highest
   rated first" (it's a database ranking — never call it AI or smart
-  picks), cards with a photo and a `+` to add to a day.
+  picks), cards with a photo and a `+` to add to a day. Tapping a card
+  opens the place.
+- **Place** — the photo fills the top ~60% of the screen and fades into
+  the ground colour; the city in mono caps and the name in mono-display
+  sit on the fade. Below: category · ★ rating · price in mono, the
+  description, tags as small pills, a small fixed map with one amber pin
+  ("Where it is", OSM credit), *Add to a day*, and a "Photo: Wikimedia
+  Commons" credit that opens the photo's licence page. No photo → the
+  ember tile with the category icon. Photos and their licences:
+  `lib/features/recommendations/PHOTO-CREDITS.md`.
 - **SOS** — coral header, big *Call emergency 112*, helplines 100 / 108 /
   101 ("These numbers work without data"), nearest hospitals and police
   with route and call buttons, the stale-location warning, and the

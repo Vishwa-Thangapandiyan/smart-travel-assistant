@@ -1,33 +1,24 @@
 // Owner: Vishwa. The Explore tab: places worth a look in the open trip's
 // destination, highest rated first, with category, price and rating
 // filters (REQ-6.1, 6.2, 6.4). + adds a place to a day of the trip as a
-// stop (REQ-6.3). Opened from a Day screen's "From suggestions", + adds
-// straight to that day. Design: design/screens/night-06-explore.png.
+// stop (REQ-6.3); tapping a card opens the place. Opened from a Day
+// screen's "From suggestions", + adds straight to that day.
+// Design: design/screens/night-06-explore.png.
 // The ranking is a database sort — never call it AI or smart picks.
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/recommendation.dart';
-import '../../models/trip.dart';
 import '../../theme/meridian_colors.dart';
 import '../../theme/meridian_theme.dart';
 import '../accounts/accounts_provider.dart';
 import '../itinerary/itinerary_provider.dart';
+import 'add_place.dart';
 import 'place_categories.dart';
+import 'place_detail_screen.dart';
+import 'place_photo.dart';
 import 'recommendations_provider.dart';
-
-const _categoryIcons = {
-  'attraction': Icons.account_balance_outlined,
-  'restaurant': Icons.restaurant_outlined,
-  'nature': Icons.park_outlined,
-  'museum': Icons.museum_outlined,
-  'shopping': Icons.shopping_bag_outlined,
-};
-
-/// "Free", "₹", "₹₹" or "₹₹₹".
-String priceLabel(int priceLevel) => priceLevel == 0 ? 'Free' : '₹' * priceLevel;
 
 class RecommendationsScreen extends StatefulWidget {
   /// Set when opened from a Day screen: + adds straight to this day.
@@ -66,47 +57,6 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
 
   void _say(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
-
-  Future<void> _add(Recommendation place, Trip trip) async {
-    final day = widget.addToDay ?? await _pickDay(trip, place);
-    if (day == null || !mounted) return;
-    try {
-      await context.read<ItineraryProvider>().addStop(
-            day: day,
-            title: place.name,
-            locationName: place.name,
-            latitude: place.latitude,
-            longitude: place.longitude,
-          );
-      _say('Added ${place.name} to Day $day');
-    } on Exception {
-      _say('Couldn\'t add ${place.name}. Check your connection.');
-    }
-  }
-
-  Future<int?> _pickDay(Trip trip, Recommendation place) {
-    return showModalBottomSheet<int>(
-      context: context,
-      showDragHandle: true,
-      builder: (context) => SafeArea(
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
-              child: Text('Add ${place.name} to…', style: Theme.of(context).textTheme.titleLarge),
-            ),
-            for (var day = 1; day <= trip.numberOfDays; day++)
-              ListTile(
-                title: Text('Day $day'),
-                subtitle: Text(DateFormat('EEEE, d MMM').format(trip.startDate.add(Duration(days: day - 1)))),
-                onTap: () => Navigator.pop(context, day),
-              ),
-          ],
-        ),
-      ),
-    );
   }
 
   @override
@@ -191,8 +141,11 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
               for (final place in feed.places)
                 _PlaceCard(
                   place: place,
-                  addedOn: _addedOn(place, trip, itinerary),
-                  onAdd: () => _add(place, trip),
+                  addedOn: addedOnLabel(place, trip, itinerary),
+                  onAdd: () => addPlaceToTrip(context, place, trip, day: widget.addToDay),
+                  onOpen: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => PlaceDetailScreen(place: place, addToDay: widget.addToDay),
+                  )),
                 ),
             ],
           ),
@@ -205,13 +158,6 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
       appBar: AppBar(title: Text('Add to Day ${widget.addToDay}')),
       body: body,
     );
-  }
-
-  /// "On Sat 21", if this place is already a stop on the trip.
-  String? _addedOn(Recommendation place, Trip trip, ItineraryProvider itinerary) {
-    final stop = itinerary.stops.where((s) => s.title == place.name).firstOrNull;
-    if (stop == null) return null;
-    return 'On ${DateFormat('EEE d').format(trip.startDate.add(Duration(days: stop.dayNumber - 1)))}';
   }
 }
 
@@ -259,8 +205,9 @@ class _PlaceCard extends StatelessWidget {
   final Recommendation place;
   final String? addedOn;
   final VoidCallback onAdd;
+  final VoidCallback onOpen;
 
-  const _PlaceCard({required this.place, required this.addedOn, required this.onAdd});
+  const _PlaceCard({required this.place, required this.addedOn, required this.onAdd, required this.onOpen});
 
   @override
   Widget build(BuildContext context) {
@@ -272,38 +219,38 @@ class _PlaceCard extends StatelessWidget {
       if (place.priceLevel != null) priceLabel(place.priceLevel!),
     ].join(' · ');
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Stack(
-            children: [
-              // No photos are seeded (image_url is empty), so a warm tile with the category icon.
-              Container(
-                decoration: BoxDecoration(color: colors.ember, borderRadius: BorderRadius.circular(20)),
-                alignment: Alignment.center,
-                child: Icon(_categoryIcons[place.category] ?? Icons.place_outlined, size: 40, color: colors.inkSoft),
-              ),
-              Positioned(
-                top: 8,
-                right: 8,
-                child: IconButton.filled(
-                  tooltip: 'Add ${place.name}',
-                  onPressed: onAdd,
-                  icon: const Icon(Icons.add),
-                  style: IconButton.styleFrom(backgroundColor: colors.amber, foregroundColor: colors.onAmber),
+    return GestureDetector(
+      onTap: onOpen,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: ClipRRect(borderRadius: BorderRadius.circular(20), child: PlacePhoto(place: place)),
                 ),
-              ),
-            ],
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: IconButton.filled(
+                    tooltip: 'Add ${place.name}',
+                    onPressed: onAdd,
+                    icon: const Icon(Icons.add),
+                    style: IconButton.styleFrom(backgroundColor: colors.amber, foregroundColor: colors.onAmber),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(place.name, style: text.titleLarge?.copyWith(fontSize: 16), maxLines: 2, overflow: TextOverflow.ellipsis),
-        const SizedBox(height: 2),
-        Text(facts, style: MeridianText.monoData.copyWith(color: colors.inkSoft, fontSize: 11)),
-        if (addedOn != null)
-          Text('$addedOn ✓', style: MeridianText.monoData.copyWith(color: colors.green, fontSize: 11)),
-      ],
+          const SizedBox(height: 8),
+          Text(place.name, style: text.titleLarge?.copyWith(fontSize: 16), maxLines: 2, overflow: TextOverflow.ellipsis),
+          const SizedBox(height: 2),
+          Text(facts, style: MeridianText.monoData.copyWith(color: colors.inkSoft, fontSize: 11)),
+          if (addedOn != null)
+            Text('$addedOn ✓', style: MeridianText.monoData.copyWith(color: colors.green, fontSize: 11)),
+        ],
+      ),
     );
   }
 }

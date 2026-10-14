@@ -21,8 +21,9 @@ import '../itinerary/day_switcher.dart';
 import '../itinerary/itinerary_provider.dart';
 
 // The night map is OpenStreetMap's tiles inverted, mostly desaturated and
-// tinted warm — the same recipe as the pictures in design/screens/.
-const _nightTiles = ColorFilter.matrix([
+// tinted warm — the same recipe as the pictures in design/screens/. Also
+// used by the small map on a place's detail screen.
+const nightTiles = ColorFilter.matrix([
   -0.297, -0.300, -0.058, 0, 172, //
   -0.153, -0.445, -0.058, 0, 171, //
   -0.153, -0.300, -0.203, 0, 169, //
@@ -169,7 +170,7 @@ class _MapsScreenState extends State<MapsScreen> {
               TileLayer(
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 userAgentPackageName: 'dev.meridian.smart_travel_assistant',
-                tileBuilder: night ? (context, tile, _) => ColorFiltered(colorFilter: _nightTiles, child: tile) : null,
+                tileBuilder: night ? (context, tile, _) => ColorFiltered(colorFilter: nightTiles, child: tile) : null,
               ),
             if (_route != null)
               PolylineLayer(polylines: [
