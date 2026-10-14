@@ -19,7 +19,6 @@ import '../../theme/meridian_theme.dart';
 import '../accounts/accounts_provider.dart';
 import '../itinerary/day_switcher.dart';
 import '../itinerary/itinerary_provider.dart';
-import '../itinerary/trips_screen.dart';
 
 // The night map is OpenStreetMap's tiles inverted, mostly desaturated and
 // tinted warm — the same recipe as the pictures in design/screens/.
@@ -72,13 +71,10 @@ class _MapsScreenState extends State<MapsScreen> {
   // The Map shows whichever trip the Trips tab last opened; before that,
   // the next upcoming trip.
   Future<void> _openNextTripIfNone() async {
-    final itinerary = context.read<ItineraryProvider>();
     final userId = context.read<AccountsProvider>().userId;
-    if (itinerary.currentTrip != null || userId == null) return;
+    if (userId == null) return;
     try {
-      if (itinerary.trips.isEmpty) await itinerary.loadTrips(userId);
-      final next = nextTrip(itinerary.trips, today: DateTime.now()) ?? itinerary.trips.lastOrNull;
-      if (next != null) await itinerary.openTrip(next);
+      await context.read<ItineraryProvider>().openNextTripIfNone(userId);
     } on Exception {
       // No trips loaded: the card says there is no trip.
     }

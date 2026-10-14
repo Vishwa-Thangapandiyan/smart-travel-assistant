@@ -22,7 +22,7 @@ void main() {
     const marks = {
       'Map': '© OpenStreetMap contributors',
       'Budget': 'Budget',
-      'Explore': 'Explore',
+      'Explore': 'Worth a look in',
       'Trips': 'Trips',
     };
     for (final tab in marks.keys) {

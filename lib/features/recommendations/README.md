@@ -26,7 +26,7 @@ degrade gracefully if time runs short, so it ships last.
 
 ## Done when
 
-- [ ] The feed shows real places for the destination, ranked by a database
+- [x] The feed shows real places for the destination, ranked by a database
       query — REQ-6.1, REQ-6.2, REQ-6.4
-- [ ] A recommendation can be added straight to the itinerary — REQ-6.3
-- [ ] Seed data covers 3–5 destinations with real place names — REQ-6.1
+- [x] A recommendation can be added straight to the itinerary — REQ-6.3
+- [x] Seed data covers 3–5 destinations with real place names — REQ-6.1

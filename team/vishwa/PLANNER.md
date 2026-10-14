@@ -35,9 +35,9 @@ Maps & routing — `lib/features/maps/README.md`
 - [x] #15 `location_service` and location permissions
 
 Recommendations — `lib/features/recommendations/README.md`
-- [ ] #16 Seed real places for 3–5 destinations (REQ-6.1)
-- [ ] #17 Ranked feed with filters (REQ-6.1, 6.2, 6.4)
-- [ ] #18 Add a recommendation to the itinerary (REQ-6.3)
+- [x] #16 Seed real places for 3–5 destinations (REQ-6.1)
+- [x] #17 Ranked feed with filters (REQ-6.1, 6.2, 6.4)
+- [x] #18 Add a recommendation to the itinerary (REQ-6.3)
 
 ## Phase C — 2 Nov – 8 Nov: integration and testing
 

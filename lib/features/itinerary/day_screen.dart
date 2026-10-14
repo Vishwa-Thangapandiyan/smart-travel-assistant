@@ -1,8 +1,9 @@
 // Owner: Vishwa. One trip, one day at a time: a switcher for the days
 // (worked out from the trip's dates, never stored — Scene 3), then the
 // day's stops in order with up/down buttons (REQ-2.2–2.4).
+// "From suggestions" opens Explore to add a seeded place to this day.
 // Design: design/screens/night-03-day.png. The "now" card for a trip in
-// progress and "From suggestions" (issue #18) come later.
+// progress comes later.
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +13,7 @@ import '../../models/itinerary_item.dart';
 import '../../models/trip.dart';
 import '../../theme/meridian_colors.dart';
 import '../../theme/meridian_theme.dart';
+import '../recommendations/recommendations_screen.dart';
 import 'day_switcher.dart';
 import 'destination_lookup.dart';
 import 'itinerary_provider.dart';
@@ -51,6 +53,10 @@ class _DayScreenState extends State<DayScreen> {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (_) => StopFormScreen(trip: widget.trip, day: _day, stop: stop, lookUp: widget.lookUp),
     ));
+  }
+
+  void _openSuggestions() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => RecommendationsScreen(addToDay: _day)));
   }
 
   Future<void> _move(ItineraryItem stop, {required bool up}) async {
@@ -109,13 +115,21 @@ class _DayScreenState extends State<DayScreen> {
                 onDown: () => _move(stops[i], up: false),
               ),
             const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: OutlinedButton.icon(
-                onPressed: loaded ? () => _openForm() : null,
-                icon: const Icon(Icons.add),
-                label: const Text('Add a stop'),
-              ),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                OutlinedButton.icon(
+                  onPressed: loaded ? () => _openForm() : null,
+                  icon: const Icon(Icons.add),
+                  label: const Text('Add a stop'),
+                ),
+                TextButton(
+                  onPressed: loaded ? _openSuggestions : null,
+                  child: Text('From suggestions', style: TextStyle(color: colors.amberText)),
+                ),
+              ],
             ),
           ],
         ),
