@@ -1368,7 +1368,17 @@ Discussed, not settled. Each of these needs a real decision before the relevant 
 
 **Watchdog / check-in alerts** — would need something running server-side, which does not currently exist anywhere in the architecture.
 
-**SMS emergency alerts to contacts** — discussed, not decided.
+**SMS emergency alerts to contacts** — discussed, not decided. (Email is
+decided, see below; SMS is not.)
+
+**Email alert to the emergency contact** — decided (issue #48): the SOS
+screen's "Email my emergency contact" opens the phone's own mail app
+with a ready-made message (subject `Meridian: I need help`, the time, and
+an OpenStreetMap link to the current or last known position). The user
+presses Send; nothing is sent automatically or in the background. Uses
+`url_launcher` with a `mailto:` link — no server, no email service and no
+keys in the app. The contact's address is stored in
+`profiles.preferences` as `{"emergency_email": "…"}`.
 
 **Sharing location with family** — the Life360 direction. Aspiration, not design.
 
