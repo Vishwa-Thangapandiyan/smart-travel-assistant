@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../../models/trip.dart';
 import '../../theme/meridian_colors.dart';
 import '../../theme/meridian_theme.dart';
+import '../accounts/account_sheet.dart';
 import '../accounts/accounts_provider.dart';
 import 'destination_lookup.dart';
 import 'itinerary_provider.dart';
@@ -78,6 +79,12 @@ class _TripsScreenState extends State<TripsScreen> {
           Row(
             children: [
               Expanded(child: Text('Trips', style: text.headlineMedium)),
+              IconButton(
+                tooltip: 'Account',
+                onPressed: () => showAccountSheet(context),
+                icon: const Icon(Icons.person_outline),
+              ),
+              const SizedBox(width: 8),
               IconButton(
                 tooltip: 'New trip',
                 onPressed: _newTrip,

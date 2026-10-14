@@ -11,14 +11,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'dev/app_config.dart';
 import 'features/accounts/accounts_provider.dart';
-import 'features/accounts/sign_in_screen.dart';
+import 'features/accounts/auth_gate.dart';
 import 'features/budget/budget_provider.dart';
 import 'features/emergency/emergency_provider.dart';
 import 'features/itinerary/itinerary_provider.dart';
 import 'features/maps/maps_provider.dart';
 import 'features/offline/offline_provider.dart';
 import 'features/recommendations/recommendations_provider.dart';
-import 'screens/home_shell.dart';
 import 'theme/meridian_theme.dart';
 
 Future<void> main() async {
@@ -28,6 +27,15 @@ Future<void> main() async {
     if (supabaseAnonKey.isEmpty) {
       throw StateError(
         'SUPABASE_URL is set but SUPABASE_ANON_KEY is missing — see RUN.md.',
+      );
+    }
+    // A real key is only letters, digits, dots, dashes and underscores.
+    // Copying it from a screen that masks secrets gives "•" instead, which
+    // otherwise fails much later as a confusing "couldn't reach" error.
+    if (!RegExp(r'^[A-Za-z0-9._-]+$').hasMatch(supabaseAnonKey)) {
+      throw StateError(
+        'SUPABASE_ANON_KEY has characters a key can\'t have (often "•" from a masked copy). '
+        'Copy it again from Supabase → Project Settings → API — see RUN.md.',
       );
     }
     // Supabase renamed the anon key to the "publishable" key; it is the
@@ -61,8 +69,8 @@ class MeridianApp extends StatelessWidget {
         // Night first (DESIGN.md §2). Following the phone's setting is
         // proposed but not decided, so this stays fixed for now.
         themeMode: ThemeMode.dark,
-        // Fake data mode has a demo user already signed in.
-        home: useFakeData ? const HomeShell() : const SignInScreen(),
+        // The app when signed in (always, in fake data mode), else sign-in.
+        home: const AuthGate(),
       ),
     );
   }
