@@ -893,6 +893,8 @@ Without it, the app would have to remember to filter by user on every single que
 
 The offline map is **one static image**, not a real map you can pan and zoom. Caching a real, pannable offline map means downloading thousands of tile images per city, and that is a substantial engineering project on its own.
 
+Refined 15 Oct 2026 (#59): the static image is drawn **per day**, so a day trip to the airport doesn't shrink the city stops into a blob. Each day's picture is a few OpenStreetMap tiles (four to nine) laid side by side at the zoom that fits that day's stops, with the route saved from OSRM at download time and the numbered stops drawn on top. The whole saved copy stays under 1 MB. It is still a picture: it does not pan or zoom, and there is no new route without signal. Each saved stop has a **Navigate** button that hands off to Google Maps for turn-by-turn directions; Google Maps works offline only if the person saved that area in Google Maps themselves.
+
 This is a deliberate, defensible scoping decision — not a bug — but it should be described accurately. "Offline access to your trip details and a destination overview" is true. "Offline maps" implies something the app does not do.
 
 ## Design decisions still open

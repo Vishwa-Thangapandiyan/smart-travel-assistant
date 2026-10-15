@@ -1,6 +1,6 @@
 // Owner: Sanjay. The downloaded copy of a trip, read-only, from Hive
-// (REQ-4.3): itinerary, guide text and the one saved map image, always
-// under the "Offline — showing saved data" banner. The app opens it when
+// (REQ-4.3): itinerary, guide text and the one saved map picture with each
+// day's route, always under the "Offline — showing saved data" banner. The app opens it when
 // Supabase can't be reached; it needs no signal at all.
 //
 // Editing offline is not decided by the team (PROJECT-UNDERSTANDING.md
@@ -13,6 +13,8 @@ import '../../models/itinerary_item.dart';
 import '../../services/offline_service.dart';
 import '../../theme/meridian_colors.dart';
 import '../../theme/meridian_theme.dart';
+import '../maps/maps_screen.dart' show nightTiles;
+import '../maps/navigate.dart';
 
 class SavedTripScreen extends StatefulWidget {
   final String tripId;
@@ -137,6 +139,13 @@ class _SavedTripView extends StatelessWidget {
               ),
               if (stops[i].startTime != null)
                 Text(stops[i].startTime!.substring(0, 5), style: MeridianText.monoData.copyWith(color: colors.ink)),
+              if (stops[i].latitude != null && stops[i].longitude != null)
+                IconButton(
+                  tooltip: 'Navigate',
+                  visualDensity: VisualDensity.compact,
+                  icon: Icon(Icons.navigation_outlined, color: colors.amberText),
+                  onPressed: () => openDirections(stops[i].latitude!, stops[i].longitude!),
+                ),
             ],
           ),
         ),
@@ -176,82 +185,187 @@ class _OfflineBanner extends StatelessWidget {
   }
 }
 
-/// The one saved map image with the stops that fall on it. A picture, not
-/// a map: it doesn't pan or zoom, and it says so.
-class _SavedMap extends StatelessWidget {
+/// The saved map of one day: its OpenStreetMap tiles laid side by side as
+/// one picture, with the day's route and numbered stops drawn on top
+/// (issue #59). Chips switch between the days that have a placed stop. A picture, not a map: it doesn't pan or zoom, and it says so.
+class _SavedMap extends StatefulWidget {
   final SavedTrip saved;
 
   const _SavedMap({required this.saved});
 
   @override
+  State<_SavedMap> createState() => _SavedMapState();
+}
+
+class _SavedMapState extends State<_SavedMap> {
+  int _day = 1;
+
+  @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<MeridianColors>()!;
     final text = Theme.of(context).textTheme;
-    final image = saved.mapImage;
-    final tile = staticMapTileFor(saved.trip, saved.items);
-
-    if (image == null || tile == null) {
+    final saved = widget.saved;
+    if (saved.mapAreas.isEmpty) {
       return Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(color: colors.surface, borderRadius: BorderRadius.circular(16)),
-        child: Text('No map image was saved with this trip.', style: text.bodySmall),
+        child: Text('No map was saved with this trip. Download it again while online to get one.', style: text.bodySmall),
       );
     }
 
-    // A dot for every stop that falls on the image; stops off it are skipped.
-    final spots = [
-      for (final stop in saved.items)
-        if (stop.latitude != null && stop.longitude != null) tile.positionOf(stop.latitude!, stop.longitude!),
-    ].nonNulls;
+    final days = saved.mapAreas.keys.toList()..sort();
+    final day = days.contains(_day) ? _day : days.first;
+    final area = saved.mapAreas[day]!;
+    final tiles = area.tiles;
+    final hasTiles = tiles.every((tile) => saved.mapTiles.containsKey(tile.url));
+    final stops = saved.items.where((i) => i.dayNumber == day).toList();
+    final route = saved.routes[day] ?? [];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (days.length > 1) ...[
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final chip in days)
+                ChoiceChip(
+                  label: Text('Day $chip'),
+                  selected: chip == day,
+                  onSelected: (_) => setState(() => _day = chip),
+                ),
+            ],
+          ),
+          const SizedBox(height: 12),
+        ],
         ClipRRect(
           borderRadius: BorderRadius.circular(16),
           child: AspectRatio(
             aspectRatio: 1,
-            child: LayoutBuilder(
-              builder: (context, box) => Stack(
-                children: [
-                  Positioned.fill(
-                    child: Semantics(
-                      label: 'Saved map of ${saved.trip.destination}',
-                      child: Image.memory(image, fit: BoxFit.fill, filterQuality: FilterQuality.medium),
-                    ),
-                  ),
-                  for (final spot in spots)
-                    Positioned(
-                      left: spot.across * box.maxWidth - 9,
-                      top: spot.down * box.maxHeight - 9,
-                      child: Container(
-                        width: 18,
-                        height: 18,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
+            child: LayoutBuilder(builder: (context, box) {
+              final side = box.maxWidth;
+              Offset? onMap(double latitude, double longitude) {
+                final spot = area.positionOf(latitude, longitude);
+                return spot == null ? null : Offset(spot.across * side, spot.down * side);
+              }
+
+              // The tiles as one picture, tinted like the live map at night.
+              Widget? picture;
+              if (hasTiles) {
+                picture = Stack(
+                  children: [
+                    for (final tile in tiles)
+                      Positioned(
+                        left: tile.across * side,
+                        top: tile.down * side,
+                        // A hair bigger than a tile, so no seam shows between neighbours.
+                        width: side / StaticMapArea.size + 0.5,
+                        height: side / StaticMapArea.size + 0.5,
+                        child: Image.memory(saved.mapTiles[tile.url]!, fit: BoxFit.fill, filterQuality: FilterQuality.medium),
+                      ),
+                  ],
+                );
+                if (Theme.of(context).brightness == Brightness.dark) {
+                  picture = ColorFiltered(colorFilter: nightTiles, child: picture);
+                }
+              }
+
+              return Semantics(
+                label: 'Saved map of ${saved.trip.destination}, day $day',
+                child: Stack(
+                  children: [
+                    Positioned.fill(child: ColoredBox(color: colors.surface)),
+                    if (picture != null) Positioned.fill(child: picture),
+                    Positioned.fill(
+                      child: CustomPaint(
+                        painter: _RouteLine(
+                          points: [for (final point in route) onMap(point.latitude, point.longitude)].nonNulls.toList(),
                           color: colors.amber,
-                          border: Border.all(color: colors.ground, width: 2),
                         ),
                       ),
                     ),
-                  Positioned(
-                    left: 0,
-                    bottom: 0,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                      color: colors.ground.withValues(alpha: 0.7),
-                      child: Text('© OpenStreetMap contributors',
-                          style: MeridianText.monoData.copyWith(fontSize: 10, color: colors.inkSoft)),
+                    for (var i = 0; i < stops.length; i++)
+                      if (stops[i].latitude != null && stops[i].longitude != null)
+                        if (onMap(stops[i].latitude!, stops[i].longitude!) case final spot?)
+                          Positioned(left: spot.dx - 13, top: spot.dy - 13, child: _StopNumber(number: i + 1)),
+                    Positioned(
+                      left: 0,
+                      bottom: 0,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                        color: colors.ground.withValues(alpha: 0.7),
+                        child: Text('© OpenStreetMap contributors',
+                            style: MeridianText.monoData.copyWith(fontSize: 10, color: colors.inkSoft)),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
+                  ],
+                ),
+              );
+            }),
           ),
         ),
         const SizedBox(height: 6),
-        Text('Saved map image — it doesn\'t move or zoom. New routes need signal.', style: text.bodySmall),
+        Text(
+          hasTiles
+              ? "Saved map picture — it doesn't move or zoom. New routes need signal."
+              : "The map tiles didn't download, so this shows the stops and route only.",
+          style: text.bodySmall,
+        ),
       ],
     );
   }
+}
+
+/// A stop's number in a circle, the same look as the Map tab's pins.
+class _StopNumber extends StatelessWidget {
+  final int number;
+
+  const _StopNumber({required this.number});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).extension<MeridianColors>()!;
+
+    return Container(
+      width: 26,
+      height: 26,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: colors.surface,
+        border: Border.all(color: colors.ink, width: 2),
+      ),
+      child: Text('$number', style: MeridianText.monoData.copyWith(color: colors.ink, fontSize: 12)),
+    );
+  }
+}
+
+/// The day's road route as one line through the saved points.
+class _RouteLine extends CustomPainter {
+  final List<Offset> points;
+  final Color color;
+
+  const _RouteLine({required this.points, required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (points.length < 2) return;
+    final path = Path()..moveTo(points.first.dx, points.first.dy);
+    for (final point in points.skip(1)) {
+      path.lineTo(point.dx, point.dy);
+    }
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = color
+        ..strokeWidth = 4
+        ..style = PaintingStyle.stroke
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_RouteLine old) => old.points != points || old.color != color;
 }

@@ -19,6 +19,7 @@ import '../../theme/meridian_theme.dart';
 import '../accounts/accounts_provider.dart';
 import '../itinerary/day_switcher.dart';
 import '../itinerary/itinerary_provider.dart';
+import 'navigate.dart';
 
 // The night map is OpenStreetMap's tiles inverted, mostly desaturated and
 // tinted warm — the same recipe as the pictures in design/screens/. Also
@@ -362,6 +363,16 @@ class _StopCard extends StatelessWidget {
           Text(routeLine!,
               maxLines: 1, overflow: TextOverflow.ellipsis, style: MeridianText.monoData.copyWith(color: colors.inkSoft)),
         ],
+        const SizedBox(height: 4),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton.icon(
+            style: TextButton.styleFrom(padding: EdgeInsets.zero, foregroundColor: colors.amberText),
+            onPressed: () => openDirections(stop.latitude!, stop.longitude!),
+            icon: const Icon(Icons.navigation_outlined, size: 18),
+            label: const Text('Navigate'),
+          ),
+        ),
         if (missing > 0) ...[
           const SizedBox(height: 4),
           Text('$missing ${missing == 1 ? 'stop has' : 'stops have'} no place yet, so ${missing == 1 ? 'it is' : 'they are'} not on the map',

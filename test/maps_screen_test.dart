@@ -52,6 +52,8 @@ void main() {
     expect(find.bySemanticsLabel('Stop 2'), findsOneWidget);
     expect(find.text('STOP 1 OF 2 · DAY 1'), findsOneWidget);
     expect(find.text('Vidhana Soudha'), findsOneWidget);
+    // Google Maps does the turn-by-turn (#59).
+    expect(find.text('Navigate'), findsOneWidget);
   });
 
   testWidgets('the route through the day is summed up on the card', (tester) async {
@@ -91,6 +93,7 @@ void main() {
 
     expect(find.text('Nothing on the map for Day 1'), findsOneWidget);
     expect(find.bySemanticsLabel('Stop 1'), findsNothing);
+    expect(find.text('Navigate'), findsNothing);
   });
 
   testWidgets('OpenStreetMap is credited on the map', (tester) async {
