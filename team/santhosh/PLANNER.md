@@ -27,7 +27,7 @@ Budget — branch `flex/budget`
 
 ## Phase C — 2 Nov – 8 Nov: integration and testing
 
-- [ ] #33 Budget against real trips
+- Moved to Vishwa: #33 Budget against real trips
 
 ## Phase D — 9 Nov – 20 Nov: release and viva
 

@@ -42,6 +42,15 @@ Recommendations — `lib/features/recommendations/README.md`
 ## Phase C — 2 Nov – 8 Nov: integration and testing
 
 - [ ] #31 Offline widgets in place, fakes gone, full flow end to end
+- [ ] #32 Emergency and Offline against the real services, helplines
+      abroad (moved from Sanjay)
+- [ ] #33 Budget against real trips, in the trip's currency (moved from
+      Santhosh)
+- [ ] #57 Explore: at least 10 Indian destinations and 10 countries
+- [ ] #58 Map: move the top bar lower
+- [ ] #59 Offline map: every stop and the route, Navigate to Google Maps
+      (takes over #26's phone checks)
+- [ ] #60 Decision: record the walked path on the map
 
 ## Phase D — 9 Nov – 20 Nov: release and viva
 
