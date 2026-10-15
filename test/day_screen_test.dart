@@ -7,6 +7,7 @@ import 'package:smart_travel_assistant/services/offline_service.dart' show reset
 import 'package:smart_travel_assistant/features/itinerary/day_screen.dart';
 import 'package:smart_travel_assistant/features/itinerary/destination_lookup.dart';
 import 'package:smart_travel_assistant/features/itinerary/itinerary_provider.dart';
+import 'package:smart_travel_assistant/features/itinerary/stays_provider.dart';
 import 'package:smart_travel_assistant/features/offline/offline_provider.dart';
 import 'package:smart_travel_assistant/features/recommendations/stop_photos.dart';
 import 'package:smart_travel_assistant/theme/meridian_theme.dart';
@@ -26,6 +27,7 @@ Widget _app(ItineraryProvider provider) {
     providers: [
       ChangeNotifierProvider.value(value: provider),
       ChangeNotifierProvider(create: (_) => OfflineProvider()),
+      ChangeNotifierProvider(create: (_) => StaysProvider()),
     ],
     child: MaterialApp(
       theme: meridianTheme(Brightness.dark),
@@ -139,6 +141,25 @@ void main() {
     final added = provider.stopsForDay(2).last;
     expect(added.title, 'Evening walk');
     expect(added.latitude, 12.9796);
+  });
+
+  testWidgets('where you stay is searched inside the trip city and shown on the day', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(420, 1400));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_app(provider));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Add where you\'re staying'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'Vidhana Soudha');
+    await tester.tap(find.byTooltip('Search place'));
+    await tester.pumpAndSettle();
+    expect(_searchedFor, 'Vidhana Soudha, Bangalore');
+    await tester.tap(find.text('Save stay'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Vidhana Soudha'), findsWidgets); // the stay, and Day 1's first stop
+    expect(find.text('Change stay'), findsOneWidget);
   });
 
   testWidgets('a stop can be deleted after confirming', (tester) async {

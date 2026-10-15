@@ -8,12 +8,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/itinerary_item.dart';
 import '../../services/offline_service.dart';
 import '../../theme/meridian_colors.dart';
 import '../../theme/meridian_theme.dart';
 import '../maps/maps_screen.dart' show nightTiles;
+import '../itinerary/stays_provider.dart';
 import '../maps/navigate.dart';
 
 class SavedTripScreen extends StatefulWidget {
@@ -111,6 +113,8 @@ class _SavedTripView extends StatelessWidget {
     final colors = Theme.of(context).extension<MeridianColors>()!;
     final text = Theme.of(context).textTheme;
     final date = saved.trip.startDate.add(Duration(days: day - 1));
+    // Navigate to the day's first placed stop starts at the stay, if any.
+    final firstPlaced = stops.indexWhere((s) => s.latitude != null && s.longitude != null);
 
     return [
       const SizedBox(height: 24),
@@ -144,7 +148,11 @@ class _SavedTripView extends StatelessWidget {
                   tooltip: 'Navigate',
                   visualDensity: VisualDensity.compact,
                   icon: Icon(Icons.navigation_outlined, color: colors.amberText),
-                  onPressed: () => openDirections(stops[i].latitude!, stops[i].longitude!),
+                  onPressed: () => openDirections(
+                    stops[i].latitude!,
+                    stops[i].longitude!,
+                    from: i == firstPlaced ? context.read<StaysProvider>().stayFor(saved.trip.id) : null,
+                  ),
                 ),
             ],
           ),

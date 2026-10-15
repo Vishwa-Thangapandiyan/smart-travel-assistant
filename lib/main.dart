@@ -17,6 +17,7 @@ import 'features/accounts/auth_gate.dart';
 import 'features/budget/budget_provider.dart';
 import 'features/emergency/emergency_provider.dart';
 import 'features/itinerary/itinerary_provider.dart';
+import 'features/itinerary/stays_provider.dart';
 import 'features/maps/maps_provider.dart';
 import 'features/offline/offline_provider.dart';
 import 'features/recommendations/recommendations_provider.dart';
@@ -50,14 +51,16 @@ Future<void> main() async {
   // downloaded trips (Offline) later in boxes of their own.
   await Hive.initFlutter();
   final settings = await Hive.openBox<String>(ThemeProvider.boxName);
+  final stays = await Hive.openBox<String>(StaysProvider.boxName);
 
-  runApp(MeridianApp(settings: settings));
+  runApp(MeridianApp(settings: settings, stays: stays));
 }
 
 class MeridianApp extends StatelessWidget {
   final Box<String> settings;
+  final Box<String> stays;
 
-  const MeridianApp({super.key, required this.settings});
+  const MeridianApp({super.key, required this.settings, required this.stays});
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +69,7 @@ class MeridianApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ThemeProvider(settings)),
         ChangeNotifierProvider(create: (_) => AccountsProvider()),
         ChangeNotifierProvider(create: (_) => ItineraryProvider()),
+        ChangeNotifierProvider(create: (_) => StaysProvider(stays)),
         ChangeNotifierProvider(create: (_) => MapsProvider()),
         ChangeNotifierProvider(create: (_) => OfflineProvider()),
         ChangeNotifierProvider(create: (_) => BudgetProvider()),

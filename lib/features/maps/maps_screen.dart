@@ -1,7 +1,8 @@
 // Owner: Vishwa. The Map tab: one day of the open trip as numbered pins on
 // OpenStreetMap, the road route through them from OSRM, and a card for
 // the selected stop (REQ-4.1, REQ-4.2). If OSRM is slow or down the pins
-// stay and the line goes. Design: design/screens/night-04-map-saved-offline.png.
+// stay and the line goes. If the trip has a stay, it gets its own pin and
+// each day's route starts there. Design: design/screens/night-04-map-saved-offline.png.
 // The Live/Saved map switch belongs to Offline (Sanjay, issue #26).
 
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import '../../theme/meridian_theme.dart';
 import '../accounts/accounts_provider.dart';
 import '../itinerary/day_switcher.dart';
 import '../itinerary/itinerary_provider.dart';
+import '../itinerary/stays_provider.dart';
 import 'navigate.dart';
 
 // The night map is OpenStreetMap's tiles inverted, mostly desaturated and
@@ -83,7 +85,7 @@ class _MapsScreenState extends State<MapsScreen> {
     }
   }
 
-  Future<void> _loadRoute(String key, List<ItineraryItem> stops) async {
+  Future<void> _loadRoute(String key, List<RoutePoint> stops) async {
     if (stops.length < 2) {
       setState(() {
         _route = null;
@@ -98,7 +100,7 @@ class _MapsScreenState extends State<MapsScreen> {
     });
     RouteResult? route;
     try {
-      route = await getRouteThrough([for (final s in stops) RoutePoint(s.latitude!, s.longitude!)]);
+      route = await getRouteThrough(stops);
     } on Exception {
       route = null;
     }
@@ -111,11 +113,11 @@ class _MapsScreenState extends State<MapsScreen> {
     });
   }
 
-  void _fitCamera(List<ItineraryItem> stops, Trip? trip) {
+  void _fitCamera(List<RoutePoint> points, Trip? trip) {
     if (!_mapReady) return;
-    if (stops.isNotEmpty) {
+    if (points.isNotEmpty) {
       _map.fitCamera(CameraFit.coordinates(
-        coordinates: [for (final s in stops) LatLng(s.latitude!, s.longitude!)],
+        coordinates: [for (final p in points) LatLng(p.latitude, p.longitude)],
         padding: const EdgeInsets.fromLTRB(48, 152, 48, 260),
         maxZoom: 15,
       ));
@@ -135,15 +137,22 @@ class _MapsScreenState extends State<MapsScreen> {
     final dayStops = trip == null ? <ItineraryItem>[] : itinerary.stopsForDay(_day);
     final placed = dayStops.where((s) => s.latitude != null && s.longitude != null).toList();
     if (_selected >= placed.length) _selected = 0;
+    final stay = trip == null ? null : context.watch<StaysProvider>().stayFor(trip.id);
 
-    // When the trip, day or stops change, fetch a fresh route and refit.
-    final key = '${trip?.id}|$_day|${placed.map((s) => '${s.latitude},${s.longitude}').join(';')}';
+    // The day's route: from the stay, if there is one, through each placed stop.
+    final routePoints = [
+      if (stay != null && placed.isNotEmpty) RoutePoint(stay.latitude, stay.longitude),
+      for (final s in placed) RoutePoint(s.latitude!, s.longitude!),
+    ];
+
+    // When the trip, day, stay or stops change, fetch a fresh route and refit.
+    final key = '${trip?.id}|$_day|${routePoints.map((p) => '${p.latitude},${p.longitude}').join(';')}';
     if (key != _routeKey) {
       _routeKey = key;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
-        _fitCamera(placed, trip);
-        _loadRoute(key, placed);
+        _fitCamera(routePoints, trip);
+        _loadRoute(key, routePoints);
       });
     }
 
@@ -163,7 +172,7 @@ class _MapsScreenState extends State<MapsScreen> {
             interactionOptions: const InteractionOptions(flags: InteractiveFlag.all & ~InteractiveFlag.rotate),
             onMapReady: () {
               _mapReady = true;
-              _fitCamera(placed, trip);
+              _fitCamera(routePoints, trip);
             },
           ),
           children: [
@@ -184,6 +193,23 @@ class _MapsScreenState extends State<MapsScreen> {
                 ),
               ]),
             MarkerLayer(markers: [
+              if (stay != null)
+                Marker(
+                  point: LatLng(stay.latitude, stay.longitude),
+                  width: 36,
+                  height: 36,
+                  child: Semantics(
+                    label: 'Your stay: ${stay.name}',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: colors.ground,
+                        border: Border.all(color: colors.amber, width: 2),
+                      ),
+                      child: Icon(Icons.hotel, size: 18, color: colors.amber),
+                    ),
+                  ),
+                ),
               for (var i = 0; i < placed.length; i++)
                 Marker(
                   point: LatLng(placed[i].latitude!, placed[i].longitude!),
@@ -244,13 +270,16 @@ class _MapsScreenState extends State<MapsScreen> {
             dayStops: dayStops,
             placed: placed,
             selected: _selected,
+            stay: stay,
             routeLine: _routing
                 ? 'Finding the road…'
                 : _routeFailed
                     ? 'No route right now. Showing stops only.'
                     : _route == null
                         ? null
-                        : _routeSummary(_route!),
+                        : stay == null
+                            ? _routeSummary(_route!)
+                            : '${_routeSummary(_route!)} · from your stay',
               ),
             ],
           ),
@@ -305,6 +334,7 @@ class _StopCard extends StatelessWidget {
   final List<ItineraryItem> dayStops;
   final List<ItineraryItem> placed;
   final int selected;
+  final Stay? stay;
   final String? routeLine;
 
   const _StopCard({
@@ -313,6 +343,7 @@ class _StopCard extends StatelessWidget {
     required this.dayStops,
     required this.placed,
     required this.selected,
+    required this.stay,
     required this.routeLine,
   });
 
@@ -368,7 +399,9 @@ class _StopCard extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: TextButton.icon(
             style: TextButton.styleFrom(padding: EdgeInsets.zero, foregroundColor: colors.amberText),
-            onPressed: () => openDirections(stop.latitude!, stop.longitude!),
+            // The day starts at the stay; after the first stop you're out,
+            // so Google Maps starts from where the phone is.
+            onPressed: () => openDirections(stop.latitude!, stop.longitude!, from: selected == 0 ? stay : null),
             icon: const Icon(Icons.navigation_outlined, size: 18),
             label: const Text('Navigate'),
           ),

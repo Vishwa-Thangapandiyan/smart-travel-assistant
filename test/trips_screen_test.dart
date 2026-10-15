@@ -6,6 +6,7 @@ import 'package:smart_travel_assistant/dev/fake_data.dart';
 import 'package:smart_travel_assistant/features/accounts/accounts_provider.dart';
 import 'package:smart_travel_assistant/features/itinerary/destination_lookup.dart';
 import 'package:smart_travel_assistant/features/itinerary/itinerary_provider.dart';
+import 'package:smart_travel_assistant/features/itinerary/stays_provider.dart';
 import 'package:smart_travel_assistant/features/itinerary/trip_dates.dart';
 import 'package:smart_travel_assistant/features/itinerary/trips_screen.dart';
 import 'package:smart_travel_assistant/features/offline/offline_provider.dart';
@@ -20,6 +21,7 @@ Widget _app({LookUpDestination? lookUp}) {
       ChangeNotifierProvider(create: (_) => AccountsProvider()),
       ChangeNotifierProvider(create: (_) => ItineraryProvider()),
       ChangeNotifierProvider(create: (_) => OfflineProvider()),
+      ChangeNotifierProvider(create: (_) => StaysProvider()),
     ],
     child: MaterialApp(
       theme: meridianTheme(Brightness.dark),
@@ -85,6 +87,28 @@ void main() {
     expect(find.text('Zurich'), findsOneWidget);
     expect(find.text('DONE'), findsOneWidget);
     expect(find.textContaining('· DONE'), findsOneWidget);
+  });
+
+  testWidgets('a trip can be deleted from its own screen after confirming', (tester) async {
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Bangalore'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Delete trip'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Keep'));
+    await tester.pumpAndSettle();
+    expect(fakeTrips, hasLength(1));
+
+    await tester.tap(find.byTooltip('Delete trip'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Delete'));
+    await tester.pumpAndSettle();
+
+    expect(fakeTrips, isEmpty);
+    expect(fakeItems, isEmpty);
+    expect(find.text('Where to next?'), findsOneWidget);
   });
 
   testWidgets('with no trips at all it offers to plan one', (tester) async {

@@ -183,6 +183,24 @@ class ItineraryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Deletes [trip] for good. The database deletes its stops, budget,
+  /// expenses and offline record with it (on delete cascade in
+  /// db/schema.sql).
+  Future<void> deleteTrip(Trip trip) async {
+    if (useFakeData) {
+      fakeTrips.removeWhere((t) => t.id == trip.id);
+      fakeItems.removeWhere((i) => i.tripId == trip.id);
+    } else {
+      await supabaseClient.from('trips').delete().eq('id', trip.id);
+    }
+    _trips = _trips.where((t) => t.id != trip.id).toList();
+    if (_currentTrip?.id == trip.id) {
+      _currentTrip = null;
+      _stops = [];
+    }
+    notifyListeners();
+  }
+
   Future<void> deleteStop(ItineraryItem stop) async {
     if (useFakeData) {
       fakeItems.removeWhere((i) => i.id == stop.id);
