@@ -39,3 +39,5 @@ telling Sanjay first.
       `routing_service.dart` — REQ-4.2
 - [x] `location_service.dart` is real and matches its signature
 - [x] A map with zero stops shows a sensible empty state, no crash
+- [x] The stop card has **Navigate**: Google Maps directions to that stop
+      (`navigate.dart`, issue #59). Google Maps does the turn-by-turn.

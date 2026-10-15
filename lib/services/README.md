@@ -147,13 +147,17 @@ class SavedTrip {
   final Trip trip;
   final List<ItineraryItem> items;
   final String? guideText;      // from the offline_packs row, if any
-  final Uint8List? mapImage;    // the one static map image, if it downloaded
+  final Map<int, StaticMapArea> mapAreas;   // what each day's saved map shows, by day number
+  final Map<String, Uint8List> mapTiles;    // the map tiles by URL; days can share tiles
+  final Map<int, List<RoutePoint>> routes;  // road route per day number, where OSRM answered
   final DateTime downloadedAt;
   const SavedTrip({
     required this.trip,
     required this.items,
     this.guideText,
-    this.mapImage,
+    this.mapAreas = const {},
+    this.mapTiles = const {},
+    this.routes = const {},
     required this.downloadedAt,
   });
 }
@@ -166,10 +170,12 @@ Future<bool> isDownloaded(String tripId);
 ```
 
 `downloadTrip` throws if the trip can't be fetched or the row can't be
-written (no connection); nothing is kept then. The map image is the one
-OpenStreetMap tile holding the trip — `staticMapTileFor(trip, items)`
-says which, and `StaticMapTile.positionOf(lat, lng)` where a point falls
-on it (see `lib/features/offline/README.md`, issue #24).
+written (no connection); nothing is kept then. Each day's static map is
+a square of OpenStreetMap tiles — `dayMapAreas(trip, items, routes)`
+picks one per day, `StaticMapArea.tiles` lists the tiles under it and
+`StaticMapArea.positionOf(lat, lng)` says where a point falls on it. The
+routes come from `getRouteThrough` at download time (see
+`lib/features/offline/README.md`, issues #24 and #59).
 
 Hive holds the payload; the `offline_packs` row in Supabase is only the
 record that a download happened. Offline also provides two widgets other
