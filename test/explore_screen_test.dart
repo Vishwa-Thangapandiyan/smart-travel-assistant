@@ -7,6 +7,7 @@ import 'package:smart_travel_assistant/features/accounts/accounts_provider.dart'
 import 'package:smart_travel_assistant/features/itinerary/day_screen.dart';
 import 'package:smart_travel_assistant/features/itinerary/destination_lookup.dart';
 import 'package:smart_travel_assistant/features/itinerary/itinerary_provider.dart';
+import 'package:smart_travel_assistant/features/itinerary/stays_provider.dart';
 import 'package:smart_travel_assistant/features/recommendations/recommendations_provider.dart';
 import 'package:smart_travel_assistant/features/recommendations/recommendations_screen.dart';
 import 'package:smart_travel_assistant/features/offline/offline_provider.dart';
@@ -21,6 +22,7 @@ Widget _app(ItineraryProvider itinerary, Widget home) {
       ChangeNotifierProvider.value(value: itinerary),
       ChangeNotifierProvider(create: (_) => RecommendationsProvider()),
       ChangeNotifierProvider(create: (_) => OfflineProvider()),
+      ChangeNotifierProvider(create: (_) => StaysProvider()),
     ],
     child: MaterialApp(theme: meridianTheme(Brightness.dark), home: home),
   );
