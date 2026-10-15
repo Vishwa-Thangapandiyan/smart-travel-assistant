@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:smart_travel_assistant/dev/app_config.dart';
 import 'package:smart_travel_assistant/dev/fake_recommendations.dart';
 import 'package:smart_travel_assistant/features/recommendations/add_place.dart';
+import 'package:smart_travel_assistant/features/recommendations/place_photo.dart';
 import 'package:smart_travel_assistant/features/recommendations/recommendations_provider.dart';
 
 void main() {
@@ -95,15 +96,23 @@ void main() {
     expect(seededDestination('Zurich'), 'Zurich');
   });
 
-  test('13 destinations in India and a city in 10 other countries, each with places', () {
+  test('41 destinations in India and 39 cities abroad, each with places and a cover photo', () {
     final destinations = fakeRecommendations.map((p) => p.destination).toSet();
-    const abroad = ['London', 'Paris', 'Rome', 'Zurich', 'Dubai', 'Singapore', 'Bangkok', 'Bali', 'Tokyo', 'New York'];
+    const some = ['Zurich', 'Tokyo', 'Kolkata', 'Leh', 'Port Blair', 'Kyoto', 'Barcelona', 'Cape Town', 'Siem Reap'];
 
-    expect(destinations, hasLength(23));
-    expect(destinations, containsAll(abroad));
+    expect(destinations, hasLength(80));
+    expect(destinations, containsAll(some));
     for (final destination in destinations) {
       final places = fakeRecommendations.where((p) => p.destination == destination);
       expect(places.length, greaterThanOrEqualTo(5), reason: destination);
+      expect(cityPhotoUrl(destination), isNotNull, reason: destination);
+    }
+  });
+
+  test('no place is seeded twice in the same destination', () {
+    final seen = <String>{};
+    for (final place in fakeRecommendations) {
+      expect(seen.add('${place.destination}|${place.name}'), isTrue, reason: place.name);
     }
   });
 
@@ -116,11 +125,17 @@ void main() {
 
     expect(seededDestination('NYC'), 'New York');
     expect(seededDestination('Cochin'), 'Kochi');
+    expect(seededDestination('Calcutta'), 'Kolkata');
+    expect(seededDestination('Trivandrum'), 'Thiruvananthapuram');
+    expect(seededDestination('Saigon'), 'Ho Chi Minh City');
+    expect(seededDestination('Vietnam'), 'Hanoi');
   });
 
   test('prices are rupees in India and dollar signs abroad', () {
     expect(priceLabel(0, 'Paris'), 'Free');
     expect(priceLabel(2, 'Jaipur'), '₹₹');
     expect(priceLabel(3, 'Tokyo'), r'$$$');
+    expect(priceLabel(1, 'Leh'), '₹');
+    expect(priceLabel(2, 'Kyoto'), r'$$');
   });
 }

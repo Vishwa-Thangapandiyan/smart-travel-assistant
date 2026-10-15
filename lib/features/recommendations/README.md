@@ -22,7 +22,7 @@ degrade gracefully if time runs short, so it ships last.
 3. "Add to itinerary" from a card: build a new `ItineraryItem` from the
    tapped `Recommendation` and write it through `TripProvider`.
 4. A place's own screen: tap a card for its photo, facts, a small map
-   and Add to a day (`place_detail_screen.dart`). All 212 places have a free
+   and Add to a day (`place_detail_screen.dart`). All 683 places have a free
    Wikimedia Commons photo in `image_url`, credited in `PHOTO-CREDITS.md`
    (for a few small restaurants and shops, the dish or street they're
    known for). A photo that fails to load shows a plain tile. A stop on
@@ -31,7 +31,16 @@ degrade gracefully if time runs short, so it ships last.
    Destinations (#57): Bangalore, Chennai, Goa, Jaipur, Mysore, Delhi,
    Agra, Mumbai, Udaipur, Varanasi, Kochi, Rishikesh and Hampi in India;
    London, Paris, Rome, Zurich, Dubai, Singapore, Bangkok, Bali, Tokyo
-   and New York abroad. Other names (Bombay, Cochin, a country's name)
+   and New York abroad. Added later: Hyderabad, Kolkata, Pune, Ahmedabad,
+   Amritsar, Shimla, Manali, Darjeeling, Ooty, Munnar, Alappuzha,
+   Puducherry, Madurai, Mahabalipuram, Jodhpur, Jaisalmer, Leh, Srinagar,
+   Gangtok, Shillong, Khajuraho, Lucknow, Coorg, Thiruvananthapuram,
+   Kanyakumari, Aurangabad, Port Blair and Bhubaneswar in India;
+   Barcelona, Amsterdam, Berlin, Prague, Vienna, Istanbul, Athens, Cairo,
+   Hong Kong, Seoul, Kyoto, Sydney, Melbourne, Kuala Lumpur, Hanoi, Ho Chi
+   Minh City, Kathmandu, Colombo, San Francisco, Los Angeles, Toronto,
+   Lisbon, Madrid, Venice, Florence, Edinburgh, Cape Town, Siem Reap and
+   Phuket abroad. Other names (Bombay, Cochin, a country's name)
    find the seeded city through `seededDestination`. Prices show as ₹
    levels in India and $ levels abroad.
 5. Optional, stop by 8 Nov 2026: a similarity ranking on top. If built,
@@ -44,3 +53,5 @@ degrade gracefully if time runs short, so it ships last.
 - [x] A recommendation can be added straight to the itinerary — REQ-6.3
 - [x] Seed data covers 3–5 destinations with real place names — REQ-6.1
 - [x] Widened to 13 Indian destinations and 10 countries (#57)
+- [x] Widened again to 80 destinations, 683 places: 41 in India and 39
+      cities in 29 other countries, every place with a photo

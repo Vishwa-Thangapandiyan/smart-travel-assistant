@@ -65,6 +65,12 @@ String? addedOnLabel(Recommendation place, Trip trip, ItineraryProvider itinerar
 const _indianDestinations = {
   'Bangalore', 'Chennai', 'Goa', 'Jaipur', 'Mysore', 'Delhi', 'Agra',
   'Mumbai', 'Udaipur', 'Varanasi', 'Kochi', 'Rishikesh', 'Hampi',
+  'Hyderabad', 'Kolkata', 'Pune', 'Ahmedabad', 'Amritsar', 'Shimla',
+  'Manali', 'Darjeeling', 'Ooty', 'Munnar', 'Alappuzha', 'Puducherry',
+  'Madurai', 'Mahabalipuram', 'Jodhpur', 'Jaisalmer', 'Leh', 'Srinagar',
+  'Gangtok', 'Shillong', 'Khajuraho', 'Lucknow', 'Coorg',
+  'Thiruvananthapuram', 'Kanyakumari', 'Aurangabad', 'Port Blair',
+  'Bhubaneswar',
 };
 
 /// "Free", or the price level as "₹" to "₹₹₹" in India and "\$" to "\$\$\$"

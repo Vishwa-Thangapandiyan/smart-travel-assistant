@@ -125,8 +125,8 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
           if (feed.places.isEmpty)
             Text(
               feed.category == null && feed.maxPrice == null && feed.minRating == null
-                  ? 'No suggestions for ${trip.destination} yet. Explore covers 13 destinations in India '
-                      'and one city in each of 10 countries. You can still add any place to a day by hand.'
+                  ? 'No suggestions for ${trip.destination} yet. Explore covers 41 destinations in India '
+                      'and 39 cities in 29 other countries. You can still add any place to a day by hand.'
                   : 'Nothing matches these filters.',
               style: text.bodyMedium?.copyWith(color: colors.inkSoft),
             ),
