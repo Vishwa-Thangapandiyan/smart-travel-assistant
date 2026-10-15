@@ -66,6 +66,12 @@ void main() {
       expect(staticMapAreaFor([]), isNull);
     });
 
+    test('points too far apart for any closer zoom fall back to the world view (zoom 3)', () {
+      final area = staticMapAreaFor([const RoutePoint(60, -150), const RoutePoint(-40, 160)])!;
+
+      expect(area.zoom, 3);
+    });
+
     test('Navigate opens Google Maps directions to the stop', () {
       expect(
         directionsTo(12.9796, 77.5907).toString(),
