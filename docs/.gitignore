@@ -5,6 +5,7 @@ srs/*
 wbs/*
 gantt/*
 images/*
+diagrams/*
 
 # Keep the folders themselves so a fresh clone shows where things belong
 !srs/.gitkeep
