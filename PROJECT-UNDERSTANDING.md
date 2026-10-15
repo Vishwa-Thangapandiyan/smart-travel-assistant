@@ -277,6 +277,8 @@ From a table called `recommendations` that **your team fills in by hand**. Vishw
 
 Widened 15 Oct 2026 (#57): 13 destinations in India and one city in each of 10 other countries (London, Paris, Rome, Zurich, Dubai, Singapore, Bangkok, Bali, Tokyo, New York), 5 to 13 places each — still picked and typed in by hand, still one table and a plain `ORDER BY`.
 
+Widened again 15 Oct 2026: 80 destinations and 683 places — 41 destinations in India (adding Hyderabad, Kolkata, Leh, Srinagar, Port Blair and others) and 39 cities in 29 other countries (adding Barcelona, Kyoto, Istanbul, Cairo, Sydney, Cape Town, Siem Reap and others), 5 to 13 places each. Every place is a real place with a Wikipedia article or an OpenStreetMap entry for its coordinates and a free Wikimedia Commons photo, checked by eye. Still hand-picked rows in one table and a plain `ORDER BY`; no ranking model.
+
 **4. Where do those places come from?**
 Vishwa. Typing them. This is worth sitting with: there is no live places API, no scraping, no external feed. It is a hand-written list in a database table.
 
