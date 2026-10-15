@@ -6,14 +6,17 @@ import 'package:smart_travel_assistant/dev/app_config.dart';
 import 'package:smart_travel_assistant/dev/fake_data.dart';
 import 'package:smart_travel_assistant/features/accounts/accounts_provider.dart';
 import 'package:smart_travel_assistant/features/itinerary/itinerary_provider.dart';
+import 'package:smart_travel_assistant/features/itinerary/stays_provider.dart';
 import 'package:smart_travel_assistant/features/maps/maps_screen.dart';
+import 'package:smart_travel_assistant/features/maps/navigate.dart';
 import 'package:smart_travel_assistant/theme/meridian_theme.dart';
 
-Widget _app(ItineraryProvider itinerary, {double systemBarHeight = 0}) {
+Widget _app(ItineraryProvider itinerary, StaysProvider stays, {double systemBarHeight = 0}) {
   return MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => AccountsProvider()),
       ChangeNotifierProvider.value(value: itinerary),
+      ChangeNotifierProvider.value(value: stays),
     ],
     child: MaterialApp(
       theme: meridianTheme(Brightness.dark),
@@ -29,18 +32,20 @@ Widget _app(ItineraryProvider itinerary, {double systemBarHeight = 0}) {
 
 void main() {
   late ItineraryProvider itinerary;
+  late StaysProvider stays;
 
   setUp(() {
     debugUseFakeData = true;
     resetFakeTrips();
     itinerary = ItineraryProvider();
+    stays = StaysProvider();
   });
   tearDown(() => debugUseFakeData = null);
 
   Future<void> show(WidgetTester tester, {double systemBarHeight = 0}) async {
     await tester.binding.setSurfaceSize(const Size(420, 900));
     addTearDown(() => tester.binding.setSurfaceSize(null));
-    await tester.pumpWidget(_app(itinerary, systemBarHeight: systemBarHeight));
+    await tester.pumpWidget(_app(itinerary, stays, systemBarHeight: systemBarHeight));
     await tester.pumpAndSettle();
   }
 
@@ -94,6 +99,23 @@ void main() {
     expect(find.text('Nothing on the map for Day 1'), findsOneWidget);
     expect(find.bySemanticsLabel('Stop 1'), findsNothing);
     expect(find.text('Navigate'), findsNothing);
+  });
+
+  testWidgets('with a stay, it has its own pin and the day\'s route starts there', (tester) async {
+    await stays.setStay(demoTrip.id, const Stay(name: 'Taj West End', latitude: 12.9846, longitude: 77.5848));
+    await show(tester);
+
+    expect(find.bySemanticsLabel('Your stay: Taj West End'), findsOneWidget);
+    expect(find.textContaining('from your stay'), findsOneWidget);
+  });
+
+  test('Navigate starts at the stay when one is given', () {
+    const stay = Stay(name: 'Taj West End', latitude: 12.9846, longitude: 77.5848);
+
+    expect(
+      directionsTo(12.9796, 77.5907, from: stay).toString(),
+      'https://www.google.com/maps/dir/?api=1&origin=12.9846,77.5848&destination=12.9796,77.5907',
+    );
   });
 
   testWidgets('OpenStreetMap is credited on the map', (tester) async {

@@ -3,8 +3,9 @@
 // day's stops in order with up/down buttons (REQ-2.2–2.4).
 // "From suggestions" opens Explore to add a seeded place to this day; a
 // stop that is a seeded place shows that place's photo.
-// At the bottom, Sanjay's Download for offline button and, once the trip
-// is saved on the phone, a way into the saved copy (REQ-4.3).
+// Below the stops, where you're staying (on this phone only), Sanjay's
+// Download for offline button and, once the trip is saved on the phone, a
+// way into the saved copy (REQ-4.3). The app bar deletes the whole trip.
 // Design: design/screens/night-03-day.png. The "now" card for a trip in
 // progress comes later.
 
@@ -25,6 +26,8 @@ import '../recommendations/stop_photos.dart';
 import 'day_switcher.dart';
 import 'destination_lookup.dart';
 import 'itinerary_provider.dart';
+import 'stay_form_screen.dart';
+import 'stays_provider.dart';
 import 'stop_form_screen.dart';
 
 class DayScreen extends StatefulWidget {
@@ -79,6 +82,39 @@ class _DayScreenState extends State<DayScreen> {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) => RecommendationsScreen(addToDay: _day)));
   }
 
+  void _openStay() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => StayFormScreen(trip: widget.trip, lookUp: widget.lookUp),
+    ));
+  }
+
+  Future<void> _deleteTrip() async {
+    final itinerary = context.read<ItineraryProvider>();
+    final stays = context.read<StaysProvider>();
+    final navigator = Navigator.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final sure = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Delete the ${widget.trip.destination} trip?'),
+        content: const Text('Every day and stop, the budget and the expenses of this trip are deleted. This can\'t be undone.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Keep')),
+          TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Delete')),
+        ],
+      ),
+    );
+    if (sure != true) return;
+    try {
+      await itinerary.deleteTrip(widget.trip);
+      await stays.removeStay(widget.trip.id);
+      navigator.pop();
+      messenger.showSnackBar(SnackBar(content: Text('Deleted the ${widget.trip.destination} trip')));
+    } on Exception {
+      messenger.showSnackBar(const SnackBar(content: Text('Couldn\'t delete the trip. Check your connection.')));
+    }
+  }
+
   void _openSavedCopy() {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) => SavedTripScreen(tripId: widget.trip.id)));
   }
@@ -103,9 +139,19 @@ class _DayScreenState extends State<DayScreen> {
     final loaded = provider.currentTrip?.id == widget.trip.id;
     final stops = loaded ? provider.stopsForDay(_day) : <ItineraryItem>[];
     final saved = context.watch<OfflineProvider>().isDownloaded(widget.trip.id);
+    final stay = context.watch<StaysProvider>().stayFor(widget.trip.id);
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.trip.destination)),
+      appBar: AppBar(
+        title: Text(widget.trip.destination),
+        actions: [
+          IconButton(
+            tooltip: 'Delete trip',
+            onPressed: _deleteTrip,
+            icon: Icon(Icons.delete_outline, color: colors.coral),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 4, 20, 40),
@@ -156,6 +202,29 @@ class _DayScreenState extends State<DayScreen> {
                   child: Text('From suggestions', style: TextStyle(color: colors.amberText)),
                 ),
               ],
+            ),
+            const SizedBox(height: 36),
+            Text('STAY', style: MeridianText.monoData.copyWith(color: colors.inkSoft)),
+            const SizedBox(height: 6),
+            if (stay == null)
+              Text('Where you sleep. Each day\'s route and Navigate to the first stop start there.',
+                  style: text.bodyMedium?.copyWith(color: colors.inkSoft))
+            else
+              Row(
+                children: [
+                  Icon(Icons.hotel_outlined, size: 18, color: colors.amber),
+                  const SizedBox(width: 10),
+                  Expanded(child: Text(stay.name, style: text.titleLarge?.copyWith(fontSize: 16))),
+                ],
+              ),
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: OutlinedButton.icon(
+                onPressed: _openStay,
+                icon: Icon(stay == null ? Icons.add : Icons.edit_outlined),
+                label: Text(stay == null ? 'Add where you\'re staying' : 'Change stay'),
+              ),
             ),
             const SizedBox(height: 36),
             Text('OFFLINE', style: MeridianText.monoData.copyWith(color: colors.inkSoft)),

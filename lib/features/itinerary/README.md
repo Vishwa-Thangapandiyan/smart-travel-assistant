@@ -39,3 +39,17 @@ recommendation. Don't build or imply anything else.
       REQ-2.3
 - [x] Notes can be added to a stop — REQ-2.4
 - [x] `trip_service.dart` is real and matches its documented signature
+
+## Added 15 Oct 2026
+
+- [x] **Delete a trip**: the trip's screen has a delete button with a
+      confirmation. The database deletes the trip's stops, budget,
+      expenses and offline record with it (`on delete cascade`).
+- [x] **Where you're staying** (`stays_provider.dart`,
+      `stay_form_screen.dart`): a hotel or address picked with Nominatim
+      inside the trip's city. The Map tab draws it as a pin, and each
+      day's route starts there. Navigate to the day's first stop starts
+      there too; later stops start from where the phone is.
+      **Saved on this phone only, in Hive.** The schema and models are
+      frozen, so a trip has no column for it, and another phone won't
+      see it. Syncing it needs a schema change, which is a team decision.
