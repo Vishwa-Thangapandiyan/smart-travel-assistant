@@ -8,7 +8,9 @@ import 'package:smart_travel_assistant/features/itinerary/day_screen.dart';
 import 'package:smart_travel_assistant/features/itinerary/destination_lookup.dart';
 import 'package:smart_travel_assistant/features/itinerary/itinerary_provider.dart';
 import 'package:smart_travel_assistant/features/offline/offline_provider.dart';
+import 'package:smart_travel_assistant/features/recommendations/stop_photos.dart';
 import 'package:smart_travel_assistant/theme/meridian_theme.dart';
+import 'package:smart_travel_assistant/widgets/web_photo.dart';
 
 String? _searchedFor;
 
@@ -59,6 +61,21 @@ void main() {
     await tester.tap(find.text('Sat 21'));
     await tester.pumpAndSettle();
   }
+
+  test('a stop matches a seeded place by name; a stop that is not one has no photo', () async {
+    final photos = await placePhotosFor('Bengaluru');
+
+    expect(photoForStop(demoItems.first, photos), isNotNull); // Vidhana Soudha
+    expect(photoForStop(demoItems.last, photos), isNull); // the airport isn't seeded
+  });
+
+  testWidgets('stops that are seeded places show their photo', (tester) async {
+    await tester.pumpWidget(_app(provider));
+    await tester.pumpAndSettle();
+
+    // Day 1 is Vidhana Soudha and Vidyarthi Bhavan, both seeded places.
+    expect(find.byType(WebPhoto), findsNWidgets(2));
+  });
 
   testWidgets('opens on day 1 and switches days from the pill', (tester) async {
     await tester.pumpWidget(_app(provider));

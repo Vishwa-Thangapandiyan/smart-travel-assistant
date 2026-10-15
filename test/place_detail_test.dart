@@ -10,6 +10,7 @@ import 'package:smart_travel_assistant/features/recommendations/place_detail_scr
 import 'package:smart_travel_assistant/features/recommendations/place_photo.dart';
 import 'package:smart_travel_assistant/features/recommendations/recommendations_provider.dart';
 import 'package:smart_travel_assistant/features/recommendations/recommendations_screen.dart';
+import 'package:smart_travel_assistant/models/recommendation.dart';
 import 'package:smart_travel_assistant/theme/meridian_theme.dart';
 
 Widget _app(ItineraryProvider itinerary, Widget home) {
@@ -26,7 +27,8 @@ Widget _app(ItineraryProvider itinerary, Widget home) {
 void main() {
   late ItineraryProvider itinerary;
   final lalbagh = fakeRecommendations.firstWhere((p) => p.name == 'Lalbagh Botanical Garden');
-  final toit = fakeRecommendations.firstWhere((p) => p.name == 'Toit');
+  // Every seeded place has a photo, so this one is made up for the test.
+  const noPhoto = Recommendation(id: 'test-no-photo', destination: 'Bangalore', name: 'Corner bakery', category: 'restaurant');
 
   setUp(() async {
     debugUseFakeData = true;
@@ -65,9 +67,9 @@ void main() {
   });
 
   testWidgets('a place with no photo has no photo credit', (tester) async {
-    await show(tester, PlaceDetailScreen(place: toit, showTiles: false));
+    await show(tester, const PlaceDetailScreen(place: noPhoto, showTiles: false));
 
-    expect(find.text('Toit'), findsOneWidget);
+    expect(find.text('Corner bakery'), findsOneWidget);
     expect(find.text('Photo: Wikimedia Commons'), findsNothing);
   });
 
@@ -98,7 +100,7 @@ void main() {
   test('every seeded photo is from Wikimedia Commons, so it has a credit page', () {
     final withPhotos = fakeRecommendations.where((p) => p.imageUrl != null).toList();
 
-    expect(withPhotos, hasLength(198));
+    expect(withPhotos, hasLength(fakeRecommendations.length));
     for (final place in withPhotos) {
       expect(photoSourcePage(place.imageUrl!), isNotNull, reason: place.name);
     }

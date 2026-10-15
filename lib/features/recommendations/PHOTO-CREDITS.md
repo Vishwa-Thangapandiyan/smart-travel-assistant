@@ -3,7 +3,9 @@
 Every place photo in Explore is from Wikimedia Commons, used under the
 licence named below. In the app, tapping the photo credit opens the
 file's Commons page, which names the author and the licence in full.
-Places with no free photo on Commons have no photo.
+Every place has a photo. Where Commons has no free photo of the place
+itself (mostly small restaurants and shops), it shows the dish it's known
+for or the street it's on, and the Place column below says so.
 
 | Place | Author | Licence | Source |
 | --- | --- | --- | --- |
@@ -205,3 +207,17 @@ Places with no free photo on Commons have no photo.
 | American Museum of Natural History | Ingfbruno | CC BY-SA 3.0 | [File page](https://commons.wikimedia.org/wiki/File:USA-NYC-American_Museum_of_Natural_History.JPG) |
 | Katz's Delicatessen | ajay_suresh | CC BY 2.0 | [File page](https://commons.wikimedia.org/wiki/File:Katz's_Delicatessen_(51623899326).jpg) |
 | Fifth Avenue | A. Balet | CC BY 3.0 | [File page](https://commons.wikimedia.org/wiki/File:Photograph_of_Fifth_Avenue_from_the_Metropolitan%E2%80%94New_York_City.jpg) |
+| Toit (photo: a beer flight, not Toit itself) | Ruth and Dave | CC BY 2.0 | [File page](https://commons.wikimedia.org/wiki/File:Beer_tasting_flight_at_the_Beer_Farmers.jpg) |
+| Ratna Cafe (photo: idli and sambar, not the café itself) | Ask27 | CC BY-SA 3.0 | [File page](https://commons.wikimedia.org/wiki/File:Idli_Sambar_Chutney_in_Madras.JPG) |
+| Britto's (photo: Baga Beach, where Britto's is) | McKay Savage | CC BY 2.0 | [File page](https://commons.wikimedia.org/wiki/File:India_-_Goa_-_010_-_Touristy_Baga_Beach.jpg) |
+| Gunpowder (photo: appam and stew, not the restaurant itself) | Sudiptorana | CC BY-SA 4.0 | [File page](https://commons.wikimedia.org/wiki/File:Massa_Stew_with_Appam.jpg) |
+| Laxmi Misthan Bhandar (photo: ghevar, not the shop itself) | Vinayakgupta4 | CC BY-SA 4.0 | [File page](https://commons.wikimedia.org/wiki/File:Ghevar.jpg) |
+| Rawat Mishthan Bhandar (photo: pyaaz kachori, not the shop itself) | Harshitdenovo | CC BY-SA 4.0 | [File page](https://commons.wikimedia.org/wiki/File:Pyaaz_ki_Kachori.jpg) |
+| Chokhi Dhani (photo: a Rajasthani thali, not Chokhi Dhani itself) | Chetana Lohar | CC BY-SA 4.0 | [File page](https://commons.wikimedia.org/wiki/File:Rajasthani_Dal-baati-churma.jpg) |
+| Hotel RRR (photo: an Andhra meal, not the restaurant itself) | Anjanadevib | CC BY-SA 4.0 | [File page](https://commons.wikimedia.org/wiki/File:Andhra_Combo_Meal.JPG) |
+| Kinari Bazaar (photo: Agra's old bazaar) | David M. | CC BY 3.0 | [File page](https://commons.wikimedia.org/wiki/File:Busy_street_in_the_old_Bazaar,_Agra,_11-2009_-_panoramio.jpg) |
+| Colaba Causeway | Udaykumar PR | CC BY 3.0 | [File page](https://commons.wikimedia.org/wiki/File:Colaba_Causeway,Mumbai_-_panoramio.jpg) |
+| Jew Town | Rudolph.A.furtado | CC0 | [File page](https://commons.wikimedia.org/wiki/File:Mattancherry_Jew_Town.JPG) |
+| The Dubai Mall | Ank Kumar | CC BY-SA 4.0 | [File page](https://commons.wikimedia.org/wiki/File:Water_Fountain_at_The_Dubai_Mall_(Ank_Kumar,_Infosys)_08.jpg) |
+| Museum of the Future | Saaremees | CC BY-SA 4.0 | [File page](https://commons.wikimedia.org/wiki/File:Museum_of_the_Future_DNA_Library-Dubai_UAE-Andres_Larin.jpg) |
+| Burj Al Arab | Yacine Hary | CC BY 2.0 | [File page](https://commons.wikimedia.org/wiki/File:Burj_Al_Arab_and_Jumeirah_Beach_(9601659067).jpg) |

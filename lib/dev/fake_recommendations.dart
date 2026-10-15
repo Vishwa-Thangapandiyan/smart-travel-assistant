@@ -132,6 +132,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['brewery', 'nightlife'],
     latitude: 12.97941,
     longitude: 77.64063,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/Beer_tasting_flight_at_the_Beer_Farmers.jpg/960px-Beer_tasting_flight_at_the_Beer_Farmers.jpg',
   ),
   Recommendation(
     id: 'rec-bangalore-11',
@@ -287,6 +288,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['idli', 'south indian'],
     latitude: 13.00795,
     longitude: 80.2594,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/Idli_Sambar_Chutney_in_Madras.JPG/960px-Idli_Sambar_Chutney_in_Madras.JPG',
   ),
   Recommendation(
     id: 'rec-chennai-10',
@@ -351,6 +353,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['seafood', 'beachfront', 'goan'],
     latitude: 15.56135,
     longitude: 73.74946,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/India_-_Goa_-_010_-_Touristy_Baga_Beach.jpg/960px-India_-_Goa_-_010_-_Touristy_Baga_Beach.jpg',
   ),
   Recommendation(
     id: 'rec-goa-3',
@@ -467,6 +470,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['coastal', 'garden'],
     latitude: 15.59672,
     longitude: 73.78841,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/Massa_Stew_with_Appam.jpg/960px-Massa_Stew_with_Appam.jpg',
   ),
   Recommendation(
     id: 'rec-goa-12',
@@ -609,6 +613,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['sweets', 'rajasthani'],
     latitude: 26.91963,
     longitude: 75.8255,
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Ghevar.jpg',
   ),
   Recommendation(
     id: 'rec-jaipur-11',
@@ -621,6 +626,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['kachori', 'breakfast'],
     latitude: 26.92424,
     longitude: 75.82177,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Pyaaz_ki_Kachori.jpg/960px-Pyaaz_ki_Kachori.jpg',
   ),
   Recommendation(
     id: 'rec-jaipur-12',
@@ -633,6 +639,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['thali', 'culture'],
     latitude: 26.76759,
     longitude: 75.83611,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/Rajasthani_Dal-baati-churma.jpg/960px-Rajasthani_Dal-baati-churma.jpg',
   ),
   Recommendation(
     id: 'rec-jaipur-13',
@@ -788,6 +795,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['meals', 'andhra'],
     latitude: 12.31109,
     longitude: 76.65502,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/Andhra_Combo_Meal.JPG/960px-Andhra_Combo_Meal.JPG',
   ),
   Recommendation(
     id: 'rec-mysore-12',
@@ -1008,6 +1016,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['market', 'petha'],
     latitude: 27.1819,
     longitude: 78.01176,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Busy_street_in_the_old_Bazaar%2C_Agra%2C_11-2009_-_panoramio.jpg/960px-Busy_street_in_the_old_Bazaar%2C_Agra%2C_11-2009_-_panoramio.jpg',
   ),
   Recommendation(
     id: 'rec-mumbai-1',
@@ -1111,6 +1120,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['street market', 'souvenirs'],
     latitude: 18.91,
     longitude: 72.81,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/Colaba_Causeway%2CMumbai_-_panoramio.jpg/960px-Colaba_Causeway%2CMumbai_-_panoramio.jpg',
   ),
   Recommendation(
     id: 'rec-udaipur-1',
@@ -1383,6 +1393,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['antiques', 'spices'],
     latitude: 9.95384,
     longitude: 76.26044,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/Mattancherry_Jew_Town.JPG/960px-Mattancherry_Jew_Town.JPG',
   ),
   Recommendation(
     id: 'rec-kochi-7',
@@ -2058,6 +2069,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['mall', 'aquarium'],
     latitude: 25.1975,
     longitude: 55.27917,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/Water_Fountain_at_The_Dubai_Mall_%28Ank_Kumar%2C_Infosys%29_08.jpg/960px-Water_Fountain_at_The_Dubai_Mall_%28Ank_Kumar%2C_Infosys%29_08.jpg',
   ),
   Recommendation(
     id: 'rec-dubai-3',
@@ -2122,6 +2134,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['architecture', 'exhibits'],
     latitude: 25.21912,
     longitude: 55.2821,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Museum_of_the_Future_DNA_Library-Dubai_UAE-Andres_Larin.jpg/960px-Museum_of_the_Future_DNA_Library-Dubai_UAE-Andres_Larin.jpg',
   ),
   Recommendation(
     id: 'rec-dubai-8',
@@ -2147,6 +2160,7 @@ const fakeRecommendations = <Recommendation>[
     tags: ['hotel', 'landmark'],
     latitude: 25.14139,
     longitude: 55.18528,
+    imageUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/Burj_Al_Arab_and_Jumeirah_Beach_%289601659067%29.jpg/960px-Burj_Al_Arab_and_Jumeirah_Beach_%289601659067%29.jpg',
   ),
   Recommendation(
     id: 'rec-singapore-1',
