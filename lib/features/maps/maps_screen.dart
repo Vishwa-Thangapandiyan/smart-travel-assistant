@@ -115,7 +115,7 @@ class _MapsScreenState extends State<MapsScreen> {
     if (stops.isNotEmpty) {
       _map.fitCamera(CameraFit.coordinates(
         coordinates: [for (final s in stops) LatLng(s.latitude!, s.longitude!)],
-        padding: const EdgeInsets.fromLTRB(48, 120, 48, 260),
+        padding: const EdgeInsets.fromLTRB(48, 152, 48, 260),
         maxZoom: 15,
       ));
     } else if (trip?.latitude != null) {
@@ -200,7 +200,8 @@ class _MapsScreenState extends State<MapsScreen> {
 
         SafeArea(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 40, 16, 0),
+            // Well below the status bar and camera cut-out (#58).
+            padding: const EdgeInsets.fromLTRB(16, 72, 16, 0),
             child: trip == null
                 ? const SizedBox.shrink()
                 : DaySwitcher(
