@@ -1,7 +1,8 @@
 // Owner: Vishwa. One trip, one day at a time: a switcher for the days
 // (worked out from the trip's dates, never stored — Scene 3), then the
 // day's stops in order with up/down buttons (REQ-2.2–2.4).
-// "From suggestions" opens Explore to add a seeded place to this day.
+// "From suggestions" opens Explore to add a seeded place to this day; a
+// stop that is a seeded place shows that place's photo.
 // At the bottom, Sanjay's Download for offline button and, once the trip
 // is saved on the phone, a way into the saved copy (REQ-4.3).
 // Design: design/screens/night-03-day.png. The "now" card for a trip in
@@ -18,7 +19,9 @@ import '../../theme/meridian_theme.dart';
 import '../offline/download_trip_button.dart';
 import '../offline/offline_provider.dart';
 import '../offline/saved_trip_screen.dart';
+import '../../widgets/web_photo.dart';
 import '../recommendations/recommendations_screen.dart';
+import '../recommendations/stop_photos.dart';
 import 'day_switcher.dart';
 import 'destination_lookup.dart';
 import 'itinerary_provider.dart';
@@ -37,11 +40,23 @@ class DayScreen extends StatefulWidget {
 class _DayScreenState extends State<DayScreen> {
   int _day = 1;
   String? _error;
+  Map<String, String> _photos = {}; // seeded place name → photo, for the stops
 
   @override
   void initState() {
     super.initState();
     _open();
+    _loadPhotos();
+  }
+
+  // Photos are extra: with no connection the stops simply show without them.
+  Future<void> _loadPhotos() async {
+    try {
+      final photos = await placePhotosFor(widget.trip.destination);
+      if (mounted) setState(() => _photos = photos);
+    } on Exception {
+      // Keep the plain list.
+    }
   }
 
   Future<void> _open() async {
@@ -118,6 +133,7 @@ class _DayScreenState extends State<DayScreen> {
             for (var i = 0; i < stops.length; i++)
               _StopRow(
                 stop: stops[i],
+                photoUrl: photoForStop(stops[i], _photos),
                 isFirst: i == 0,
                 isLast: i == stops.length - 1,
                 onTap: () => _openForm(stop: stops[i]),
@@ -164,9 +180,11 @@ class _DayScreenState extends State<DayScreen> {
   }
 }
 
-/// One stop on the rail: dot, name, note, time, and the reorder arrows.
+/// One stop on the rail: dot, photo if it's a seeded place, name, note,
+/// time, and the reorder arrows.
 class _StopRow extends StatelessWidget {
   final ItineraryItem stop;
+  final String? photoUrl;
   final bool isFirst;
   final bool isLast;
   final VoidCallback onTap;
@@ -175,6 +193,7 @@ class _StopRow extends StatelessWidget {
 
   const _StopRow({
     required this.stop,
+    required this.photoUrl,
     required this.isFirst,
     required this.isLast,
     required this.onTap,
@@ -198,6 +217,17 @@ class _StopRow extends StatelessWidget {
           children: [
             Icon(Icons.circle_outlined, size: 12, color: stop.latitude == null ? colors.inkSoft : colors.amber),
             const SizedBox(width: 14),
+            if (photoUrl != null) ...[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: SizedBox(
+                  width: 52,
+                  height: 52,
+                  child: WebPhoto(url: photoUrl, placeholder: ColoredBox(color: colors.ember)),
+                ),
+              ),
+              const SizedBox(width: 12),
+            ],
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

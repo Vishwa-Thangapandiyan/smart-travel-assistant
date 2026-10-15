@@ -22,9 +22,12 @@ degrade gracefully if time runs short, so it ships last.
 3. "Add to itinerary" from a card: build a new `ItineraryItem` from the
    tapped `Recommendation` and write it through `TripProvider`.
 4. A place's own screen: tap a card for its photo, facts, a small map
-   and Add to a day (`place_detail_screen.dart`). 198 of the 212 places
-   have a free Wikimedia Commons photo in `image_url`, credited in
-   `PHOTO-CREDITS.md`; the rest show a plain tile.
+   and Add to a day (`place_detail_screen.dart`). All 212 places have a free
+   Wikimedia Commons photo in `image_url`, credited in `PHOTO-CREDITS.md`
+   (for a few small restaurants and shops, the dish or street they're
+   known for). A photo that fails to load shows a plain tile. A stop on
+   the Day screen that is a seeded place shows the same photo
+   (`stop_photos.dart`).
    Destinations (#57): Bangalore, Chennai, Goa, Jaipur, Mysore, Delhi,
    Agra, Mumbai, Udaipur, Varanasi, Kochi, Rishikesh and Hampi in India;
    London, Paris, Rome, Zurich, Dubai, Singapore, Bangkok, Bali, Tokyo
