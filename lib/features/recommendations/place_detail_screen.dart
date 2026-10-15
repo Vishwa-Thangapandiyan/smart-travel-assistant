@@ -39,7 +39,7 @@ class PlaceDetailScreen extends StatelessWidget {
     final facts = [
       (placeCategories[place.category] ?? place.category).toUpperCase(),
       if (place.rating != null) '★ ${place.rating}',
-      if (place.priceLevel != null) priceLabel(place.priceLevel!),
+      if (place.priceLevel != null) priceLabel(place.priceLevel!, place.destination),
     ].join('  ·  ');
 
     return Scaffold(

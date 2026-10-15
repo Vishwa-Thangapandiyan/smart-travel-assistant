@@ -61,5 +61,15 @@ String? addedOnLabel(Recommendation place, Trip trip, ItineraryProvider itinerar
   return 'On ${DateFormat('EEE d').format(trip.startDate.add(Duration(days: stop.dayNumber - 1)))}';
 }
 
-/// "Free", "₹", "₹₹" or "₹₹₹".
-String priceLabel(int priceLevel) => priceLevel == 0 ? 'Free' : '₹' * priceLevel;
+// The seeded destinations in India; prices elsewhere aren't in rupees.
+const _indianDestinations = {
+  'Bangalore', 'Chennai', 'Goa', 'Jaipur', 'Mysore', 'Delhi', 'Agra',
+  'Mumbai', 'Udaipur', 'Varanasi', 'Kochi', 'Rishikesh', 'Hampi',
+};
+
+/// "Free", or the price level as "₹" to "₹₹₹" in India and "\$" to "\$\$\$"
+/// abroad — cheap to expensive for that city, not an amount.
+String priceLabel(int priceLevel, String destination) {
+  if (priceLevel == 0) return 'Free';
+  return (_indianDestinations.contains(destination) ? '₹' : '\$') * priceLevel;
+}

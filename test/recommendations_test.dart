@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:smart_travel_assistant/dev/app_config.dart';
+import 'package:smart_travel_assistant/dev/fake_recommendations.dart';
+import 'package:smart_travel_assistant/features/recommendations/add_place.dart';
 import 'package:smart_travel_assistant/features/recommendations/recommendations_provider.dart';
 
 void main() {
@@ -34,7 +36,7 @@ void main() {
   });
 
   test('a destination with no seeded places gives an empty list', () async {
-    await provider.load('Tokyo');
+    await provider.load('Reykjavik');
 
     expect(provider.places, isEmpty);
   });
@@ -91,5 +93,34 @@ void main() {
     expect(provider.destination, 'Bengaluru');
     expect(seededDestination('Bengaluru'), 'Bangalore');
     expect(seededDestination('Zurich'), 'Zurich');
+  });
+
+  test('13 destinations in India and a city in 10 other countries, each with places', () {
+    final destinations = fakeRecommendations.map((p) => p.destination).toSet();
+    const abroad = ['London', 'Paris', 'Rome', 'Zurich', 'Dubai', 'Singapore', 'Bangkok', 'Bali', 'Tokyo', 'New York'];
+
+    expect(destinations, hasLength(23));
+    expect(destinations, containsAll(abroad));
+    for (final destination in destinations) {
+      final places = fakeRecommendations.where((p) => p.destination == destination);
+      expect(places.length, greaterThanOrEqualTo(5), reason: destination);
+    }
+  });
+
+  test('a country or an old city name finds the seeded city', () async {
+    await provider.load('Switzerland');
+    expect(provider.places.first.destination, 'Zurich');
+
+    await provider.load('Bombay');
+    expect(provider.places.first.destination, 'Mumbai');
+
+    expect(seededDestination('NYC'), 'New York');
+    expect(seededDestination('Cochin'), 'Kochi');
+  });
+
+  test('prices are rupees in India and dollar signs abroad', () {
+    expect(priceLabel(0, 'Paris'), 'Free');
+    expect(priceLabel(2, 'Jaipur'), '₹₹');
+    expect(priceLabel(3, 'Tokyo'), r'$$$');
   });
 }

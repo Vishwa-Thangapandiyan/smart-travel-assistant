@@ -46,7 +46,7 @@ Recommendations — `lib/features/recommendations/README.md`
       abroad (moved from Sanjay)
 - [ ] #33 Budget against real trips, in the trip's currency (moved from
       Santhosh)
-- [ ] #57 Explore: at least 10 Indian destinations and 10 countries
+- [x] #57 Explore: at least 10 Indian destinations and 10 countries
 - [ ] #58 Map: move the top bar lower
 - [ ] #59 Offline map: every stop and the route, Navigate to Google Maps
       (takes over #26's phone checks)

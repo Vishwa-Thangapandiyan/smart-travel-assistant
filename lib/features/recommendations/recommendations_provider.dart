@@ -13,6 +13,7 @@ import '../../services/supabase_service.dart';
 
 // Other names people type for the seeded cities. A trip saved as
 // "Bengaluru" should still find the places seeded under "Bangalore".
+// A country's name finds the one city seeded for it.
 const _otherNames = {
   'bengaluru': 'Bangalore',
   'mysuru': 'Mysore',
@@ -20,6 +21,32 @@ const _otherNames = {
   'panaji': 'Goa',
   'panjim': 'Goa',
   'pink city': 'Jaipur',
+  'new delhi': 'Delhi',
+  'old delhi': 'Delhi',
+  'bombay': 'Mumbai',
+  'benares': 'Varanasi',
+  'banaras': 'Varanasi',
+  'kashi': 'Varanasi',
+  'cochin': 'Kochi',
+  'ernakulam': 'Kochi',
+  'fort kochi': 'Kochi',
+  'england': 'London',
+  'uk': 'London',
+  'united kingdom': 'London',
+  'france': 'Paris',
+  'italy': 'Rome',
+  'roma': 'Rome',
+  'switzerland': 'Zurich',
+  'zürich': 'Zurich',
+  'uae': 'Dubai',
+  'united arab emirates': 'Dubai',
+  'thailand': 'Bangkok',
+  'indonesia': 'Bali',
+  'japan': 'Tokyo',
+  'usa': 'New York',
+  'united states': 'New York',
+  'new york city': 'New York',
+  'nyc': 'New York',
 };
 
 /// The name the places are seeded under, or [destination] itself if it

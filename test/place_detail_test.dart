@@ -98,7 +98,7 @@ void main() {
   test('every seeded photo is from Wikimedia Commons, so it has a credit page', () {
     final withPhotos = fakeRecommendations.where((p) => p.imageUrl != null).toList();
 
-    expect(withPhotos, hasLength(54));
+    expect(withPhotos, hasLength(198));
     for (final place in withPhotos) {
       expect(photoSourcePage(place.imageUrl!), isNotNull, reason: place.name);
     }
