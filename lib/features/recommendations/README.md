@@ -22,9 +22,15 @@ degrade gracefully if time runs short, so it ships last.
 3. "Add to itinerary" from a card: build a new `ItineraryItem` from the
    tapped `Recommendation` and write it through `TripProvider`.
 4. A place's own screen: tap a card for its photo, facts, a small map
-   and Add to a day (`place_detail_screen.dart`). 54 of the 62 places
+   and Add to a day (`place_detail_screen.dart`). 198 of the 212 places
    have a free Wikimedia Commons photo in `image_url`, credited in
    `PHOTO-CREDITS.md`; the rest show a plain tile.
+   Destinations (#57): Bangalore, Chennai, Goa, Jaipur, Mysore, Delhi,
+   Agra, Mumbai, Udaipur, Varanasi, Kochi, Rishikesh and Hampi in India;
+   London, Paris, Rome, Zurich, Dubai, Singapore, Bangkok, Bali, Tokyo
+   and New York abroad. Other names (Bombay, Cochin, a country's name)
+   find the seeded city through `seededDestination`. Prices show as ₹
+   levels in India and $ levels abroad.
 5. Optional, stop by 8 Nov 2026: a similarity ranking on top. If built,
    describe it in code and docs as a ranking function, never a model.
 
@@ -34,3 +40,4 @@ degrade gracefully if time runs short, so it ships last.
       query — REQ-6.1, REQ-6.2, REQ-6.4
 - [x] A recommendation can be added straight to the itinerary — REQ-6.3
 - [x] Seed data covers 3–5 destinations with real place names — REQ-6.1
+- [x] Widened to 13 Indian destinations and 10 countries (#57)

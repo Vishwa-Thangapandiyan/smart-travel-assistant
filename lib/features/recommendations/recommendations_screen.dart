@@ -125,8 +125,8 @@ class _RecommendationsScreenState extends State<RecommendationsScreen> {
           if (feed.places.isEmpty)
             Text(
               feed.category == null && feed.maxPrice == null && feed.minRating == null
-                  ? 'No suggestions for ${trip.destination} yet. Explore covers Bangalore, Chennai, Goa, '
-                      'Jaipur and Mysore. You can still add any place to a day by hand.'
+                  ? 'No suggestions for ${trip.destination} yet. Explore covers 13 destinations in India '
+                      'and one city in each of 10 countries. You can still add any place to a day by hand.'
                   : 'Nothing matches these filters.',
               style: text.bodyMedium?.copyWith(color: colors.inkSoft),
             ),
@@ -216,7 +216,7 @@ class _PlaceCard extends StatelessWidget {
     final facts = [
       placeCategories[place.category] ?? place.category,
       if (place.rating != null) '★ ${place.rating}',
-      if (place.priceLevel != null) priceLabel(place.priceLevel!),
+      if (place.priceLevel != null) priceLabel(place.priceLevel!, place.destination),
     ].join(' · ');
 
     return GestureDetector(
