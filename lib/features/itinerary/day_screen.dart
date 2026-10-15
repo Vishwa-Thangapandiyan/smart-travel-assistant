@@ -2,6 +2,8 @@
 // (worked out from the trip's dates, never stored — Scene 3), then the
 // day's stops in order with up/down buttons (REQ-2.2–2.4).
 // "From suggestions" opens Explore to add a seeded place to this day.
+// At the bottom, Sanjay's Download for offline button and, once the trip
+// is saved on the phone, a way into the saved copy (REQ-4.3).
 // Design: design/screens/night-03-day.png. The "now" card for a trip in
 // progress comes later.
 
@@ -13,6 +15,9 @@ import '../../models/itinerary_item.dart';
 import '../../models/trip.dart';
 import '../../theme/meridian_colors.dart';
 import '../../theme/meridian_theme.dart';
+import '../offline/download_trip_button.dart';
+import '../offline/offline_provider.dart';
+import '../offline/saved_trip_screen.dart';
 import '../recommendations/recommendations_screen.dart';
 import 'day_switcher.dart';
 import 'destination_lookup.dart';
@@ -59,6 +64,10 @@ class _DayScreenState extends State<DayScreen> {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) => RecommendationsScreen(addToDay: _day)));
   }
 
+  void _openSavedCopy() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => SavedTripScreen(tripId: widget.trip.id)));
+  }
+
   Future<void> _move(ItineraryItem stop, {required bool up}) async {
     try {
       await context.read<ItineraryProvider>().moveStop(stop, up: up);
@@ -78,6 +87,7 @@ class _DayScreenState extends State<DayScreen> {
     final provider = context.watch<ItineraryProvider>();
     final loaded = provider.currentTrip?.id == widget.trip.id;
     final stops = loaded ? provider.stopsForDay(_day) : <ItineraryItem>[];
+    final saved = context.watch<OfflineProvider>().isDownloaded(widget.trip.id);
 
     return Scaffold(
       appBar: AppBar(title: Text(widget.trip.destination)),
@@ -129,6 +139,22 @@ class _DayScreenState extends State<DayScreen> {
                   onPressed: loaded ? _openSuggestions : null,
                   child: Text('From suggestions', style: TextStyle(color: colors.amberText)),
                 ),
+              ],
+            ),
+            const SizedBox(height: 36),
+            Text('OFFLINE', style: MeridianText.monoData.copyWith(color: colors.inkSoft)),
+            const SizedBox(height: 6),
+            Text('Save the whole trip on this phone to read it with no signal.',
+                style: text.bodyMedium?.copyWith(color: colors.inkSoft)),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                DownloadTripButton(tripId: widget.trip.id),
+                // Also the way in when the stops above couldn't load.
+                if (saved) TextButton(onPressed: _openSavedCopy, child: const Text('Open saved copy')),
               ],
             ),
           ],

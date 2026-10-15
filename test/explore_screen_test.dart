@@ -9,6 +9,7 @@ import 'package:smart_travel_assistant/features/itinerary/destination_lookup.dar
 import 'package:smart_travel_assistant/features/itinerary/itinerary_provider.dart';
 import 'package:smart_travel_assistant/features/recommendations/recommendations_provider.dart';
 import 'package:smart_travel_assistant/features/recommendations/recommendations_screen.dart';
+import 'package:smart_travel_assistant/features/offline/offline_provider.dart';
 import 'package:smart_travel_assistant/theme/meridian_theme.dart';
 
 Future<List<DestinationMatch>> _noLookUp(String _) async => [];
@@ -19,6 +20,7 @@ Widget _app(ItineraryProvider itinerary, Widget home) {
       ChangeNotifierProvider(create: (_) => AccountsProvider()),
       ChangeNotifierProvider.value(value: itinerary),
       ChangeNotifierProvider(create: (_) => RecommendationsProvider()),
+      ChangeNotifierProvider(create: (_) => OfflineProvider()),
     ],
     child: MaterialApp(theme: meridianTheme(Brightness.dark), home: home),
   );

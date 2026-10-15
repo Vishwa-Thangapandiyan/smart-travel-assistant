@@ -8,6 +8,7 @@ import 'package:smart_travel_assistant/features/itinerary/destination_lookup.dar
 import 'package:smart_travel_assistant/features/itinerary/itinerary_provider.dart';
 import 'package:smart_travel_assistant/features/itinerary/trip_dates.dart';
 import 'package:smart_travel_assistant/features/itinerary/trips_screen.dart';
+import 'package:smart_travel_assistant/features/offline/offline_provider.dart';
 import 'package:smart_travel_assistant/models/trip.dart';
 import 'package:smart_travel_assistant/theme/meridian_theme.dart';
 
@@ -18,6 +19,7 @@ Widget _app({LookUpDestination? lookUp}) {
     providers: [
       ChangeNotifierProvider(create: (_) => AccountsProvider()),
       ChangeNotifierProvider(create: (_) => ItineraryProvider()),
+      ChangeNotifierProvider(create: (_) => OfflineProvider()),
     ],
     child: MaterialApp(
       theme: meridianTheme(Brightness.dark),
