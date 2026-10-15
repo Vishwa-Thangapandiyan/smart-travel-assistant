@@ -3,9 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_travel_assistant/dev/app_config.dart';
 import 'package:smart_travel_assistant/dev/fake_data.dart';
+import 'package:smart_travel_assistant/services/offline_service.dart' show resetFakeDownloads;
 import 'package:smart_travel_assistant/features/itinerary/day_screen.dart';
 import 'package:smart_travel_assistant/features/itinerary/destination_lookup.dart';
 import 'package:smart_travel_assistant/features/itinerary/itinerary_provider.dart';
+import 'package:smart_travel_assistant/features/offline/offline_provider.dart';
 import 'package:smart_travel_assistant/theme/meridian_theme.dart';
 
 String? _searchedFor;
@@ -18,8 +20,11 @@ Future<List<DestinationMatch>> _fakeLookUp(String query) async {
 }
 
 Widget _app(ItineraryProvider provider) {
-  return ChangeNotifierProvider.value(
-    value: provider,
+  return MultiProvider(
+    providers: [
+      ChangeNotifierProvider.value(value: provider),
+      ChangeNotifierProvider(create: (_) => OfflineProvider()),
+    ],
     child: MaterialApp(
       theme: meridianTheme(Brightness.dark),
       home: DayScreen(trip: demoTrip, lookUp: _fakeLookUp),
@@ -38,8 +43,9 @@ List<String> _stopsOnScreen(WidgetTester tester, ItineraryProvider provider, int
 void main() {
   late ItineraryProvider provider;
 
-  setUp(() {
+  setUp(() async {
     debugUseFakeData = true;
+    await resetFakeDownloads();
     resetFakeTrips();
     provider = ItineraryProvider();
   });
@@ -130,5 +136,22 @@ void main() {
 
     expect(find.text('Church Street'), findsNothing);
     expect(find.text('DAY 2 · 4 STOPS'), findsOneWidget);
+  });
+
+  testWidgets('the trip can be downloaded, then its saved copy opened', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(420, 1400));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_app(provider));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Open saved copy'), findsNothing);
+    await tester.tap(find.text('Download for offline'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Downloaded ✓'), findsOneWidget);
+    await tester.tap(find.text('Open saved copy'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Saved trip'), findsOneWidget);
   });
 }
