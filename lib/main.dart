@@ -23,6 +23,7 @@ import 'features/offline/offline_provider.dart';
 import 'features/recommendations/recommendations_provider.dart';
 import 'theme/meridian_theme.dart';
 import 'theme/theme_provider.dart';
+import 'widgets/intro_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,20 +57,30 @@ Future<void> main() async {
   runApp(MeridianApp(settings: settings, stays: stays));
 }
 
-class MeridianApp extends StatelessWidget {
+class MeridianApp extends StatefulWidget {
   final Box<String> settings;
   final Box<String> stays;
 
-  const MeridianApp({super.key, required this.settings, required this.stays});
+  /// The brand intro before the app; tests turn it off.
+  final bool showIntro;
+
+  const MeridianApp({super.key, required this.settings, required this.stays, this.showIntro = true});
+
+  @override
+  State<MeridianApp> createState() => _MeridianAppState();
+}
+
+class _MeridianAppState extends State<MeridianApp> {
+  late bool _intro = widget.showIntro;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ThemeProvider(settings)),
+        ChangeNotifierProvider(create: (_) => ThemeProvider(widget.settings)),
         ChangeNotifierProvider(create: (_) => AccountsProvider()),
         ChangeNotifierProvider(create: (_) => ItineraryProvider()),
-        ChangeNotifierProvider(create: (_) => StaysProvider(stays)),
+        ChangeNotifierProvider(create: (_) => StaysProvider(widget.stays)),
         ChangeNotifierProvider(create: (_) => MapsProvider()),
         ChangeNotifierProvider(create: (_) => OfflineProvider()),
         ChangeNotifierProvider(create: (_) => BudgetProvider()),
@@ -85,8 +96,9 @@ class MeridianApp extends StatelessWidget {
           darkTheme: meridianTheme(Brightness.dark),
           // Follows the phone unless the user picked Day or Night (DESIGN.md §2).
           themeMode: context.watch<ThemeProvider>().mode,
-          // The app when signed in (always, in fake data mode), else sign-in.
-          home: const AuthGate(),
+          // The intro once per start, then the app when signed in (always,
+          // in fake data mode), else sign-in.
+          home: _intro ? IntroScreen(onDone: () => setState(() => _intro = false)) : const AuthGate(),
         ),
       ),
     );

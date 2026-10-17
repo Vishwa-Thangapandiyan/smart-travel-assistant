@@ -121,8 +121,11 @@ class _SignInScreenState extends State<SignInScreen> {
           children: [
             Row(
               children: [
-                Icon(Icons.route, color: colors.amber),
-                const SizedBox(width: 8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset('assets/brand/meridian-mark.png', width: 28, height: 28, semanticLabel: 'Meridian logo'),
+                ),
+                const SizedBox(width: 10),
                 Text('Meridian', style: text.titleLarge),
               ],
             ),
