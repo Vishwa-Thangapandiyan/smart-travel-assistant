@@ -31,6 +31,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+  # Logo and the brand intro (made from docs/logo_assets).
+  assets:
+    - assets/brand/
+
   # Bundled font files (SIL Open Font License, see assets/fonts/OFL-*.txt),
   # not the google_fonts package — that would be a new dependency, and
   # bundled files also work offline. See DESIGN.md §4.

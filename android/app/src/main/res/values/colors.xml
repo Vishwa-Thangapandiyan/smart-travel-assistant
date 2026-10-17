@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The near-black of the logo, behind the launcher icon and the splash. -->
+    <color name="ic_launcher_background">#0D0904</color>
+</resources>
