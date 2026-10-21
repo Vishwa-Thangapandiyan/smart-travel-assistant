@@ -84,3 +84,8 @@ landing-page/
 # Kept in the repo folder for convenience, never committed.
 /Project-Report.docx
 /Project-Report.pdf
+
+# ---- Lab submissions ----
+# Test-case write-ups and recordings for course labs, kept here for
+# convenience and never committed.
+/lab8_submission/

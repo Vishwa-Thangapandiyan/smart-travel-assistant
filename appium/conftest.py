@@ -44,7 +44,8 @@ def app(driver):
     driver.activate_app(PACKAGE)
     screen = App(driver)
     screen.skip_intro()
-    screen.find("New trip")  # the Trips tab is showing
+    # A cold start can be slow, more so with a screen recorder running.
+    App(driver, timeout=30).find("New trip")  # the Trips tab is showing
     return screen
 
 
