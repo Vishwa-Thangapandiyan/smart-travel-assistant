@@ -27,6 +27,8 @@ smart-travel-assistant/
 │   ├── CODEOWNERS                        tags each folder's owner on a PR
 │   └── workflows/ci.yml                  flutter analyze (+ test) on every PR
 │
+├── appium/                               end-to-end UI tests on a real phone (Python + Appium), see its README
+│
 ├── docs/                                  contents gitignored, structure tracked
 │   ├── .gitignore
 │   ├── README.md                          ⚠ flags the SRS/diagrams as web-app-era and out of date

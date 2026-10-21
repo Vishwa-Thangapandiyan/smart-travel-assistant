@@ -1,0 +1,5 @@
+# Made by each run: phone screenshots of failed tests (they can show
+# anything on the phone) and the results file.
+failures/
+results.xml
+__pycache__/
